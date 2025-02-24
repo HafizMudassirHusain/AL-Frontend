@@ -6,6 +6,7 @@ import bghero from '../assets/hero-bg.jpg'
 import logo from '../assets/logo.png'
 import { motion } from 'framer-motion';
 
+
 const Home = () => {
   return (
     <div className="min-h-screen bg-gray-100">
@@ -36,7 +37,7 @@ const Home = () => {
           <img
             src={logo}
             alt="MZ Kitchen"
-            className="w-full h-auto rounded-lg shadow-lg"
+            className="w-full h-auto rounded-lg "
           />
         </motion.div>
 
@@ -75,6 +76,8 @@ const Home = () => {
 
       {/* Branches Section */}
       <Branches />
+
+       
     </div>
   );
 };
