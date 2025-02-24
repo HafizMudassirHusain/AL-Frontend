@@ -51,7 +51,7 @@ const Order = () => {
   };
 
   return (
-    <div className="text-center mt-10">
+    <div className="text-center  my-20">
       <h1 className="text-3xl font-bold">Place Your Order</h1>
 
       {/* Show message if user is not logged in */}

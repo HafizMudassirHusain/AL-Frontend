@@ -10,8 +10,8 @@ const Footer = () => {
           {/* Logo and Name */}
           <div className="mb-8 md:mb-0">
             <h2 className="text-2xl font-bold flex items-center">
-              <img src={logo} alt="Al-Rehman Kitchen Logo" className="w-20 h-20 mr-2" />
-              Al-Rehman Kitchen
+              <img src={logo} alt="MZ Kitchen Logo" className="w-20 h-20 mr-2" />
+              MZ Kitchen
             </h2>
             <p className="text-gray-400 mt-4">
               Serving delicious food since 2016. Your flavor haven in Karachi.
@@ -70,7 +70,7 @@ const Footer = () => {
 
         {/* Copyright */}
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-          &copy; {new Date().getFullYear()} Al-Rehman Kitchen. All rights reserved.
+          &copy; {new Date().getFullYear()} MZ Kitchen. All rights reserved.
         </div>
       </div>
     </footer>

@@ -10,6 +10,7 @@ import { useAuth } from "./context/AuthContext";
 import CustomerOrders from "./pages/CustomerOrders";
 import Footer from "./components/Footer";
 import AboutUs from "./pages/AboutUs";
+import ContactUs from "./pages/ContactUs";
 
 
 function App() {
@@ -26,6 +27,7 @@ const { user } = useAuth();
       <Route path="/order" element={<Order />} />
       <Route path="/login" element={<Login />} />
       <Route path="/about" element={<AboutUs />} />
+      <Route path="/contact" element={<ContactUs />} />
       <Route path="/my-orders" element={<CustomerOrders />} />
       <Route path="/admin/orders" element={user?.role === "admin" ? <AdminOrders /> : <Navigate to="/login" />} />  
     </Routes>

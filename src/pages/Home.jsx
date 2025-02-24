@@ -5,9 +5,11 @@ import Branches from '../components/Branches';
 import bghero from '../assets/hero-bg.jpg'
 import logo from '../assets/logo.png'
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 
 const Home = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Hero Section */}
@@ -17,9 +19,15 @@ const Home = () => {
           <h1 className="text-5xl font-bold mb-4">Flavor Haven – Home Food Services</h1>
           <p className="text-xl mb-8">Serving Karachi since 2016 with 17+ branches</p>
           <div className="space-x-4">
-            <button className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-300">Order Online</button>
-            <button className="bg-transparent border border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-black transition duration-300">View Menu</button>
-            <button className="bg-transparent border border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-black transition duration-300">Contact Us</button>
+            <button
+            onClick={() => navigate("/order")}
+            className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-300">Order Online</button>
+            <button
+               onClick={() => navigate("/menu")}
+            className="bg-transparent border border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-black transition duration-300">View Menu</button>
+            <button
+               onClick={() => navigate("/contact")}
+            className="bg-transparent border border-white text-white px-6 py-3 rounded-lg hover:bg-white hover:text-black transition duration-300">Contact Us</button>
           </div>
         </div>
       </div>
@@ -52,7 +60,9 @@ const Home = () => {
           <p className="text-lg text-gray-700 mb-6">
             We started our journey in 2016 with a single kitchen in Gulshan Iqbal. Today, we proudly serve food across 17+ branches in Karachi. Our commitment to quality and delicious food has made us a trusted name in the food industry.
           </p>
-          <button className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-300">
+          <button 
+          onClick={() => navigate("/about")}
+           className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-300">
             Read More
           </button>
         </motion.div>

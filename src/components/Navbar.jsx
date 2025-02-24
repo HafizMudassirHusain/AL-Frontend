@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { FaBars, FaTimes, FaUser, FaShoppingCart } from "react-icons/fa";
@@ -9,6 +9,12 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for user dropdown
+  const location = useLocation(); // Get the current route location
+
+  // Close the dropdown when the route changes
+  useEffect(() => {
+    setIsDropdownOpen(false);
+  }, [location]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -43,8 +49,8 @@ const Navbar = () => {
               </span>
             )}
           </Link>
-          <Link to="/order" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 transition duration-300">
-            Order
+          <Link to="/contact" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 transition duration-300">
+            Contact Us
           </Link>
           {user ? (
             <div className="relative">
@@ -58,28 +64,27 @@ const Navbar = () => {
                 {user.name}
               </button>
               {isDropdownOpen && (
-                <div
-                  className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2"
-                  onMouseEnter={() => setIsDropdownOpen(true)}
-                  onMouseLeave={() => setIsDropdownOpen(false)}
-                >
-                  <Link to="/my-orders" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    My Orders
-                  </Link>
-                  {user.role === "admin" && (
-                    <Link to="/admin/orders" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                      Admin
-                    </Link>
-                  &&
-                  <button
-                    onClick={logout}
-                    className="w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    Logout
-                  </button>
-                  )}
-                </div>
-              )}
+  <div
+    className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-2 z-50" // Add z-50 here
+    onMouseEnter={() => setIsDropdownOpen(true)}
+    onMouseLeave={() => setIsDropdownOpen(false)}
+  >
+    <Link to="/my-orders" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+      My Orders
+    </Link>
+    {user.role === "admin" && (
+      <Link to="/admin/orders" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+        Admin
+      </Link>
+    )}
+    <button
+      onClick={logout}
+      className="w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+    >
+      Logout
+    </button>
+  </div>
+)}
             </div>
           ) : (
             <Link to="/login" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 transition duration-300">
@@ -106,11 +111,16 @@ const Navbar = () => {
           <Link to="/about" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
             About Us
           </Link>
-          <Link to="/cart" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-            Cart ({cart.length})
+          <Link to="/contact" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+            Contact Us
           </Link>
-          <Link to="/order" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-            Order
+          <Link to="/cart"  className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+            <FaShoppingCart size={20} />
+            {cart.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">
+                {cart.length}
+              </span>
+            )}
           </Link>
           {user ? (
             <>
