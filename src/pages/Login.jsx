@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -35,6 +35,10 @@ const Login = () => {
         <button type="submit" className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
           Login
         </button>
+        <p className="text-center mt-4">
+         Don't have an account? <Link to="/signup" className="text-blue-500">Sign up</Link>
+           </p>
+
         <p>hmudassir511@gmail.com admin123456</p>
         <p>cus@gmail.com cus123</p>
       </form>

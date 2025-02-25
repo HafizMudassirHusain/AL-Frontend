@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -7,54 +8,44 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+    const savedUser = localStorage.getItem("user");
+    return savedUser ? JSON.parse(savedUser) : null;
   });
+  const navigate = useNavigate();
 
+  // Auto logout after 30 minutes of inactivity
   useEffect(() => {
-    const verifyUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
-      try {
-        const response = await axios.get("http://localhost:5000/api/auth/verify", {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-
-        setUser({ name: response.data.name, role: response.data.role });
-
-      } catch (error) {
-        console.error("Session expired, logging out...");
+    let timeout;
+    if (user) {
+      timeout = setTimeout(() => {
         logout();
-      }
-    };
+      }, 30 * 60 * 1000); // 30 minutes
+    }
+    return () => clearTimeout(timeout);
+  }, [user]);
 
-    verifyUser();
-  }, []);
-
+  // Login function (No Changes)
   const login = async (email, password) => {
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", {
         email,
-        password
+        password,
       });
 
-      const { token, name, role } = response.data;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify({ name, role }));
-
-      setUser({ name, role });
-
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("user", JSON.stringify(response.data));
+      setUser(response.data);
     } catch (error) {
       console.error("Login Failed:", error.response ? error.response.data : error);
     }
   };
 
+  // Logout function (No Changes)
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
+    navigate("/login");
   };
 
   return (

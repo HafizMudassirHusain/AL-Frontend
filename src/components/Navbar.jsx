@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { FaBars, FaTimes, FaUser, FaShoppingCart } from "react-icons/fa";
+import logo from '../assets/logo.png';
 
 const Navbar = () => {
   const { cart } = useCart();
@@ -28,7 +29,10 @@ const Navbar = () => {
     <nav className="bg-white dark:bg-gray-900 shadow-md">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         {/* Logo */}
+        <div className="flex items-center">
+         <img src={logo} alt="MZ Kitchen Logo" className="w-15 h-15 mr-2" />
         <h1 className="text-2xl font-bold dark:text-white">MZ Kitchen</h1>
+        </div>
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex space-x-6 items-center">
@@ -41,6 +45,9 @@ const Navbar = () => {
           <Link to="/about" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 transition duration-300">
             About Us
           </Link>
+          <Link to="/contact" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 transition duration-300">
+            Contact Us
+          </Link>
           <Link to="/cart" className="relative text-gray-700 dark:text-gray-300 hover:text-orange-500 transition duration-300">
             <FaShoppingCart size={20} />
             {cart.length > 0 && (
@@ -48,9 +55,6 @@ const Navbar = () => {
                 {cart.length}
               </span>
             )}
-          </Link>
-          <Link to="/contact" className="text-gray-700 dark:text-gray-300 hover:text-orange-500 transition duration-300">
-            Contact Us
           </Link>
           {user ? (
             <div className="relative">
@@ -73,7 +77,7 @@ const Navbar = () => {
       My Orders
     </Link>
     {user.role === "admin" && (
-      <Link to="/admin/orders" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+      <Link to="/admin" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
         Admin
       </Link>
     )}
