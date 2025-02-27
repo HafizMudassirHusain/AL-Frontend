@@ -39,6 +39,7 @@ const Login = () => {
          Don't have an account? <Link to="/signup" className="text-blue-500">Sign up</Link>
            </p>
 
+        <p>superadmin@gmail.com SuperSecure123</p>
         <p>hmudassir511@gmail.com admin123456</p>
         <p>cus@gmail.com cus123</p>
       </form>

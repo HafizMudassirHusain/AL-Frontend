@@ -7,40 +7,31 @@ const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
+
+  // ✅ Load user from localStorage on first render
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem("user");
     return savedUser ? JSON.parse(savedUser) : null;
   });
-  const navigate = useNavigate();
 
-  // Auto logout after 30 minutes of inactivity
-  useEffect(() => {
-    let timeout;
-    if (user) {
-      timeout = setTimeout(() => {
-        logout();
-      }, 30 * 60 * 1000); // 30 minutes
-    }
-    return () => clearTimeout(timeout);
-  }, [user]);
-
-  // Login function (No Changes)
+  // ✅ Login function
   const login = async (email, password) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post("http://localhost:5000/api/auth/login", { email, password });
+      const loggedInUser = { name: response.data.name, role: response.data.role };
 
+      // ✅ Save user & token in localStorage
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data));
-      setUser(response.data);
+      localStorage.setItem("user", JSON.stringify(loggedInUser));
+
+      setUser(loggedInUser);
     } catch (error) {
       console.error("Login Failed:", error.response ? error.response.data : error);
     }
   };
 
-  // Logout function (No Changes)
+  // ✅ Logout function
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");

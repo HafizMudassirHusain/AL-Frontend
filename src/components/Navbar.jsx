@@ -76,11 +76,11 @@ const Navbar = () => {
     <Link to="/my-orders" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
       My Orders
     </Link>
-    {user.role === "admin" && (
-      <Link to="/admin" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-        Admin
-      </Link>
-    )}
+    {(user.role === "admin" || user.role === "super-admin") && (
+     <Link to="/admin" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+      Admin
+     </Link>
+      )}
     <button
       onClick={logout}
       className="w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -131,11 +131,11 @@ const Navbar = () => {
               <Link to="/my-orders" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                 My Orders
               </Link>
-              {user.role === "admin" && (
-                <Link to="/admin/orders" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+              {(user.role === "admin" || user.role === "super-admin") && (
+              <Link to="/admin" className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
                   Admin
                 </Link>
-              )}
+                      )}
               <button
                 onClick={logout}
                 className="w-full text-left px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -154,4 +154,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbar;    

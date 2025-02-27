@@ -3,6 +3,7 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { motion } from "framer-motion";
 import Modal from 'react-modal'
+import Papa from "papaparse"; // ✅ Import PapaParse for CSV
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -83,6 +84,28 @@ const closeModal = () => setSelectedOrder(null);
     }
   };
 
+  // ✅ Convert orders to CSV format
+  const exportToCSV = () => {
+    const csvData = orders.map(order => ({
+      "Order ID": order._id,
+      "Customer Name": order.customerName,
+      "Phone": order.phone,
+      "Total Price": order.totalPrice,
+      "Status": order.status,
+      "Order Date": new Date(order.createdAt).toLocaleString(),
+    }));
+
+    const csv = Papa.unparse(csvData);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute("download", "orders.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  
+
 
   return (
     <>
@@ -137,6 +160,11 @@ const closeModal = () => setSelectedOrder(null);
           <option value="totalPrice">Highest Price</option>
           <option value="status">Sort by Status</option>
         </select>
+
+         {/* ✅ CSV Export Button */}
+         <button onClick={exportToCSV} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 mb-4">
+          📥 Export Orders to CSV
+        </button>
       </motion.div>
 
       {/* Order Table */}
