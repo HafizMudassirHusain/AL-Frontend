@@ -38,7 +38,7 @@ const AdminAnalytics = () => {
   // Fetch Orders with Date Filter
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/orders?filter=${dateFilter}`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders?filter=${dateFilter}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setOrders(response.data);

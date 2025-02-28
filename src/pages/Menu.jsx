@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useCart } from "../context/CartContext";
 
+
 const Menu = () => {
   const [menu, setMenu] = useState([]);
   const {addToCart} = useCart();
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/menu")
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/menu`)
       .then(response => setMenu(response.data))
       .catch(error => console.error("Error fetching menu:", error));
   }, []);

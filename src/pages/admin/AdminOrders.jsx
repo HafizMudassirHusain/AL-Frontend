@@ -22,7 +22,7 @@ const closeModal = () => setSelectedOrder(null);
   // Fetch Orders
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/orders", {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
       setOrders(response.data);
@@ -34,7 +34,7 @@ const closeModal = () => setSelectedOrder(null);
   // Update Order Status
   const updateStatus = async (orderId, status) => {
     try {
-      await axios.put(`http://localhost:5000/api/orders/${orderId}/status`, { status }, {
+      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${orderId}/status`, { status }, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
 
@@ -74,7 +74,7 @@ const closeModal = () => setSelectedOrder(null);
     if (!window.confirm("Are you sure you want to delete this order?")) return;
   
     try {
-      await axios.delete(`http://localhost:5000/api/orders/${orderId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${orderId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
   

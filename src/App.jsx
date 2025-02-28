@@ -20,8 +20,9 @@ import { useAuth } from "./context/AuthContext";
 
 function App() {
   const token = localStorage.getItem("token");
-  const userRole = localStorage.getItem("role");
-  const { user } = useAuth();
+const userData = JSON.parse(localStorage.getItem("user")); // ✅ Get full user object
+const userRole = userData?.role; // ✅ Extract role
+const { user } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
@@ -41,9 +42,13 @@ function App() {
 
         {/* ✅ Protected Admin Routes (Admin & Super Admin) */}
         <Route
-          path="/admin"
-          element={token && (userRole === "admin" || userRole === "super-admin") ? <AdminLayout /> : <Navigate to="/login" />}
-        >
+  path="/admin"
+  element={
+    token && (userRole === "admin" || userRole === "super-admin")
+      ? <AdminLayout />
+      : <Navigate to="/login" />
+  }
+>
           <Route index element={<Navigate to="/admin/dashboard" />} />
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="orders" element={<AdminOrders />} />
@@ -51,6 +56,7 @@ function App() {
           <Route path="analytics" element={<AdminAnalytics />} />
           {/* ✅ Only Super Admin can access user management */}
           <Route path="users" element={userRole === "super-admin" ? <AdminUsers /> : <Navigate to="/admin/dashboard" />} />
+
         </Route>
       </Routes>
 

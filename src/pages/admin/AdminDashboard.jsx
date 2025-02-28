@@ -40,7 +40,7 @@ const AdminDashboard = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/orders");
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders`);
       let filteredOrders = response.data;
 
       // Apply Date Filters

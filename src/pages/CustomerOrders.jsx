@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
+
 const CustomerOrders = () => {
   const [orders, setOrders] = useState([]);
   const { user } = useAuth();
@@ -9,7 +10,7 @@ const CustomerOrders = () => {
   useEffect(() => {
     if (!user?.name) return; // Ensure user is defined before making a request
 
-    axios.get("http://localhost:5000/api/orders", {
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, {
       headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
     })
     .then(response => {

@@ -7,9 +7,16 @@ const AdminUsers = () => {
   const [sortBy, setSortBy] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
-
   const token = localStorage.getItem("token");
-  const userRole = localStorage.getItem("role");
+
+// ✅ Fix: Parse user role from localStorage
+const userData = JSON.parse(localStorage.getItem("user")); // ✅ Parse entire user object
+const userRole = userData?.role; // ✅ Extract role
+const userId = userData?.userId || localStorage.getItem("userId");
+ console.log("userRoleData: ",userData)
+ console.log("userRole: ",userRole)
+ console.log("userid: ",token)
+
 
   useEffect(() => {
     fetchUsers();
@@ -18,7 +25,7 @@ const AdminUsers = () => {
   // ✅ Fetch All Users
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/auth/users", {
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(response.data);
@@ -33,7 +40,7 @@ const AdminUsers = () => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/auth/users/${userId}/role`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/auth/users/${userId}/role`,
         { role: newRole },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -49,7 +56,7 @@ const AdminUsers = () => {
     if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/auth/users/${userId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/auth/users/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -110,7 +117,7 @@ const AdminUsers = () => {
             <th className="border p-2">Name</th>
             <th className="border p-2">Email</th>
             <th className="border p-2">Role</th>
-            {userRole === "super-admin" && <th className="border p-2">Actions</th>}
+            {(userRole === "admin" || userRole === "super-admin") && <th className="border p-2">Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -119,26 +126,30 @@ const AdminUsers = () => {
               <tr key={user._id} className="border hover:bg-gray-100 transition duration-300">
                 <td className="border p-2">{user.name}</td>
                 <td className="border p-2">{user.email}</td>
-                <td className="border p-2">{user.role}</td>
-                {userRole === "super-admin" && (
+                <td className="border p-2">
+                  {(userRole === "admin" || userRole === "super-admin") && user._id !== userId ? (
+                    <select
+                      value={user.role}
+                      onChange={(e) => updateUserRole(user._id, e.target.value)}
+                      className="p-2 border rounded"
+                    >
+                      <option value="customer">Customer</option>
+                      <option value="admin">Admin</option>
+                      <option value="super-admin">Super Admin</option>
+                    </select>
+                  ) : (
+                    user.role
+                  )}
+                </td>
+                {(userRole === "admin" || userRole === "super-admin") && (
                   <td className="border p-2 flex items-center space-x-2">
-                    {user.role !== "super-admin" && (
-                      <>
-                        <select
-                          value={user.role}
-                          onChange={(e) => updateUserRole(user._id, e.target.value)}
-                          className="p-2 border rounded"
-                        >
-                          <option value="customer">Customer</option>
-                          <option value="admin">Admin</option>
-                        </select>
-                        <button
-                          onClick={() => deleteUser(user._id)}
-                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition duration-300"
-                        >
-                          Delete
-                        </button>
-                      </>
+                    {user.role !== "super-admin" && user._id !== userId && (
+                      <button
+                        onClick={() => deleteUser(user._id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition duration-300"
+                      >
+                        Delete
+                      </button>
                     )}
                   </td>
                 )}

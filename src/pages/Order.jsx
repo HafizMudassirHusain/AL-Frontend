@@ -4,6 +4,7 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
+
 const Order = () => {
   const { user } = useAuth();
   const { cart, clearCart } = useCart();
@@ -32,7 +33,7 @@ const Order = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/orders", {
+      const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, {
         customerName,
         phone,
         address,

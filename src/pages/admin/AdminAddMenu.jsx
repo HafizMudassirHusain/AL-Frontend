@@ -18,7 +18,7 @@ const AdminAddMenu = () => {
 
   const fetchMenu = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/menu");
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/menu`);
       setMenu(response.data);
     } catch (error) {
       console.error("Error fetching menu:", error);
@@ -38,13 +38,13 @@ const AdminAddMenu = () => {
     try {
       if (editItem) {
         // Update Existing Menu Item
-        await axios.put(`http://localhost:5000/api/menu/${editItem._id}`, formData, {
+        await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/menu/${editItem._id}`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         setMessage("Menu item updated successfully!");
       } else {
         // Add New Menu Item
-        await axios.post("http://localhost:5000/api/menu", formData, {
+        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/menu`, formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
         setMessage("Menu item added successfully!");
@@ -75,7 +75,7 @@ const AdminAddMenu = () => {
     if (!window.confirm("Are you sure you want to delete this item?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/menu/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/menu/${id}`);
       setMenu(menu.filter((item) => item._id !== id));
     } catch (error) {
       console.error("Error deleting menu item:", error);

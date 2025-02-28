@@ -3,6 +3,7 @@ import { FaUtensils, FaAward, FaUsers, FaSmile } from "react-icons/fa";
 import { motion } from "framer-motion";
 import logo from '../assets/logo.png'
 
+
 // Animation variants
 const fadeInUp = {
   hidden: { opacity: 0, y: 50 },
