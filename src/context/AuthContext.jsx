@@ -46,7 +46,7 @@ console.log("✅ Login Success - Full Response:", response.data);
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user"); // ✅ Remove full user object
-    window.location.href = "/login"; // ✅ Redirect to login after logout
+    navigate("/") // ✅ Redirect to login after logout
   };
   
 
