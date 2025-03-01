@@ -97,13 +97,13 @@ const AboutUs = () => {
             <motion.div variants={fadeInUp}>
               <h3 className="text-2xl font-semibold text-white mb-4">Mission</h3>
               <p className="text-white">
-                To become a trusted and beloved brand known for offering high-quality, delicious, and nutritious food that enhances people's lives.
+              To become the trusted companion for home cooks and food lovers, providing inspiration, education, and support to help them create memorable meals that bring people together and nourish both body and soul.
               </p>
             </motion.div>
             <motion.div variants={fadeInUp}>
               <h3 className="text-2xl font-semibold text-white mb-4">Vision</h3>
               <p className="text-white">
-                To expand our reach and continue delivering exceptional food experiences while maintaining our commitment to quality and customer satisfaction.
+              Empowering individuals and families to live healthier, happier lives by providing access to nutritious, delicious, and convenient home-made food solutions
               </p>
             </motion.div>
           </div>
