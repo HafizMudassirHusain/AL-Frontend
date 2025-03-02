@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom"; 
 import Home from "./pages/Home";
-import Menu from "./pages/Menu";
+import MenuPage from "./pages/Menu";
 import Cart from "./pages/Cart";
 import Order from "./pages/Order";
 import Login from "./pages/Login";
@@ -31,7 +31,7 @@ const { user } = useAuth();
       <Routes>
         {/* ✅ Public Routes */}
         <Route path="/" element={<Home />} />
-        <Route path="/menu" element={<Menu />} />
+        <Route path="/menu" element={<MenuPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<Order />} />
         <Route path="/signup" element={<Signup />} />

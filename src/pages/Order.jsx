@@ -4,18 +4,15 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
-
 const Order = () => {
   const { user } = useAuth();
   const { cart, clearCart } = useCart();
-  
-  // Set initial state based on user login status
+
   const [customerName, setCustomerName] = useState(user ? user.name : "");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState("");
 
-  // Update name field if user logs in after page load
   useEffect(() => {
     if (user) {
       setCustomerName(user.name);
@@ -42,8 +39,8 @@ const Order = () => {
       });
 
       setMessage(response.data.message);
-      clearCart(); // Clear cart after successful order
-      setCustomerName(user ? user.name : ""); // Reset if logged out
+      clearCart();
+      setCustomerName(user ? user.name : "");
       setPhone("");
       setAddress("");
     } catch (error) {
@@ -52,54 +49,57 @@ const Order = () => {
   };
 
   return (
-    <div className="text-center  my-20">
-      <h1 className="text-3xl font-bold">Place Your Order</h1>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+      <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
+        <h1 className="text-2xl font-bold text-center mb-4">Place Your Order</h1>
 
-      {/* Show message if user is not logged in */}
-      {!user && (
-        <p className="text-red-500 mb-3">
-          If you want to save your order details, <Link to="/login" className="text-blue-500 underline">Login first</Link> and track your order status.
-        </p>
-      )}
+        {!user && (
+          <p className="text-red-500 text-center mb-3">
+            If you want to save your order details,{" "}
+            <Link to="/login" className="text-blue-500 underline">Login first</Link> to track your order status.
+          </p>
+        )}
 
-      <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-5 p-5 bg-white shadow-md rounded">
-        {message && <p className="text-red-500">{message}</p>}
+        {message && <p className="text-red-500 text-center mb-3">{message}</p>}
 
-        <input
-          type="text"
-          placeholder="Your Name"
-          className="w-full p-2 border rounded mb-2"
-          value={customerName}
-          onChange={(e) => setCustomerName(e.target.value)}
-          disabled={!!user} // Disable input if user is logged in
-        />
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <input
+            type="text"
+            placeholder="Your Name"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={customerName}
+            onChange={(e) => setCustomerName(e.target.value)}
+            disabled={!!user}
+          />
 
-        <input
-          type="text"
-          placeholder="Phone Number"
-          className="w-full p-2 border rounded mb-2"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        />
+          <input
+            type="text"
+            placeholder="Phone Number"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
 
-        <textarea
-          placeholder="Delivery Address"
-          className="w-full p-2 border rounded mb-2"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
+          <textarea
+            placeholder="Delivery Address"
+            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
 
-        <p className="text-lg font-bold">Total: Rs. {totalPrice}</p>
+          <p className="text-lg font-bold text-center">Total: Rs. {totalPrice}</p>
 
-        {/* Disable Confirm Order button if user is not logged in */}
-        <button
-          type="submit"
-          className={`mt-2 px-4 py-2 rounded ${user ? "bg-blue-500 hover:bg-blue-700 text-white" : "bg-gray-400 cursor-not-allowed text-gray-700"}`}
-          disabled={!user}
-        >
-          Confirm Order
-        </button>
-      </form>
+          <button
+            type="submit"
+            className={`w-full p-3 rounded-lg text-white font-semibold ${
+              user ? "bg-orange-500 hover:bg-orange-700" : "bg-gray-300 cursor-not-allowed"
+            }`}
+            disabled={!user}
+          >
+            Confirm Order
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

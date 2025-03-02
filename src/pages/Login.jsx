@@ -17,7 +17,10 @@ const Login = () => {
   return (
     <div className="text-center mt-10">
       <h1 className="text-3xl font-bold">Login</h1>
-      <form onSubmit={handleLogin} className="max-w-md mx-auto mt-5 p-5 bg-white shadow-md rounded">
+      <form 
+        onSubmit={handleLogin} 
+        className="max-w-md mx-auto mt-5 p-5 bg-white shadow-md rounded"
+      >
         <input
           type="email"
           placeholder="Email"
@@ -32,12 +35,19 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit" className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+
+        {/* ✅ Disable button if inputs are empty */}
+        <button 
+          type="submit" 
+          className={`mt-2 px-4 py-2 rounded ${email && password ? "bg-blue-500 hover:bg-blue-700 text-white" : "bg-gray-400 text-gray-700 cursor-not-allowed"}`}
+          disabled={!email || !password}
+        >
           Login
         </button>
+
         <p className="text-center mt-4">
-         Don't have an account? <Link to="/signup" className="text-blue-500">Sign up</Link>
-           </p>
+          Don't have an account? <Link to="/signup" className="text-blue-500">Sign up</Link>
+        </p>
 
         <p>superadmin@gmail.com SuperSecure123</p>
         <p>hmudassir511@gmail.com admin123456</p>
