@@ -33,117 +33,100 @@ const Cart = () => {
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="text-center mb-12"
+          className="text-center mb-12 "
         >
-          <motion.h1
-            variants={fadeInUp}
-            className="text-4xl font-bold text-gray-800 mb-4"
-          >
+          <motion.h1 variants={fadeInUp} className="text-4xl font-bold text-gray-800 mb-4">
             Your Cart
           </motion.h1>
-          <motion.p
-            variants={fadeInUp}
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
-          >
+          <motion.p variants={fadeInUp} className="text-lg text-gray-600 max-w-2xl mx-auto">
             Review your items and proceed to checkout.
           </motion.p>
         </motion.div>
-
-        {/* Cart Items */}
+  
+        {/* Cart Table */}
         {cart.length === 0 ? (
-          <motion.p
-            variants={fadeInUp}
-            className="text-center text-lg text-gray-600"
-          >
+          <motion.p variants={fadeInUp} className="text-center text-lg text-gray-600">
             No items added yet.
           </motion.p>
         ) : (
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="bg-white shadow-lg rounded-lg p-8"
-          >
-            {cart.map((item) => (
-              <motion.div
-                key={item._id}
-                variants={fadeInUp}
-                className="flex items-center justify-between p-4 border-b last:border-b-0"
-              >
-                {/* Product Image */}
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className="w-20 h-20 object-cover rounded-lg"
-                />
-
-                {/* Product Name */}
-                <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
-
-                {/* Quantity Control */}
-                <div className="flex items-center">
-                  <button
-                    onClick={() => decreaseQuantity(item._id)}
-                    className="bg-gray-200 px-3 py-1 rounded-l hover:bg-gray-300 transition duration-300"
-                    disabled={item.quantity <= 1}
-                  >
-                    -
-                  </button>
-                  <span className="px-3 text-gray-700">{item.quantity}</span>
-                  <button
-                    onClick={() => increaseQuantity(item._id)}
-                    className="bg-gray-200 px-3 py-1 rounded-r hover:bg-gray-300 transition duration-300"
-                  >
-                    +
-                  </button>
-                </div>
-
-                {/* Price */}
-                <p className="text-lg font-bold text-gray-800">
-                  Rs. {item.price * item.quantity}
-                </p>
-
-                {/* Remove Button */}
-                <button
-                  onClick={() => removeFromCart(item._id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300"
-                >
-                  Remove
-                </button>
-              </motion.div>
-            ))}
-
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="bg-white shadow-lg rounded-lg p-6 overflow-x-auto hide-scrollbar">
+            <table className="w-full border-collapse">
+              {/* Table Header */}
+              <thead>
+                <tr className="bg-gray-200 text-gray-800 text-left">
+                  <th className="p-3">Image</th>
+                  <th className="p-3">Product</th>
+                  <th className="p-3">Quantity</th>
+                  <th className="p-3">Price</th>
+                  <th className="p-3 text-center">Actions</th>
+                </tr>
+              </thead>
+  
+              {/* Table Body */}
+              <tbody>
+                {cart.map((item) => (
+                  <motion.tr key={item._id} variants={fadeInUp} className="border-b">
+                    {/* Product Image */}
+                    <td className="p-3">
+                      <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-lg" />
+                    </td>
+  
+                    {/* Product Name */}
+                    <td className="p-3 font-semibold text-gray-800">{item.name}</td>
+  
+                    {/* Quantity Control */}
+                    <td className="p-3">
+                      <div className="flex items-center">
+                        <button
+                          onClick={() => decreaseQuantity(item._id)}
+                          className="bg-gray-200 px-3 py-1 rounded-l hover:bg-gray-300 transition duration-300"
+                          disabled={item.quantity <= 1}
+                        >
+                          -
+                        </button>
+                        <span className="px-3 text-gray-700">{item.quantity}</span>
+                        <button
+                          onClick={() => increaseQuantity(item._id)}
+                          className="bg-gray-200 px-3 py-1 rounded-r hover:bg-gray-300 transition duration-300"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </td>
+  
+                    {/* Price */}
+                    <td className="p-3 font-bold text-gray-800">Rs. {item.price * item.quantity}</td>
+  
+                    {/* Remove Button */}
+                    <td className="p-3 text-center">
+                      <button
+                        onClick={() => removeFromCart(item._id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300"
+                      >
+                        Remove
+                      </button>
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+  
             {/* Total Price */}
-            <motion.div
-              variants={fadeInUp}
-              className="mt-6 text-right"
-            >
-              <p className="text-2xl font-bold text-gray-800">
-                Total: Rs. {totalPrice}
-              </p>
+            <motion.div variants={fadeInUp} className="mt-6 text-right">
+              <p className="text-2xl font-bold text-gray-800">Total: Rs. {totalPrice}</p>
             </motion.div>
-
-            {/* Clear Cart Button */}
-            <motion.div
-              variants={fadeInUp}
-              className="mt-6"
-            >
+  
+            {/* Buttons */}
+            <motion.div variants={fadeInUp} className="mt-6 flex flex-col sm:flex-row gap-4">
               <button
                 onClick={clearCart}
-                className="w-full bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300"
+                className="flex-1 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300"
               >
                 Clear Cart
               </button>
-            </motion.div>
-
-            {/* Move to Order Page Button */}
-            <motion.div
-              variants={fadeInUp}
-              className="mt-4"
-            >
               <button
                 onClick={() => navigate("/order")}
-                className="w-full bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300"
+                className="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300"
               >
                 Place Order
               </button>
@@ -153,6 +136,7 @@ const Cart = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Cart;

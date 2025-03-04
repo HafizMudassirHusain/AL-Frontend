@@ -104,12 +104,12 @@ const Menu = () => {
       <h2 className="text-3xl font-bold text-center mb-8">Our Menu</h2>
 
       {/* ✅ Category Scrollable Buttons */}
-      <div className="relative flex items-center mb-8">
+      <div className="relative flex items-center mb-8 ">
         <button onClick={scrollLeft} className="absolute left-0 z-10 bg-gray-200 dark:bg-gray-700 p-2 rounded-full shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 transition hidden sm:flex">
           <FaChevronLeft />
         </button>
 
-        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-10">
+        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-10  hide-scrollbar">
           {categories.map((category) => (
             <button
               key={category}

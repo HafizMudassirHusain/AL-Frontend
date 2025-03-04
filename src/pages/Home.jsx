@@ -100,7 +100,7 @@ const Home = () => {
               <FaChevronLeft />
             </button>
 
-            <div ref={scrollRef} className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth px-10">
+            <div ref={scrollRef} className="flex gap-6 overflow-x-auto scroll-smooth px-10  hide-scrollbar">
               {deals.length > 0 ? (
                 deals.map((deal) => {
                   const discountedPrice = (deal.price * 0.85).toFixed(0); // ✅ Apply 15% discount

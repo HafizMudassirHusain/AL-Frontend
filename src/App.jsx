@@ -16,6 +16,7 @@ import AdminOrders from "./pages/admin/AdminOrders";
 import AdminAddMenu from "./pages/admin/AdminAddMenu";
 import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminUsers from "./pages/admin/AdminUsers";
+import AdminHeroSection from "./pages/admin/AdminHeroSection";
 import { useAuth } from "./context/AuthContext";
 
 function App() {
@@ -54,6 +55,7 @@ const { user } = useAuth();
           <Route path="orders" element={<AdminOrders />} />
           <Route path="menu" element={<AdminAddMenu />} />
           <Route path="analytics" element={<AdminAnalytics />} />
+          <Route path="hero-section" element={<AdminHeroSection />} />
           {/* ✅ Only Super Admin can access user management */}
           <Route path="users" element={userRole === "super-admin" ? <AdminUsers /> : <Navigate to="/admin/dashboard" />} />
 

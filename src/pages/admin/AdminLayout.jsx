@@ -88,6 +88,14 @@ const AdminLayout = () => {
           >
             <FiUsers className="mr-2" /> User Management
           </Link>
+          <Link
+            to="/admin/hero-section"
+            className={`flex items-center p-3 hover:bg-gray-700 rounded ${
+              location.pathname === "/admin/hero-section" ? "bg-gray-700" : ""
+            }`}
+          >
+            🌟 Admin Hero Section
+          </Link>
         </nav>
       </motion.div>
 

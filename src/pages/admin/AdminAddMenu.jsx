@@ -224,8 +224,8 @@ const AdminAddMenu = () => {
           {menu.length === 0 ? (
             <p className="text-center text-gray-600">No items added yet.</p>
           ) : (
-            <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
-              <table className="w-full border-collapse">
+            <div className="overflow-x-auto overflow-y-auto h-[500px] bg-white shadow-lg rounded-lg">
+              <table className="w-full border-collapse ">
                 <thead>
                   <tr className="bg-gray-200">
                     <th className="p-4 text-left">Name</th>

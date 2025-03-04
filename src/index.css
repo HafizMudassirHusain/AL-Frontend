@@ -26,3 +26,13 @@ body {
   ::-webkit-scrollbar-thumb:hover {
     background: #ef700e; 
   }
+
+
+  .hide-scrollbar {
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+  
