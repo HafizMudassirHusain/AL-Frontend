@@ -18,15 +18,18 @@ import AdminAnalytics from "./pages/admin/AdminAnalytics";
 import AdminUsers from "./pages/admin/AdminUsers";
 import AdminHeroSection from "./pages/admin/AdminHeroSection";
 import { useAuth } from "./context/AuthContext";
+import { ThemeContext } from "./context/ThemeContext";
+import { useContext } from "react";
 
 function App() {
   const token = localStorage.getItem("token");
 const userData = JSON.parse(localStorage.getItem("user")); // ✅ Get full user object
 const userRole = userData?.role; // ✅ Extract role
 const { user } = useAuth();
+  const { theme, setTheme } = useContext(ThemeContext);
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100">
+    <div className={`min-h-screen ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>
       <Navbar />
 
       <Routes>

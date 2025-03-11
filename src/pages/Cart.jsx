@@ -1,6 +1,8 @@
 import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ThemeContext } from "../context/ThemeContext";
+import { useContext } from "react";
 
 const Cart = () => {
   const { cart, removeFromCart, clearCart, increaseQuantity, decreaseQuantity } = useCart();
@@ -24,10 +26,11 @@ const Cart = () => {
       },
     },
   };
+  const { theme, setTheme } = useContext(ThemeContext);
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12">
-      <div className="container mx-auto px-4">
+    <div className={`min-h-screen ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-900 text-white'} py-12`}>
+      <div className={`container mx-auto px-4 `}>
         {/* Hero Section */}
         <motion.div
           initial="hidden"
@@ -35,21 +38,21 @@ const Cart = () => {
           variants={staggerContainer}
           className="text-center mb-12 "
         >
-          <motion.h1 variants={fadeInUp} className="text-4xl font-bold text-gray-800 mb-4">
+          <motion.h1 variants={fadeInUp} className="text-4xl font-bold  mb-4">
             Your Cart
           </motion.h1>
-          <motion.p variants={fadeInUp} className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <motion.p variants={fadeInUp} className="text-lg  max-w-2xl mx-auto">
             Review your items and proceed to checkout.
           </motion.p>
         </motion.div>
   
         {/* Cart Table */}
         {cart.length === 0 ? (
-          <motion.p variants={fadeInUp} className="text-center text-lg text-gray-600">
+          <motion.p variants={fadeInUp} className="text-center text-lg">
             No items added yet.
           </motion.p>
         ) : (
-          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="bg-white shadow-lg rounded-lg p-6 overflow-x-auto hide-scrollbar">
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} shadow-lg rounded-lg p-6 overflow-x-auto hide-scrollbar`}>
             <table className="w-full border-collapse">
               {/* Table Header */}
               <thead>
@@ -72,22 +75,22 @@ const Cart = () => {
                     </td>
   
                     {/* Product Name */}
-                    <td className="p-3 font-semibold text-gray-800">{item.name}</td>
+                    <td className={`p-3 font-semibold ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>{item.name}</td>
   
                     {/* Quantity Control */}
                     <td className="p-3">
                       <div className="flex items-center">
                         <button
                           onClick={() => decreaseQuantity(item._id)}
-                          className="bg-gray-200 px-3 py-1 rounded-l hover:bg-gray-300 transition duration-300"
+                          className={`${theme === 'light' ? 'bg-gray-200 text-black' : 'bg-gray-400 text-white'} px-3 py-1 rounded-l hover:bg-gray-300 transition duration-300`}
                           disabled={item.quantity <= 1}
                         >
                           -
                         </button>
-                        <span className="px-3 text-gray-700">{item.quantity}</span>
+                        <span className={`px-3 ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>{item.quantity}</span>
                         <button
                           onClick={() => increaseQuantity(item._id)}
-                          className="bg-gray-200 px-3 py-1 rounded-r hover:bg-gray-300 transition duration-300"
+                          className={`${theme === 'light' ? 'bg-gray-200 text-black' : 'bg-gray-400 text-white'} px-3 py-1 rounded-r hover:bg-gray-300 transition duration-300`}
                         >
                           +
                         </button>
@@ -95,7 +98,7 @@ const Cart = () => {
                     </td>
   
                     {/* Price */}
-                    <td className="p-3 font-bold text-gray-800">Rs. {item.price * item.quantity}</td>
+                    <td className={`p-3 font-bold ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>Rs. {item.price * item.quantity}</td>
   
                     {/* Remove Button */}
                     <td className="p-3 text-center">
@@ -113,7 +116,7 @@ const Cart = () => {
   
             {/* Total Price */}
             <motion.div variants={fadeInUp} className="mt-6 text-right">
-              <p className="text-2xl font-bold text-gray-800">Total: Rs. {totalPrice}</p>
+              <p className={`text-2xl font-bold ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>Total: Rs. {totalPrice}</p>
             </motion.div>
   
             {/* Buttons */}

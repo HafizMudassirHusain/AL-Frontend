@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from "react-icons/fa";
 import { motion } from "framer-motion";
 import emailjs from "emailjs-com";
+import { ThemeContext } from "../context/ThemeContext";
 
 // Animation variants
 const fadeInUp = {
@@ -51,9 +52,10 @@ const ContactUs = () => {
   // Reset the form
   e.target.reset();
   };
+    const { theme, setTheme } = useContext(ThemeContext);
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12">
+    <div className={`min-h-screen ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} py-12`}>
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <motion.div
@@ -64,13 +66,13 @@ const ContactUs = () => {
         >
           <motion.h1
             variants={fadeInUp}
-            className="text-4xl font-bold text-gray-800 mb-4"
+            className="text-4xl font-bold mb-4"
           >
             Contact Us
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            className="text-lg max-w-2xl mx-auto"
           >
             We'd love to hear from you! Whether you have a question, feedback, or just want to say hello, feel free to reach out to us.
           </motion.p>
@@ -81,14 +83,14 @@ const ContactUs = () => {
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="bg-white shadow-lg rounded-lg p-8 mb-12"
+          className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} shadow-lg rounded-lg p-8 mb-12`}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Address */}
             <motion.div variants={fadeInUp} className="text-center">
               <FaMapMarkerAlt className="text-4xl text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Address</h3>
-              <p className="text-gray-600">
+              <h3 className="text-xl font-semibold mb-2">Address</h3>
+              <p >
                 House #12, Ground Floor, Gulistan-e-Johar, Karachi
               </p>
             </motion.div>
@@ -96,22 +98,22 @@ const ContactUs = () => {
             {/* Phone */}
             <motion.div variants={fadeInUp} className="text-center">
               <FaPhone className="text-4xl text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Phone</h3>
-              <p className="text-gray-600">03XX-XXXXXXX</p>
+              <h3 className="text-xl font-semibold  mb-2">Phone</h3>
+              <p>03XX-XXXXXXX</p>
             </motion.div>
 
             {/* Email */}
             <motion.div variants={fadeInUp} className="text-center">
               <FaEnvelope className="text-4xl text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Email</h3>
-              <p className="text-gray-600">info@mzkitchen.com</p>
+              <h3 className="text-xl font-semibold  mb-2">Email</h3>
+              <p>info@mzkitchen.com</p>
             </motion.div>
 
             {/* Opening Hours */}
             <motion.div variants={fadeInUp} className="text-center">
               <FaClock className="text-4xl text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Opening Hours</h3>
-              <p className="text-gray-600">10:00 AM - 10:00 PM</p>
+              <h3 className="text-xl font-semibold mb-2">Opening Hours</h3>
+              <p>10:00 AM - 10:00 PM</p>
             </motion.div>
           </div>
         </motion.div>
@@ -126,13 +128,13 @@ const ContactUs = () => {
           {/* Contact Form */}
           <motion.div
             variants={fadeInUp}
-            className="bg-white shadow-lg rounded-lg p-8"
+            className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} shadow-lg rounded-lg p-8`}
           >
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Send Us a Message</h2>
+            <h2 className="text-3xl font-bold  mb-6">Send Us a Message</h2>
             <form ref={form} onSubmit={sendEmail} className="space-y-6">
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     <div>
-      <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">
+      <label htmlFor="name" className="block  font-semibold mb-2">
         Name
       </label>
       <input
@@ -140,12 +142,13 @@ const ContactUs = () => {
         id="name"
         name="name"   // Must match {{from_name}} in the template
         placeholder="Your Name"
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+        className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}
+        w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500`}
         required
       />
     </div>
     <div>
-      <label htmlFor="email" className="block text-gray-700 font-semibold mb-2">
+      <label htmlFor="email" className="block font-semibold mb-2">
         Email
       </label>
       <input
@@ -153,13 +156,14 @@ const ContactUs = () => {
         id="email"
         name="email"   // Must match {{from_email}} in the template
         placeholder="Your Email"
-        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+        className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}
+        w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500`}
         required
       />
     </div>
   </div>
   <div>
-    <label htmlFor="subject" className="block text-gray-700 font-semibold mb-2">
+    <label htmlFor="subject" className="block font-semibold mb-2">
       Subject
     </label>
     <input
@@ -167,12 +171,13 @@ const ContactUs = () => {
       id="subject"
       name="subject" // Must match {{subject}} in the template
       placeholder="Subject"
-      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+      className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}
+      w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500`}
       required
     />
   </div>
   <div>
-    <label htmlFor="message" className="block text-gray-700 font-semibold mb-2">
+    <label htmlFor="message" className="block font-semibold mb-2">
       Message
     </label>
     <textarea
@@ -180,14 +185,15 @@ const ContactUs = () => {
       name="message" // Must match {{message}} in the template
       rows="5"
       placeholder="Your Message"
-      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+      className={`${theme === 'light' ? 'bg-white text-black' : ' text-white'}
+      w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500`}
       required
     ></textarea>
   </div>
   <div>
     <button
       type="submit"
-      className="w-full bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-300"
+      className="w-full bg-orange-500 px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-300"
     >
       Send Message
     </button>

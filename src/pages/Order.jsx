@@ -1,17 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useCart } from "../context/CartContext";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Order = () => {
   const { user } = useAuth();
   const { cart, clearCart } = useCart();
-
   const [customerName, setCustomerName] = useState(user ? user.name : "");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState("");
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (user) {
@@ -49,50 +50,74 @@ const Order = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4">
-      <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
-        <h1 className="text-2xl font-bold text-center mb-4">Place Your Order</h1>
+    <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-gray-100' : 'bg-gray-900'}`}>
+      <div className={`w-full max-w-lg p-6 rounded-lg shadow-lg ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>
+        <h1 className="text-2xl font-bold text-center mb-6">Place Your Order</h1>
 
         {!user && (
-          <p className="text-red-500 text-center mb-3">
+          <p className="text-red-500 text-center mb-4">
             If you want to save your order details,{" "}
             <Link to="/login" className="text-blue-500 underline">Login first</Link> to track your order status.
           </p>
         )}
 
-        {message && <p className="text-red-500 text-center mb-3">{message}</p>}
+        {message && <p className="text-red-500 text-center mb-4">{message}</p>}
 
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <input
-            type="text"
-            placeholder="Your Name"
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
-            disabled={!!user}
-          />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="customerName" className="block text-sm font-medium mb-1">
+              Your Name
+            </label>
+            <input
+              type="text"
+              id="customerName"
+              placeholder="Your Name"
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
+                theme === 'light' ? 'focus:ring-orange-500' : 'focus:ring-orange-300'
+              } ${user ? ' cursor-not-allowed' : ''}`}
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
+              disabled={!!user}
+            />
+          </div>
 
-          <input
-            type="text"
-            placeholder="Phone Number"
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
+          <div>
+            <label htmlFor="phone" className="block text-sm font-medium mb-1">
+              Phone Number
+            </label>
+            <input
+              type="text"
+              id="phone"
+              placeholder="Phone Number"
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
+                theme === 'light' ? 'focus:ring-orange-500' : 'focus:ring-orange-300'
+              }`}
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+            />
+          </div>
 
-          <textarea
-            placeholder="Delivery Address"
-            className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
+          <div>
+            <label htmlFor="address" className="block text-sm font-medium mb-1">
+              Delivery Address
+            </label>
+            <textarea
+              id="address"
+              placeholder="Delivery Address"
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
+                theme === 'light' ? 'focus:ring-orange-500' : 'focus:ring-orange-300'
+              }`}
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </div>
 
           <p className="text-lg font-bold text-center">Total: Rs. {totalPrice}</p>
 
           <button
             type="submit"
             className={`w-full p-3 rounded-lg text-white font-semibold ${
-              user ? "bg-orange-500 hover:bg-orange-700" : "bg-gray-300 cursor-not-allowed"
+              user ? "bg-orange-500 hover:bg-orange-600" : "bg-gray-400 cursor-not-allowed"
             }`}
             disabled={!user}
           >

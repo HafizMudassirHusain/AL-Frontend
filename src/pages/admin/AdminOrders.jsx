@@ -234,24 +234,55 @@ const closeModal = () => setSelectedOrder(null);
       </div>
      
     </motion.div>
-     <Modal isOpen={!!selectedOrder} onRequestClose={closeModal} className="modal-content">
-     {selectedOrder && (
-       <div className="p-5 text-center border rounded-md bg-orange-400 w-1/2 m-auto">
-         <h2 className="text-2xl font-bold mb-3">Order Details</h2>
-         <p><strong>Customer:</strong> {selectedOrder.customerName}</p>
-         <p><strong>Phone:</strong> {selectedOrder.phone}</p>
-         <p><strong>Address:</strong> {selectedOrder.address}</p>
-         <p className="mt-3"><strong>Items:</strong></p>
-         <ul className="list-disc ml-6">
-           {selectedOrder.items.map((item, index) => (
-             <li key={index}>{item.name} x{item.quantity} - Rs. {item.price}</li>
-           ))}
-         </ul>
-         <p className="mt-3"><strong>Total Price:</strong> Rs. {selectedOrder.totalPrice}</p>
-         <button onClick={closeModal} className="mt-4 bg-gray-500 text-white px-3 py-1 rounded">Close</button>
-       </div>
-     )}
-   </Modal>
+    <Modal 
+  isOpen={!!selectedOrder} 
+  onRequestClose={closeModal} 
+  className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 p-4"
+>
+  {selectedOrder && (
+    <div className="bg-white rounded-2xl shadow-lg p-6 w-11/12 sm:w-10/12 md:w-3/4 lg:max-w-lg transform transition-all scale-95 md:scale-100">
+      {/* Modal Header */}
+      <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Order Details</h2>
+
+      {/* Customer Info */}
+      <div className="border-b pb-3">
+        <p className="text-lg"><strong>Customer:</strong> {selectedOrder.customerName}</p>
+        <p className="text-lg"><strong>Phone:</strong> {selectedOrder.phone}</p>
+        <p className="text-lg"><strong>Address:</strong> {selectedOrder.address}</p>
+      </div>
+
+      {/* Items List */}
+      <div className="mt-4">
+        <h3 className="text-lg font-semibold text-gray-700">Items Ordered:</h3>
+        <ul className="mt-2 space-y-2">
+          {selectedOrder.items.map((item, index) => (
+            <li key={index} className="flex justify-between p-2 bg-gray-100 rounded-md text-sm md:text-base">
+              <span>{item.name} x{item.quantity}</span>
+              <span className="font-semibold">Rs. {item.price}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Total Price */}
+      <p className="text-xl font-bold text-gray-900 mt-4 text-center">
+        Total: Rs. {selectedOrder.totalPrice}
+      </p>
+
+      {/* Close Button */}
+      <div className="flex justify-center mt-6">
+        <button 
+          onClick={closeModal} 
+          className="px-5 py-2 bg-orange-500 text-white font-semibold rounded-lg shadow-md transition-transform transform hover:scale-105 active:scale-95"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  )}
+</Modal>
+
+
     </>
   );
 };

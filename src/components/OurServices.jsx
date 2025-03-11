@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { ThemeContext } from "../context/ThemeContext";
+import { useContext } from "react";
 
 // Animation variants
 const fadeInUp = {
@@ -49,9 +51,11 @@ const OurServices = () => {
       icon: "🎉", // You can replace this with an actual icon or image
     },
   ];
+  const { theme, setTheme } = useContext(ThemeContext);
+
 
   return (
-    <div className="bg-gray-100 py-12"> {/* Removed min-h-screen */}
+    <div className={`py-12 ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-900 text-white'}`}> {/* Removed min-h-screen */}
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <motion.div
@@ -62,13 +66,13 @@ const OurServices = () => {
         >
           <motion.h1
             variants={fadeInUp}
-            className="text-4xl font-bold text-gray-800 mb-4"
+            className="text-4xl font-bold  mb-4"
           >
             Food Provisioning Services
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            className="text-lg  max-w-2xl mx-auto"
           >
             We offer a range of food provisioning services to various institutions and organizations.
           </motion.p>
@@ -85,13 +89,13 @@ const OurServices = () => {
             <motion.div
               key={index}
               variants={fadeInUp}
-              className="bg-white shadow-lg rounded-lg p-6 text-center hover:shadow-xl transition-shadow duration-300"
+              className={`shadow-lg  ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} rounded-lg p-6 text-center hover:shadow-xl transition-shadow duration-300`}
             >
               <div className="text-4xl mb-4">{service.icon}</div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-2">
+              <h2 className="text-xl font-semibold  mb-2">
                 {service.title}
               </h2>
-              <p className="text-gray-600">{service.description}</p>
+              <p className="">{service.description}</p>
             </motion.div>
           ))}
         </motion.div>

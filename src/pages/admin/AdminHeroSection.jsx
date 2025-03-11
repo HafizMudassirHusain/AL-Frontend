@@ -87,22 +87,22 @@ const AdminHeroSection = () => {
           placeholder="Slide Title"
           value={newSlide.text}
           onChange={(e) => setNewSlide({ ...newSlide, text: e.target.value })}
-          className="border p-2 mr-2"
+          className="border rounded p-2 mr-2"
         />
         <input
           type="text"
           placeholder="Slide Subtext"
           value={newSlide.subtext}
           onChange={(e) => setNewSlide({ ...newSlide, subtext: e.target.value })}
-          className="border p-2 mr-2"
+          className="border p-2 rounded mr-2"
         />
         <input
           type="file"
           accept="image/*"
           onChange={(e) => setNewSlide({ ...newSlide, image: e.target.files[0] })}
-          className="border p-2 mr-2"
+          className="border p-2 rounded mr-2"
         />
-        <button onClick={handleAddSlide} className="bg-blue-500 text-white p-2">Add Slide</button>
+        <button onClick={handleAddSlide} className="bg-orange-500 rounded text-white p-2">Add Slide</button>
       </div>
       <table className="w-full border-collapse border border-gray-300">
   <thead>

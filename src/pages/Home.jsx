@@ -48,7 +48,7 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen ">
       {/* ✅ Hero Section */}
       <HeroSection bghero={bghero} />
 
@@ -73,7 +73,7 @@ const Home = () => {
             transition={{ duration: 1 }}
           >
             <h2 className="text-3xl font-bold mb-6">About MZ Kitchen</h2>
-            <p className="text-lg text-gray-700 mb-6">
+            <p className="text-lg mb-6">
               We started in 2016 with a single kitchen. Today, we proudly serve across 17+ branches in Karachi. Our commitment to quality and delicious food has made us a trusted name in the food industry.
             </p>
             <button 
@@ -121,9 +121,8 @@ const Home = () => {
                       )}
 
                       <img src={deal.image} alt={deal.name} className="w-full h-32 object-cover rounded-lg mb-2" />
-                      <h3 className="text-lg font-semibold">{deal.name}</h3>
+                      <h3 className="text-gray-600 text-lg font-semibold">{deal.name}</h3>
                       <p className="text-gray-600">{deal.description}</p>
-
                       {/* ✅ Show Discounted Price */}
                       <p className="text-xl font-bold text-orange-500 mt-2">
                         <s className="text-gray-500">Rs. {deal.price}</s> Rs. {discountedPrice}

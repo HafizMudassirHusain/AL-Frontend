@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaUtensils, FaAward, FaUsers, FaSmile } from "react-icons/fa";
 import { motion } from "framer-motion";
 import logo from '../assets/logo.png'
+import { ThemeContext } from "../context/ThemeContext";
 
 
 // Animation variants
@@ -18,11 +19,13 @@ const staggerContainer = {
       staggerChildren: 0.3,
     },
   },
-};
+};  
+
 
 const AboutUs = () => {
+  const { theme, setTheme } = useContext(ThemeContext);
   return (
-    <div className="min-h-screen bg-gray-100 py-12">
+    <div className={`min-h-screen py-12 ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <motion.div
@@ -33,13 +36,13 @@ const AboutUs = () => {
         >
           <motion.h1
             variants={fadeInUp}
-            className="text-4xl font-bold text-gray-800 mb-4"
+            className="text-4xl font-bold mb-4"
           >
             About Al-Rehman Kitchen
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            className="text-lg max-w-2xl mx-auto"
           >
             We started our journey in 2016 with a single kitchen in Gulshan Iqbal. Today, we proudly serve food across 17+ branches in Karachi. Our commitment to quality and delicious food has made us a trusted name in the food industry.
           </motion.p>
@@ -50,23 +53,23 @@ const AboutUs = () => {
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="bg-white shadow-lg rounded-lg p-8 mb-12"
+          className=" shadow-lg rounded-lg p-8 mb-12"
         >
           <motion.h2
             variants={fadeInUp}
-            className="text-3xl font-bold text-gray-800 mb-6"
+            className="text-3xl font-bold  mb-6"
           >
             Our Story
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <motion.div variants={fadeInUp}>
-              <p className="text-gray-600 mb-4">
+              <p className=" mb-4">
                 Al-Rehman Kitchen began with a simple vision: to provide high-quality, delicious, and nutritious food to our community. What started as a small kitchen in Gulshan Iqbal has now grown into a beloved brand with 17+ branches across Karachi.
               </p>
-              <p className="text-gray-600 mb-4">
+              <p className=" mb-4">
                 Our journey has been fueled by a passion for food and a commitment to excellence. We believe in using only the freshest ingredients and traditional recipes to create meals that bring joy to our customers.
               </p>
-              <p className="text-gray-600 mb-4">
+              <p className=" mb-4">
                 Over the years, our dedicated team of chefs and staff has worked tirelessly to maintain the highest standards of quality and hygiene. We take pride in being an integral part of the community, supporting local farmers and suppliers, and contributing to the growth of Karachi's food culture.
               </p>
             </motion.div>
@@ -114,34 +117,38 @@ const AboutUs = () => {
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
-          className="bg-white shadow-lg rounded-lg p-8"
+          className=" shadow-lg rounded-lg p-8"
         >
           <motion.h2
             variants={fadeInUp}
-            className="text-3xl font-bold text-gray-800 mb-6"
+            className={`text-3xl font-bold mb-6 ${theme === 'light' ? 'bg-white text-black' : ' text-white'}`}
           >
             Why Choose Us?
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <motion.div variants={fadeInUp} className="text-center">
               <FaUtensils className="text-4xl text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Fresh Ingredients</h3>
-              <p className="text-gray-600">We use only the freshest ingredients to ensure the best taste and quality.</p>
+              <h3 className={`text-xl font-semibold mb-2
+                ${theme === 'light' ? 'bg-white text-black' : ' text-white'}`}>Fresh Ingredients</h3>
+              <p className={`${theme === 'light' ? 'bg-white text-black' : ' text-white'}`}>We use only the freshest ingredients to ensure the best taste and quality.</p>
             </motion.div>
             <motion.div variants={fadeInUp} className="text-center">
               <FaAward className="text-4xl text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Award-Winning Recipes</h3>
-              <p className="text-gray-600">Our recipes have been recognized for their authenticity and flavor.</p>
+              <h3 className={`text-xl font-semibold mb-2
+                ${theme === 'light' ? 'bg-white text-black' : ' text-white'}`}>Award-Winning Recipes</h3>
+              <p className={`${theme === 'light' ? 'bg-white text-black' : ' text-white'}`}>Our recipes have been recognized for their authenticity and flavor.</p>
             </motion.div>
             <motion.div variants={fadeInUp} className="text-center">
               <FaUsers className="text-4xl text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Experienced Chefs</h3>
-              <p className="text-gray-600">Our team of experienced chefs ensures every dish is perfect.</p>
+              <h3 className={`text-xl font-semibold mb-2
+                ${theme === 'light' ? 'bg-white text-black' : ' text-white'}`}>Experienced Chefs</h3>
+              <p className={`${theme === 'light' ? 'bg-white text-black' : ' text-white'}`}>Our team of experienced chefs ensures every dish is perfect.</p>
             </motion.div>
             <motion.div variants={fadeInUp} className="text-center">
               <FaSmile className="text-4xl text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Customer Satisfaction</h3>
-              <p className="text-gray-600">Your satisfaction is our top priority. We strive to exceed your expectations.</p>
+              <h3 className={`text-xl font-semibold mb-2
+                ${theme === 'light' ? 'bg-white text-black' : ' text-white'}`}>Customer Satisfaction</h3>
+              <p className={`${theme === 'light' ? 'bg-white text-black' : ' text-white'}`}>Your satisfaction is our top priority. We strive to exceed your expectations.</p>
             </motion.div>
           </div>
         </motion.div>

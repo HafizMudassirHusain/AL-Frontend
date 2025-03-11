@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import { useCart } from "../context/CartContext";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight, FaPlus, FaMinus } from "react-icons/fa";
+import { ThemeContext } from "../context/ThemeContext";
 
 const Menu = () => {
   const [menu, setMenu] = useState([]);
@@ -98,23 +99,26 @@ const Menu = () => {
 
   // ✅ Limit items to 6 if on Home Page
   const displayedMenu = isHomePage ? filteredMenu.slice(0, 6) : filteredMenu;
+  const { theme, setTheme } = useContext(ThemeContext);
 
   return (
-    <div className="container mx-auto px-6 py-12">
+    <div className={`container mx-auto px-6 py-12 ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>
       <h2 className="text-3xl font-bold text-center mb-8">Our Menu</h2>
 
       {/* ✅ Category Scrollable Buttons */}
       <div className="relative flex items-center mb-8 ">
-        <button onClick={scrollLeft} className="absolute left-0 z-10 bg-gray-200 dark:bg-gray-700 p-2 rounded-full shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 transition hidden sm:flex">
+        <button onClick={scrollLeft} className={`absolute left-0 z-10 
+        ${theme === 'light' ? 'bg-gray-100 text-black' : 'bg-gray-100 text-black'} p-2 rounded-full shadow-md
+         hover:bg-gray-300 dark:hover:bg-gray-600 transition hidden sm:flex`}>
           <FaChevronLeft />
         </button>
 
-        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-10  hide-scrollbar">
+        <div ref={scrollRef} className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth px-10 hide-scrollbar">
           {categories.map((category) => (
             <button
               key={category}
               className={`px-4 py-2 whitespace-nowrap rounded-lg font-semibold ${
-                selectedCategory === category ? "bg-orange-500 text-white" : "bg-gray-200 dark:bg-gray-700"
+          selectedCategory === category ? "bg-orange-500 text-white" : `${theme === 'light' ? 'bg-gray-200 text-black' : 'bg-white text-black'}`
               } hover:bg-orange-600 dark:hover:bg-gray-600 transition duration-300`}
               onClick={() => filterMenu(category)}
             >
@@ -123,7 +127,9 @@ const Menu = () => {
           ))}
         </div>
 
-        <button onClick={scrollRight} className="absolute right-0 z-10 bg-gray-200 dark:bg-gray-700 p-2 rounded-full shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 transition hidden sm:flex">
+        <button onClick={scrollRight} className={`absolute right-0 z-10 
+         ${theme === 'light' ? 'bg-gray-100 text-black' : 'bg-gray-100 text-black'} p-2 rounded-full 
+         shadow-md hover:bg-gray-300 dark:hover:bg-gray-600 transition hidden sm:flex`}>
           <FaChevronRight />
         </button>
       </div>
@@ -145,7 +151,8 @@ const Menu = () => {
 
               <img src={item.image} alt={item.name} className="w-full h-48 object-cover rounded-t-lg" />
               <div className="p-4 text-center">
-                <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
+                <h3 className={`text-xl font-semibold mb-2 
+                  ${theme === 'light' ? 'bg-white text-black' : 'bg-white text-black'}`}>{item.name}</h3>
                 <p className="text-gray-600 mb-2">{item.description}</p>
 
                 {/* ✅ Price & Quantity Controls */}
@@ -156,7 +163,7 @@ const Menu = () => {
                     <button onClick={() => decrementQuantity(item._id)} className="bg-gray-300 text-gray-700 px-2 py-1 rounded-lg hover:bg-gray-400 transition">
                       <FaMinus />
                     </button>
-                    <span className="text-lg font-bold">{quantity}</span>
+                    <span className={`text-lg font-bold ${theme === 'light' ? 'bg-white text-black' : 'bg-white text-black'}`}>{quantity}</span>
                     <button onClick={() => incrementQuantity(item._id)} className="bg-gray-300 text-gray-700 px-2 py-1 rounded-lg hover:bg-gray-400 transition">
                       <FaPlus />
                     </button>

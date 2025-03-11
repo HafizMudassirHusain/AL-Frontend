@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import testnomialuser1 from '../assets/testnomialuser1.png';
 import testnomialuser2 from '../assets/testnomialuser2.png';
 import testnomialuser3 from '../assets/testnomialuser3.png';
+import { ThemeContext } from '../context/ThemeContext';
 
 
 const Testimonials = () => {
@@ -91,16 +92,19 @@ const Testimonials = () => {
     }
     return stars;
   };
+    const { theme, setTheme } = useContext(ThemeContext);
 
   return (
     <div className="py-12">
-      <div className="container bg-gray-100 mx-auto px-6 pb-10">
-        <h2 className="text-3xl text-black font-bold text-center mb-8 pt-10">What Our Customers Say</h2>
+      <div className={`container mx-auto px-6 pb-10 ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-900 text-white'}`}>
+        <h2 className="text-3xl font-bold text-center mb-8 pt-10">What Our Customers Say</h2>
         <div className="relative h-96 flex items-center justify-center">
           {/* Previous Button */}
           <button
             onClick={handlePrevious}
-            className="absolute left-0 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-200 transition duration-300"
+            className={`absolute left-0 z-10 p-2   
+              ${theme === 'light' ? 'bg-gray-100 text-black' : 'bg-gray-100 text-black'}
+             rounded-full shadow-md hover:bg-gray-200 transition duration-300`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -128,19 +132,19 @@ const Testimonials = () => {
               transition={{ duration: 0.5 }}
               className="absolute w-full max-w-lg text-center"
             >
-              <div className="bg-white p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className={` ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} p-8 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300`}>
                 <img
                   src={testimonials[currentIndex].image}
                   alt={testimonials[currentIndex].name}
                   className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-orange-500"
                 />
-                <h3 className="text-xl font-semibold mb-2">
+                <h3 className="text-xl font-semibold mb-2 ">
                   {testimonials[currentIndex].name}
                 </h3>
                 <div className="flex justify-center mb-4">
                   {renderStars(testimonials[currentIndex].rating)}
                 </div>
-                <p className="text-gray-600 italic">
+                <p className=" italic">
                   "{testimonials[currentIndex].review}"
                 </p>
               </div>
@@ -157,7 +161,9 @@ const Testimonials = () => {
           {/* Next Button */}
           <button
             onClick={handleNext}
-            className="absolute right-0 z-10 p-2 bg-white rounded-full shadow-md hover:bg-gray-200 transition duration-300"
+            className={`absolute right-0 z-10 p-2 
+                ${theme === 'light' ? 'bg-gray-100 text-black' : 'bg-gray-100 text-black'} 
+                rounded-full shadow-md hover:bg-gray-200 transition duration-300`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
