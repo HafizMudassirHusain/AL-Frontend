@@ -4,7 +4,7 @@ import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
 import { FaBars, FaTimes, FaUser, FaShoppingCart, FaMoon, FaSun } from "react-icons/fa";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.jpeg";
 import { ThemeContext } from "../context/ThemeContext";
 
 const Navbar = () => {

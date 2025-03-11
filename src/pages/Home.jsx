@@ -9,7 +9,7 @@ import Gallery from "../components/Menutemp";
 import Testimonials from "../components/Testimonials";
 import OurServices from "../components/OurServices";
 import HeroSection from "../components/Hero";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.jpeg";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const Home = () => {
