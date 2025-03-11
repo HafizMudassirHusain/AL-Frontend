@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Bar, Line, Pie } from "react-chartjs-2";
 import {
@@ -13,6 +13,7 @@ import {
   BarElement,
   ArcElement,
 } from "chart.js";
+import { ThemeContext } from "../../context/ThemeContext";
 
 // Register Chart.js components
 ChartJS.register(
@@ -103,6 +104,7 @@ const AdminAnalytics = () => {
       },
     ],
   };
+  const { theme, setTheme } = useContext(ThemeContext);
 
   return (
     <div className="h-screen flex flex-col">
@@ -123,11 +125,12 @@ const AdminAnalytics = () => {
       </div>
   
       {/* Scrollable Analytics Content */}
-      <div className="overflow-y-auto flex-1 p-4 md:p-10 space-y-4 md:space-y-6" style={{ maxHeight: "calc(100vh - 150px)" }}>
+      <div className="overflow-y-auto flex-1 p-4 md:p-10 space-y-4 md:space-y-6 " style={{ maxHeight: "calc(100vh - 150px)" }}>
         
         {/* Revenue Chart */}
         <div className="bg-white shadow-md rounded-lg p-4 md:p-5 w-full">
-          <h2 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">Revenue Trend</h2>
+          <h2 className={`${theme === 'light' ? 'bg-white text-black' : ' text-black'} 
+          text-lg md:text-xl font-semibold mb-2 md:mb-4`}>Revenue Trend</h2>
           <div className="flex justify-center w-full">
             <Line data={revenueChartData} options={{ responsive: true, maintainAspectRatio: false }} className="max-w-full h-auto" />
           </div>
@@ -135,7 +138,8 @@ const AdminAnalytics = () => {
   
         {/* Order Status Distribution */}
         <div className="bg-white shadow-md rounded-lg p-4 md:p-5 w-full">
-          <h2 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">Order Status Breakdown</h2>
+          <h2 className={`${theme === 'light' ? 'bg-white text-black' : ' text-black'} 
+          text-lg md:text-xl font-semibold mb-2 md:mb-4`}>Order Status Breakdown</h2>
           <div className="flex justify-center w-full">
             <Pie data={orderStatusChartData} options={{ responsive: true, maintainAspectRatio: false }} className="max-w-full h-auto" />
           </div>
@@ -143,7 +147,8 @@ const AdminAnalytics = () => {
   
         {/* Orders Per Day Chart */}
         <div className="bg-white shadow-md rounded-lg p-4 md:p-5 mb-10 w-full">
-          <h2 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">Orders Per Day</h2>
+          <h2 className={`${theme === 'light' ? 'bg-white text-black' : ' text-black'} 
+          text-lg md:text-xl font-semibold mb-2 md:mb-4`}>Orders Per Day</h2>
           <div className="flex justify-center w-full">
             <Bar data={ordersPerDayChartData} options={{ responsive: true, maintainAspectRatio: false }} className="max-w-full h-auto" />
           </div>

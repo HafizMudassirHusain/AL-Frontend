@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { ThemeContext } from "../../context/ThemeContext";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
@@ -85,22 +86,32 @@ const userId = userData?.userId || localStorage.getItem("userId");
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = sortedUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const { theme, setTheme } = useContext(ThemeContext);
 
   return (
-    <div className="p-10">
-      <h1 className="text-3xl font-bold mb-6">User Management</h1>
+    <div className={` border w-full p-10 md:w-[90%] sm:w-[90%] ${theme === 'light' ? 'bg-gray-100' : 'bg-gray-900'}`}>
+      <h1 className={`text-3xl font-bold mb-6 ${theme === 'light' ? 'text-black' : 'text-white'}`}>User Management</h1>
 
       {/* Search & Sorting */}
       <div className="flex justify-between items-center mb-4">
+        <div className="w-1/3">
+        <label htmlFor="search" >Search User</label>
+        <br />
         <input
           type="text"
+          id="search"
           placeholder="Search users..."
-          className="p-2 border rounded w-1/3"
+          className={`p-2 border rounded  focus:outline-none focus:ring-2 ${
+            theme === 'light' ? 'focus:ring-blue-500 text-black' : 'focus:ring-blue-300 text-white'
+          }`}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        </div>
         <select
-          className="p-2 border rounded"
+          className={`p-2 border rounded focus:outline-none focus:ring-2 ${
+            theme === 'light' ? 'focus:ring-blue-500 bg-white text-black' : 'focus:ring-blue-300 text-white bg-black'
+          }`}
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
         >
@@ -111,72 +122,80 @@ const userId = userData?.userId || localStorage.getItem("userId");
       </div>
 
       {/* User Table */}
-      <table className="w-full border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border p-2">Name</th>
-            <th className="border p-2">Email</th>
-            <th className="border p-2">Role</th>
-            {(userRole === "admin" || userRole === "super-admin") && <th className="border p-2">Actions</th>}
-          </tr>
-        </thead>
-        <tbody>
-          {currentUsers.length > 0 ? (
-            currentUsers.map((user) => (
-              <tr key={user._id} className="border hover:bg-gray-100 transition duration-300">
-                <td className="border p-2">{user.name}</td>
-                <td className="border p-2">{user.email}</td>
-                <td className="border p-2">
-                  {(userRole === "admin" || userRole === "super-admin") && user._id !== userId ? (
-                    <select
-                      value={user.role}
-                      onChange={(e) => updateUserRole(user._id, e.target.value)}
-                      className="p-2 border rounded"
-                    >
-                      <option value="customer">Customer</option>
-                      <option value="admin">Admin</option>
-                      <option value="super-admin">Super Admin</option>
-                    </select>
-                  ) : (
-                    user.role
-                  )}
-                </td>
-                {(userRole === "admin" || userRole === "super-admin") && (
-                  <td className="border p-2 flex items-center space-x-2">
-                    {user.role !== "super-admin" && user._id !== userId && (
-                      <button
-                        onClick={() => deleteUser(user._id)}
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition duration-300"
+      <div className="overflow-x-auto">
+        <table className={`w-full border-collapse ${theme === 'light' ? 'border-gray-300' : 'border-gray-600'}`}>
+          <thead>
+            <tr className={`${theme === 'light' ? 'bg-gray-200' : 'bg-gray-700'}`}>
+              <th className="border p-2">Name</th>
+              <th className="border p-2">Email</th>
+              <th className="border p-2">Role</th>
+              {(userRole === "admin" || userRole === "super-admin") && <th className="border p-2">Actions</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {currentUsers.length > 0 ? (
+              currentUsers.map((user) => (
+                <tr key={user._id} className={`border ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-800'}`}>
+                  <td className="border p-2">{user.name}</td>
+                  <td className="border p-2">{user.email}</td>
+                  <td className="border p-2">
+                    {(userRole === "admin" || userRole === "super-admin") && user._id !== userId ? (
+                      <select
+                        value={user.role}
+                        onChange={(e) => updateUserRole(user._id, e.target.value)}
+                        className={`p-2 border rounded ${
+                          theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'
+                        }`}
                       >
-                        Delete
-                      </button>
+                        <option value="customer">Customer</option>
+                        <option value="admin">Admin</option>
+                        <option value="super-admin">Super Admin</option>
+                      </select>
+                    ) : (
+                      user.role
                     )}
                   </td>
-                )}
+                  {(userRole === "admin" || userRole === "super-admin") && (
+                    <td className="border p-2 flex items-center space-x-2">
+                      {user.role !== "super-admin" && user._id !== userId && (
+                        <button
+                          onClick={() => deleteUser(user._id)}
+                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition duration-300"
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </td>
+                  )}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="4" className="text-center p-4">No users found.</td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="4" className="text-center p-4">No users found.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* Pagination Controls */}
       <div className="flex justify-center mt-4">
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-1 border rounded bg-gray-300 disabled:opacity-50"
+          className={`px-3 py-1 border rounded ${
+            theme === 'light' ? 'bg-gray-300' : 'bg-gray-700'
+          } disabled:opacity-50`}
         >
           Previous
         </button>
-        <span className="px-4">{currentPage}</span>
+        <span className={`px-4 ${theme === 'light' ? 'text-black' : 'text-white'}`}>{currentPage}</span>
         <button
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={indexOfLastUser >= sortedUsers.length}
-          className="px-3 py-1 border rounded bg-gray-300 disabled:opacity-50"
+          className={`px-3 py-1 border rounded ${
+            theme === 'light' ? 'bg-gray-300' : 'bg-gray-700'
+          } disabled:opacity-50`}
         >
           Next
         </button>
