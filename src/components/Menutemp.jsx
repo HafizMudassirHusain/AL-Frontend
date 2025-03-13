@@ -90,7 +90,7 @@ const Menu = () => {
       quantity,
       totalPrice,
     };
-
+    addToCart(orderItem);
     navigate("/cart", { state: { orderItem } });
   };
 

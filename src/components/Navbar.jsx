@@ -27,7 +27,7 @@ const Navbar = () => {
     <nav className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} shadow-lg fixed top-0 min-w-full z-50`}>
       <div className="container mx-auto px-6 py-3 flex justify-between items-center">
         <Link to="/" className="flex items-center">
-          <img src={logo} alt="MZ Kitchen" className="w-12 h-12 mr-2" />
+          <img src={logo} alt="MZ Kitchen" className="w-12 rounded-xl h-12 mr-2" />
           <h1 className="text-2xl font-bold">MZ Kitchen</h1>
         </Link>
 

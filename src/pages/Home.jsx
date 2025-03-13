@@ -1,5 +1,4 @@
 import bghero from '../assets/hero-bg.jpg';
-
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -11,20 +10,26 @@ import OurServices from "../components/OurServices";
 import HeroSection from "../components/Hero";
 import logo from "../assets/logo.jpeg";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-
+import '../index.css'
 const Home = () => {
   const navigate = useNavigate();
   const { addToCart, cart } = useCart(); // ✅ Access cart functions
   const [deals, setDeals] = useState([]);
   const scrollRef = useRef(null);
 
+  // ✅ Fetch Deals on Component Mount
   useEffect(() => {
-    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/menu?category=deals`) // ✅ Fetch only deals
-      .then(response => {
+    const fetchDeals = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/menu?category=deals`);
         const filteredDeals = response.data.filter(item => item.category.toLowerCase() === "deals");
         setDeals(filteredDeals);
-      })
-      .catch(error => console.error("Error fetching deals:", error));
+      } catch (error) {
+        console.error("Error fetching deals:", error);
+      }
+    };
+
+    fetchDeals();
   }, []);
 
   // ✅ Scroll Buttons for Deals Section
@@ -32,12 +37,12 @@ const Home = () => {
   const scrollRight = () => scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
 
   // ✅ Add to Cart Function
-  const handleAddToCart = (deal) => {
+  const handleAddToCart = async (deal) => {
     const discountedPrice = (deal.price * 0.85).toFixed(0); // ✅ Apply 15% discount
 
     // ✅ Check if item is already in cart
     const existingItem = cart.find((item) => item._id === deal._id);
-    
+
     if (existingItem) {
       // ✅ If item exists, increase quantity
       addToCart({ ...existingItem, quantity: existingItem.quantity + 1 });
@@ -47,17 +52,23 @@ const Home = () => {
     }
   };
 
+  // ✅ Handle Order Now Button Click
+  const handleOrderNow = async (deal) => {
+    await handleAddToCart(deal); // ✅ Add to cart first
+    navigate('/cart'); // ✅ Navigate to cart
+  };
+
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen hide-scrollbar">
       {/* ✅ Hero Section */}
       <HeroSection bghero={bghero} />
 
       {/* ✅ Introduction Section */}
-      <div className="container mx-auto px-6 py-12">
-        <div className="flex flex-col md:flex-row items-center gap-8">
-          {/* Image */}
+      <div className="container mx-auto px-6 py-12 hide-scrollbar">
+        <div className="flex flex-col md:flex-row items-center gap-8 hide-scrollbar">
+     
           <motion.div
-            className="w-full md:w-1/2"
+            className="w-full md:w-1/2 hide-scrollbar"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
@@ -65,9 +76,9 @@ const Home = () => {
             <img src={logo} alt="MZ Kitchen" className="w-full h-auto rounded-lg" />
           </motion.div>
 
-          {/* Text */}
+       
           <motion.div
-            className="w-full md:w-1/2"
+            className="w-full md:w-1/2 hide-scrollbar"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 1 }}
@@ -76,7 +87,7 @@ const Home = () => {
             <p className="text-lg mb-6">
               We started in 2016 with a single kitchen. Today, we proudly serve across 17+ branches in Karachi. Our commitment to quality and delicious food has made us a trusted name in the food industry.
             </p>
-            <button 
+            <button
               onClick={() => navigate("/about")}
               className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-300"
             >
@@ -96,11 +107,12 @@ const Home = () => {
             <button
               onClick={scrollLeft}
               className="absolute left-0 z-10 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 transition hidden sm:flex"
+              aria-label="Scroll Left"
             >
               <FaChevronLeft />
             </button>
 
-            <div ref={scrollRef} className="flex gap-6 overflow-x-auto scroll-smooth px-10  hide-scrollbar">
+            <div ref={scrollRef} className="flex gap-6 overflow-x-auto scroll-smooth px-10 hide-scrollbar">
               {deals.length > 0 ? (
                 deals.map((deal) => {
                   const discountedPrice = (deal.price * 0.85).toFixed(0); // ✅ Apply 15% discount
@@ -130,18 +142,20 @@ const Home = () => {
 
                       {/* ✅ Buttons */}
                       <div className="flex flex-col gap-2 mt-3">
-                        <button 
+                        <button
                           onClick={() => handleAddToCart(deal)}
                           className={`px-4 py-2 rounded-lg transition duration-300 ${
                             isAddedToCart ? "bg-gray-500 text-white cursor-not-allowed" : "bg-orange-500 text-white hover:bg-orange-600"
                           }`}
                           disabled={isAddedToCart} // ✅ Disable if already added
+                          aria-label={isAddedToCart ? "In Cart" : "Add to Cart"}
                         >
                           {isAddedToCart ? "In Cart" : "Add to Cart"}
                         </button>
-                        <button 
-                          onClick={() => navigate("/cart")}
+                        <button
+                          onClick={() => handleOrderNow(deal)}
                           className="bg-white border border-orange-500 text-orange-500 px-4 py-2 rounded-lg hover:bg-orange-700 hover:text-white transition duration-300"
+                          aria-label="Order Now"
                         >
                           Order Now
                         </button>
@@ -157,6 +171,7 @@ const Home = () => {
             <button
               onClick={scrollRight}
               className="absolute right-0 z-10 bg-white p-2 rounded-full shadow-md hover:bg-gray-200 transition hidden sm:flex"
+              aria-label="Scroll Right"
             >
               <FaChevronRight />
             </button>

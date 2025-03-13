@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaMapMarkerAlt, FaPhone, FaClock } from 'react-icons/fa';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.jpeg';
 
 const Footer = () => {
   return (
@@ -10,7 +10,7 @@ const Footer = () => {
           {/* Logo and Name */}
           <div className="mb-8 md:mb-0">
             <h2 className="text-2xl font-bold flex items-center">
-              <img src={logo} alt="MZ Kitchen Logo" className="w-20 h-20 mr-2" />
+              <img src={logo} alt="MZ Kitchen Logo" className="w-20 h-20 rounded-2xl mr-2" />
               MZ Kitchen
             </h2>
             <p className="text-gray-400 mt-4">
