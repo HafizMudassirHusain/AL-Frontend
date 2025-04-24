@@ -31,10 +31,6 @@ const ContactUs = () => {
     const templateID = "template_ax35b4d";
     const userID = "Pv3yL9ioNcyiGiaxV";
 
-    
-  
-
-
   // Send email
   emailjs
     .sendForm(serviceID, templateID, form.current, userID)
