@@ -35,7 +35,59 @@ body {
   .hide-scrollbar::-webkit-scrollbar {
     display: none; /* Chrome, Safari */
   }
+  
+
   /* ===================================================== */
 
 
-  
+  @keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2.5s ease-in-out infinite;
+}
+
+
+/* ====================================================== */
+
+@keyframes shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shine {
+  background-size: 200% 100%;
+  animation: shine 6s linear infinite;
+}
+
+/* ===============aboutus================== */
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 6s ease-in-out infinite;
+}
+/* =============special offer=================== */
+
+
+@keyframes text-glow {
+  0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.3); }
+  50% { text-shadow: 0 0 25px rgba(255,255,255,0.8); }
+}
+.animate-text-glow {
+  animation: text-glow 3s ease-in-out infinite;
+}

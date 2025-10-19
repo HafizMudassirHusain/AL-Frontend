@@ -1,11 +1,21 @@
+
+
+@keyframes bounce-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2.5s ease-in-out infinite;
+}
+
+/* Optional: pagination dots better visibility */
 .swiper-pagination-bullet {
-    background-color: #d1d5db !important; /* Gray */
-    width: 10px;
-    height: 10px;
-    opacity: 1;
-  }
-  
-  .swiper-pagination-bullet-active {
-    background-color: #f97316 !important; /* Orange */
-  }
-  
+  background: white !important;
+  opacity: 0.7;
+}
+.swiper-pagination-bullet-active {
+  background: #f97316 !important; /* orange-500 */
+  opacity: 1;
+}
+
