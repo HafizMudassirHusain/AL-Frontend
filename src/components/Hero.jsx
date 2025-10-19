@@ -23,7 +23,6 @@ const HeroSection = () => {
     if (offersSection) offersSection.scrollIntoView({ behavior: "smooth" });
   };
 
-  // ✨ Animation variants for text
   const textAnimation = {
     hidden: { opacity: 0, y: 40 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.7 } },
@@ -48,19 +47,21 @@ const HeroSection = () => {
                 backgroundImage: `url(${slide.image})`,
               }}
             >
-              {/* Dark gradient for readability */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/90 z-[1]" />
+              {/* Gradient overlay for contrast */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 z-[1]" />
             </div>
 
-            {/* ✅ Text Content */}
+            {/* ✅ Hero Text Content */}
             <div className="relative z-[2] flex flex-col items-center justify-center h-full text-center text-white px-6 md:px-20">
               <motion.h1
                 variants={textAnimation}
                 initial="hidden"
                 animate="visible"
-                className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-lg"
+                className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-[0_4px_20px_rgba(255,107,0,0.3)]"
               >
-                {slide.text}
+                <span className="bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] bg-clip-text text-transparent">
+                  {slide.text}
+                </span>
               </motion.h1>
 
               <motion.p
@@ -73,22 +74,23 @@ const HeroSection = () => {
                 {slide.subtext}
               </motion.p>
 
+              {/* CTA Button with same gradient theme */}
               <motion.button
                 onClick={handleScrollToOffers}
                 whileHover={{ scale: 1.07 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-8 py-3 rounded-lg shadow-md transition-all duration-300"
+                className="bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] text-white font-semibold px-10 py-3 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(255,107,0,0.4)] transition-all duration-300"
               >
-                Order Now
+                Order Now 🍽️
               </motion.button>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
 
-      {/* ✅ Home Delivery Floating Card */}
+      {/* ✅ Floating Home Delivery Card */}
       <motion.div
-        className="absolute bottom-8 md:bottom-12 right-6 md:right-12 z-[3] bg-white/10 backdrop-blur-md border border-white/20 text-white shadow-lg rounded-2xl px-6 py-4 flex flex-col items-center hover:scale-105 transition-transform duration-300"
+        className="absolute bottom-8 md:bottom-12 right-6 md:right-12 z-[3] bg-gradient-to-r from-[#FF5E62]/30 to-[#FFD43B]/30 backdrop-blur-md border border-white/20 text-white shadow-lg rounded-2xl px-6 py-4 flex flex-col items-center hover:scale-105 transition-transform duration-300"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
@@ -96,10 +98,14 @@ const HeroSection = () => {
         <img
           src={bikerider}
           alt="Delivery Bike Rider"
-          className="w-16 h-16 md:w-20 md:h-20 mb-2 animate-bounce-slow"
+          className="w-16 h-16 md:w-20 md:h-20 mb-2 animate-bounce-slow drop-shadow-[0_0_20px_rgba(255,107,0,0.4)]"
         />
-        <p className="text-lg md:text-xl font-semibold font-serif text-center">
-          🚴‍♂️ <span className="text-orange-400">Home Delivery</span> Available
+        <p className="text-lg md:text-xl font-semibold text-center">
+          🚴‍♂️{" "}
+          <span className="bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] bg-clip-text text-transparent">
+            Home Delivery
+          </span>{" "}
+          Available
         </p>
         <p className="text-xs md:text-sm text-white/80 mt-1">
           Fresh meals at your doorstep

@@ -1,21 +1,110 @@
 import { useEffect, useState, useRef, useContext } from "react";
 import axios from "axios";
 import { useCart } from "../context/CartContext";
-import { useLocation, Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { FaChevronLeft, FaChevronRight, FaPlus, FaMinus } from "react-icons/fa";
+import { useLocation, Link } from "react-router-dom";
+import { motion, useMotionValue, useTransform } from "framer-motion";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { ThemeContext } from "../context/ThemeContext";
+import PropTypes from "prop-types";
+import toast, { Toaster } from "react-hot-toast";
 
+// ✅ Tilt Card with MZ Kitchen Theme
+const TiltCard = ({ item, theme, i, addToCart }) => {
+  const x = useMotionValue(125);
+  const y = useMotionValue(125);
+  const rotateX = useTransform(y, [0, 250], [10, -10]);
+  const rotateY = useTransform(x, [0, 250], [-10, 10]);
+
+  return (
+    <motion.div
+      key={item._id}
+      style={{ rotateX, rotateY }}
+      onMouseMove={(e) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        x.set(e.clientX - rect.left);
+        y.set(e.clientY - rect.top);
+      }}
+      onMouseLeave={() => {
+        x.set(125);
+        y.set(125);
+      }}
+      className={`group relative rounded-2xl overflow-hidden border backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 
+        ${
+          theme === "light"
+            ? "bg-white/60 border-orange-100 hover:shadow-[0_10px_40px_rgba(255,107,0,0.25)]"
+            : "bg-[#1f1f1f]/60 border-gray-700 hover:shadow-[0_10px_40px_rgba(255,107,0,0.25)]"
+        }`}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: i * 0.05 }}
+    >
+      <div className="absolute top-3 left-3 bg-gradient-to-r from-[#FF5E62] to-[#FF9966] text-white text-xs px-2 py-0.5 rounded-full font-medium shadow-md">
+        {item.category}
+      </div>
+
+      <div className="relative overflow-hidden rounded-t-2xl">
+        <motion.img
+          src={item.image}
+          alt={item.name}
+          className="w-full h-36 object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      </div>
+
+      <div className="p-4 flex flex-col justify-between h-[130px]">
+        <div>
+          <h3 className="text-lg font-bold bg-gradient-to-r from-[#FF5E62] to-[#FF9966] bg-clip-text text-transparent line-clamp-1">
+            {item.name}
+          </h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-1">
+            {item.description}
+          </p>
+        </div>
+
+        <div className="flex justify-between items-center mt-3">
+          <p className="text-base font-semibold bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] bg-clip-text text-transparent">
+            Rs. {item.price}
+          </p>
+          <motion.button
+            onClick={() => {
+              addToCart(item);
+              toast.success(`${item.name} added to cart!`);
+            }}
+            whileTap={{ scale: 0.9 }}
+            className="bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] text-white font-medium text-sm px-3 py-1.5 rounded-full shadow-md hover:scale-105 hover:shadow-[0_0_12px_rgba(255,107,0,0.5)] transition-all"
+          >
+            + Add
+          </motion.button>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+TiltCard.propTypes = {
+  item: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    price: PropTypes.number.isRequired,
+  }).isRequired,
+  theme: PropTypes.string.isRequired,
+  i: PropTypes.number.isRequired,
+  addToCart: PropTypes.func.isRequired,
+};
+
+// ✅ Main Menu Component
 const Menu = () => {
   const [menu, setMenu] = useState([]);
   const [filteredMenu, setFilteredMenu] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const { addToCart, cart } = useCart();
+  const [searchQuery, setSearchQuery] = useState("");
+  const { addToCart } = useCart();
   const location = useLocation();
-  const navigate = useNavigate();
   const scrollRef = useRef(null);
-  const [quantities, setQuantities] = useState({});
   const isHomePage = location.pathname === "/";
   const { theme } = useContext(ThemeContext);
 
@@ -39,8 +128,22 @@ const Menu = () => {
 
   const filterMenu = (category) => {
     setSelectedCategory(category);
-    if (category === "All") setFilteredMenu(menu);
-    else setFilteredMenu(menu.filter((item) => item.category === category));
+    const filtered =
+      category === "All"
+        ? menu
+        : menu.filter((item) => item.category === category);
+    setFilteredMenu(filtered);
+  };
+
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchQuery(value);
+    const filtered = menu.filter(
+      (item) =>
+        item.name.toLowerCase().includes(value) ||
+        item.description.toLowerCase().includes(value)
+    );
+    setFilteredMenu(filtered);
   };
 
   const scrollLeft = () =>
@@ -48,53 +151,44 @@ const Menu = () => {
   const scrollRight = () =>
     scrollRef.current.scrollBy({ left: 150, behavior: "smooth" });
 
-  const incrementQuantity = (id) =>
-    setQuantities((prev) => ({ ...prev, [id]: (prev[id] || 1) + 1 }));
-  const decrementQuantity = (id) =>
-    setQuantities((prev) => ({
-      ...prev,
-      [id]: prev[id] > 1 ? prev[id] - 1 : 1,
-    }));
-
-  const handleAddToCart = (item) => {
-    const quantity = quantities[item._id] || 1;
-    const totalPrice = quantity * item.price;
-    addToCart({ ...item, quantity, totalPrice });
-  };
-
-  const handleOrderNow = (item) => {
-    const quantity = quantities[item._id] || 1;
-    const totalPrice = quantity * item.price;
-    const orderItem = { ...item, quantity, totalPrice };
-    addToCart(orderItem);
-    navigate("/cart", { state: { orderItem } });
-  };
-
-  const isInCart = (id) => cart.some((cartItem) => cartItem._id === id);
+  const specials = menu.filter((item) => item.isSpecial);
   const displayedMenu = isHomePage ? filteredMenu.slice(0, 6) : filteredMenu;
 
   return (
     <div
       className={`container mx-auto px-6 py-16 transition-colors duration-500 ${
         theme === "light"
-          ? "bg-gradient-to-b from-orange-50 to-white text-gray-900"
-          : "bg-gradient-to-b from-gray-900 to-gray-800 text-white"
+          ? "bg-gradient-to-b from-[#FFF8F3] to-white text-gray-900"
+          : "bg-gradient-to-b from-gray-900 to-[#1f1f1f] text-white"
       }`}
     >
-      <motion.h2
-        className="text-4xl font-extrabold text-center mb-10 text-orange-500"
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        Our Menu
-      </motion.h2>
+      <Toaster position="bottom-center" />
 
-      {/* ✅ Category Scroll Bar */}
+      {/* ✅ Intro Section */}
+      <section className="text-center py-14 mb-12 bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] text-white rounded-3xl shadow-lg">
+        <h1 className="text-5xl font-extrabold mb-4">Explore Our Delicious Menu 🍽️</h1>
+        <p className="text-lg max-w-2xl mx-auto opacity-90">
+          From sizzling appetizers to mouth-watering desserts — every dish is
+          made fresh with love and top-quality ingredients.
+        </p>
+      </section>
+
+      {/* ✅ Search Bar */}
+      <div className="flex justify-center mb-10">
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearch}
+          placeholder="Search your favorite dish..."
+          className="w-full sm:w-2/3 md:w-1/2 px-5 py-3 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FF9966]"
+        />
+      </div>
+
+      {/* ✅ Category Scroll */}
       <div className="relative flex items-center mb-10">
         <button
           onClick={scrollLeft}
-          className="absolute left-0 z-10 bg-white/70 backdrop-blur-md text-gray-800 p-2 rounded-full shadow-md hover:bg-orange-100 transition hidden sm:flex"
+          className="absolute left-0 z-10 bg-white/70 backdrop-blur-md text-gray-800 p-2 rounded-full shadow-md hover:bg-[#FFF0E0] transition hidden sm:flex"
         >
           <FaChevronLeft />
         </button>
@@ -106,11 +200,12 @@ const Menu = () => {
           {categories.map((category) => (
             <button
               key={category}
-              className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 ${
-                selectedCategory === category
-                  ? "bg-gradient-to-r from-orange-500 to-yellow-400 text-white shadow-md"
-                  : "bg-white/60 dark:bg-gray-700/50 backdrop-blur-md text-gray-700 dark:text-white hover:bg-orange-200"
-              }`}
+              className={`px-5 py-2.5 rounded-full font-medium transition-all duration-300 
+                ${
+                  selectedCategory === category
+                    ? "bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] text-white shadow-md"
+                    : "bg-white/60 dark:bg-gray-700/50 backdrop-blur-md text-gray-700 dark:text-white hover:bg-[#FFE0CC]"
+                }`}
               onClick={() => filterMenu(category)}
             >
               {category}
@@ -120,101 +215,65 @@ const Menu = () => {
 
         <button
           onClick={scrollRight}
-          className="absolute right-0 z-10 bg-white/70 backdrop-blur-md text-gray-800 p-2 rounded-full shadow-md hover:bg-orange-100 transition hidden sm:flex"
+          className="absolute right-0 z-10 bg-white/70 backdrop-blur-md text-gray-800 p-2 rounded-full shadow-md hover:bg-[#FFF0E0] transition hidden sm:flex"
         >
           <FaChevronRight />
         </button>
       </div>
 
-      {/* ✅ Menu Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {displayedMenu.map((item, i) => {
-          const quantity = quantities[item._id] || 1;
-          const totalPrice = quantity * item.price;
-
-          return (
-            <motion.div
-              key={item._id}
-              className={`relative rounded-2xl shadow-xl overflow-hidden border border-white/20 backdrop-blur-lg p-5 
-                transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl 
-                ${
-                  theme === "light"
-                    ? "bg-white/80"
-                    : "bg-gray-800/50 border-gray-700/30"
-                } ${isInCart(item._id) ? "ring-2 ring-green-400" : ""}`}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: i * 0.05 }}
-            >
-              {isInCart(item._id) && (
-                <div className="absolute top-2 right-2 bg-green-500 text-white text-xs px-3 py-1 rounded-full shadow">
-                  ✔ Added
-                </div>
-              )}
-
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full h-48 object-cover rounded-xl mb-4"
+      {/* ✅ Chef's Specials Section */}
+      {specials.length > 0 && (
+        <div className="mb-12">
+          <h3 className="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] bg-clip-text text-transparent">
+            🍲 Chef’s Specials
+          </h3>
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {specials.map((item, i) => (
+              <TiltCard
+                key={item._id}
+                item={item}
+                theme={theme}
+                i={i}
+                addToCart={addToCart}
               />
-
-              <h3 className="text-xl font-semibold mb-1 text-orange-500">
-                {item.name}
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
-                {item.description}
-              </p>
-
-              <div className="flex justify-between items-center mb-4">
-                <p className="text-lg font-bold bg-gradient-to-r from-orange-500 to-yellow-400 bg-clip-text text-transparent">
-                  Rs. {totalPrice}
-                </p>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => decrementQuantity(item._id)}
-                    className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white px-2 py-1 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-                  >
-                    <FaMinus />
-                  </button>
-                  <span className="text-lg font-semibold">{quantity}</span>
-                  <button
-                    onClick={() => incrementQuantity(item._id)}
-                    className="bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-white px-2 py-1 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition"
-                  >
-                    <FaPlus />
-                  </button>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <button
-                  onClick={() => handleAddToCart(item)}
-                  className="bg-gradient-to-r from-orange-500 to-yellow-400 text-white font-medium px-4 py-2 rounded-lg hover:shadow-lg transition"
-                >
-                  Add to Cart
-                </button>
-                <button
-                  onClick={() => handleOrderNow(item)}
-                  className="border border-orange-400 text-orange-500 px-4 py-2 rounded-lg hover:bg-orange-500 hover:text-white transition"
-                >
-                  Order Now
-                </button>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {isHomePage && (
-        <div className="text-center mt-10">
-          <Link to="/menu">
-            <button className="bg-gradient-to-r from-orange-500 to-yellow-400 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 hover:shadow-lg transition">
-              View Full Menu
-            </button>
-          </Link>
+            ))}
+          </div>
         </div>
       )}
+
+      {/* ✅ Menu Grid with Empty/Loading States */}
+      {menu.length === 0 ? (
+        <div className="text-center text-gray-500 dark:text-gray-400">
+          Loading menu... 🍳
+        </div>
+      ) : filteredMenu.length === 0 ? (
+        <div className="text-center text-gray-500 dark:text-gray-400">
+          No items found 😔
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {displayedMenu.map((item, i) => (
+            <TiltCard
+              key={item._id}
+              item={item}
+              theme={theme}
+              i={i}
+              addToCart={addToCart}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* ✅ Bottom CTA */}
+      <div className="mt-20 text-center py-10 bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] rounded-3xl shadow-md text-white">
+        <h3 className="text-2xl font-bold mb-2">Craving something special?</h3>
+        <p>Check out our exclusive offers and meal deals now!</p>
+        <Link to="/offers">
+          <button className="mt-4 bg-white text-[#FF5E62] px-6 py-2 rounded-full font-semibold hover:scale-105 transition">
+            View Offers
+          </button>
+        </Link>
+      </div>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import testnomialuser1 from "../assets/testnomialuser1.png";
 import testnomialuser2 from "../assets/testnomialuser2.png";
 import testnomialuser3 from "../assets/testnomialuser3.png";
-// import bgImage from "../assets/bg-image.jpg"; // 📸 Add your parallax image here
+import bgImage from "../assets/bg-image.jpg"; // Add your bg image here
 
 const Testimonials = () => {
   const testimonials = [
@@ -23,24 +23,6 @@ const Testimonials = () => {
     {
       name: "Usman Malik",
       review: "The chicken karahi is to die for. Delicious!",
-      image: testnomialuser3,
-      rating: 5,
-    },
-    {
-      name: "Sara Khan",
-      review: "The desserts are heavenly. Love the Gajjar ka Halwa!",
-      image: testnomialuser1,
-      rating: 4,
-    },
-    {
-      name: "Zainab Ali",
-      review: "The Singaporean Rice is a must-try. Perfectly cooked!",
-      image: testnomialuser2,
-      rating: 4.5,
-    },
-    {
-      name: "Ahmed Raza",
-      review: "Great variety of dishes and consistent quality.",
       image: testnomialuser3,
       rating: 5,
     },
@@ -94,32 +76,53 @@ const Testimonials = () => {
 
   return (
     <section className="relative overflow-hidden py-28">
-      {/* Parallax Background */}
-      {/* <div
+      {/* Animated Background Layer */}
+      <motion.div
         className="absolute inset-0 bg-fixed bg-center bg-cover"
         style={{
           backgroundImage: `url(${bgImage})`,
-          transform: "translateZ(0)",
         }}
-      ></div> */}
+        animate={{
+          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+      />
 
-      {/* Overlay */}
-      <div
-        className={`absolute inset-0 ${
-          theme === "light"
-            ? "bg-white/60 backdrop-blur-sm"
-            : "bg-black/70 backdrop-blur-md"
-        }`}
-      ></div>
 
-      {/* Gradient glow accents */}
-      <div className="absolute top-0 left-[-100px] w-80 h-80 bg-orange-500/20 blur-[100px] animate-pulse"></div>
-      <div className="absolute bottom-0 right-[-100px] w-96 h-96 bg-yellow-400/20 blur-[120px] animate-pulse delay-2000"></div>
+      {/* Floating gradient glows */}
+      <motion.div
+        className="absolute top-10 left-[-120px] w-96 h-96 bg-orange-500/20 blur-[120px]"
+        animate={{
+          y: [0, 40, 0],
+          opacity: [0.6, 1, 0.6],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      ></motion.div>
+      <motion.div
+        className="absolute bottom-10 right-[-120px] w-96 h-96 bg-yellow-400/20 blur-[120px]"
+        animate={{
+          y: [0, -40, 0],
+          opacity: [0.6, 1, 0.6],
+        }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      ></motion.div>
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10">
         <motion.h2
-          className="text-4xl md:text-5xl font-extrabold text-center mb-14 text-orange-500"
+          className="text-4xl md:text-5xl font-extrabold text-center mb-14 text-orange-500 drop-shadow-[0_2px_10px_rgba(255,165,0,0.4)]"
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -133,43 +136,33 @@ const Testimonials = () => {
             onClick={handlePrevious}
             className="absolute left-0 z-10 p-3 bg-white/80 backdrop-blur-lg text-orange-600 rounded-full shadow-lg hover:scale-110 transition duration-300"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
+            ◀
           </button>
 
-          {/* Card */}
+          {/* Testimonial Card */}
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -30 }}
-              transition={{ duration: 0.6 }}
-              className={`relative max-w-lg w-full mx-auto text-center px-8 py-12 rounded-3xl shadow-2xl border border-white/10 ${
+              className={`relative max-w-lg w-full mx-auto text-center px-8 py-12 rounded-3xl shadow-2xl border border-white/10 transition-transform duration-500 hover:shadow-orange-500/20 ${
                 theme === "light"
                   ? "bg-white/80 backdrop-blur-xl"
                   : "bg-gray-900/70 backdrop-blur-xl"
               }`}
+              initial={{ opacity: 0, rotateY: -30, scale: 0.9 }}
+              animate={{ opacity: 1, rotateY: 0, scale: 1 }}
+              exit={{ opacity: 0, rotateY: 30, scale: 0.9 }}
+              transition={{ duration: 0.8, type: "spring" }}
+              whileHover={{
+                rotateX: [0, 5, 0],
+                rotateY: [0, -5, 0],
+                transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+              }}
             >
               <motion.img
                 src={testimonials[currentIndex].image}
                 alt={testimonials[currentIndex].name}
-                className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-orange-500 shadow-lg"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
+                className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-orange-500 shadow-lg hover:scale-110 transition duration-500"
+                whileHover={{ rotate: [0, 10, -10, 0] }}
               />
               <h3 className="text-2xl font-semibold mb-2">
                 {testimonials[currentIndex].name}
@@ -204,20 +197,7 @@ const Testimonials = () => {
             onClick={handleNext}
             className="absolute right-0 z-10 p-3 bg-white/80 backdrop-blur-lg text-orange-600 rounded-full shadow-lg hover:scale-110 transition duration-300"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
+            ▶
           </button>
         </div>
       </div>
