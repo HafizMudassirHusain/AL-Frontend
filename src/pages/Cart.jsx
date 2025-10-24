@@ -3,10 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ThemeContext } from "../context/ThemeContext";
 import { useContext } from "react";
+import { FaTrashAlt, FaPlus, FaMinus, FaShoppingCart } from "react-icons/fa";
 
 const Cart = () => {
   const { cart, removeFromCart, clearCart, increaseQuantity, decreaseQuantity } = useCart();
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
 
   // Calculate total price
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -21,125 +23,163 @@ const Cart = () => {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
+      transition: { staggerChildren: 0.2 },
     },
   };
-  const { theme, setTheme } = useContext(ThemeContext);
 
   return (
-    <div className={`min-h-screen ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-900 text-white'} py-12`}>
-      <div className={`container mx-auto px-4 `}>
-        {/* Hero Section */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-          className="text-center mb-12 "
-        >
-          <motion.h1 variants={fadeInUp} className="text-4xl font-bold  mb-4">
+    <div
+      className={`min-h-screen ${
+        theme === "light" ? "bg-[#fff9f3] text-gray-800" : "bg-[#1a1a1a] text-gray-100"
+      } py-16 px-4`}
+    >
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+        className="max-w-6xl mx-auto"
+      >
+        {/* Header */}
+        <motion.div variants={fadeInUp} className="text-center mb-12">
+          <h1 className="text-4xl font-bold mb-3 flex items-center justify-center gap-2">
+            <FaShoppingCart className="text-orange-500" />
             Your Cart
-          </motion.h1>
-          <motion.p variants={fadeInUp} className="text-lg  max-w-2xl mx-auto">
-            Review your items and proceed to checkout.
-          </motion.p>
+          </h1>
+          <p className="text-lg text-gray-500">
+            Review your selected items before placing the order.
+          </p>
         </motion.div>
-  
-        {/* Cart Table */}
+
+        {/* If empty */}
         {cart.length === 0 ? (
-          <motion.p variants={fadeInUp} className="text-center text-lg">
-            No items added yet.
-          </motion.p>
-        ) : (
-          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} shadow-lg rounded-lg p-6 overflow-x-auto hide-scrollbar`}>
-            <table className="w-full border-collapse">
-              {/* Table Header */}
-              <thead>
-                <tr className="bg-gray-200 text-gray-800 text-left">
-                  <th className="p-3">Image</th>
-                  <th className="p-3">Product</th>
-                  <th className="p-3">Quantity</th>
-                  <th className="p-3">Price</th>
-                  <th className="p-3 text-center">Actions</th>
-                </tr>
-              </thead>
-  
-              {/* Table Body */}
-              <tbody>
-                {cart.map((item) => (
-                  <motion.tr key={item._id} variants={fadeInUp} className="border-b">
-                    {/* Product Image */}
-                    <td className="p-3">
-                      <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-lg" />
-                    </td>
-  
-                    {/* Product Name */}
-                    <td className={`p-3 font-semibold ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>{item.name}</td>
-  
-                    {/* Quantity Control */}
-                    <td className="p-3">
-                      <div className="flex items-center">
-                        <button
-                          onClick={() => decreaseQuantity(item._id)}
-                          className={`${theme === 'light' ? 'bg-gray-200 text-black' : 'bg-gray-400 text-white'} px-3 py-1 rounded-l hover:bg-gray-300 transition duration-300`}
-                          disabled={item.quantity <= 1}
-                        >
-                          -
-                        </button>
-                        <span className={`px-3 ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>{item.quantity}</span>
-                        <button
-                          onClick={() => increaseQuantity(item._id)}
-                          className={`${theme === 'light' ? 'bg-gray-200 text-black' : 'bg-gray-400 text-white'} px-3 py-1 rounded-r hover:bg-gray-300 transition duration-300`}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </td>
-  
-                    {/* Price */}
-                    <td className={`p-3 font-bold ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>Rs. {item.price * item.quantity}</td>
-  
-                    {/* Remove Button */}
-                    <td className="p-3 text-center">
-                      <button
-                        onClick={() => removeFromCart(item._id)}
-                        className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300"
-                      >
-                        Remove
-                      </button>
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-  
-            {/* Total Price */}
-            <motion.div variants={fadeInUp} className="mt-6 text-right">
-              <p className={`text-2xl font-bold ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>Total: Rs. {totalPrice}</p>
-            </motion.div>
-  
-            {/* Buttons */}
-            <motion.div variants={fadeInUp} className="mt-6 flex flex-col sm:flex-row gap-4">
-              <button
-                onClick={clearCart}
-                className="flex-1 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300"
-              >
-                Clear Cart
-              </button>
-              <button
-                onClick={() => navigate("/order")}
-                className="flex-1 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition duration-300"
-              >
-                Place Order
-              </button>
-            </motion.div>
+          <motion.div variants={fadeInUp} className="text-center py-20">
+            <p className="text-xl text-gray-400">🛒 Your cart is empty.</p>
+            <button
+              onClick={() => navigate("/menu")}
+              className="mt-6 px-6 py-3 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 transition duration-300"
+            >
+              Browse Menu
+            </button>
           </motion.div>
+        ) : (
+          <>
+            {/* Cart Table */}
+            <motion.div
+              variants={fadeInUp}
+              className={`rounded-2xl shadow-lg p-6 overflow-x-auto backdrop-blur-md ${
+                theme === "light"
+                  ? "bg-white/90 border border-orange-100"
+                  : "bg-gray-800/80 border border-gray-700"
+              }`}
+            >
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr
+                    className={`text-left ${
+                      theme === "light"
+                        ? "bg-orange-100 text-gray-700"
+                        : "bg-gray-700 text-gray-200"
+                    }`}
+                  >
+                    <th className="p-3">Image</th>
+                    <th className="p-3">Product</th>
+                    <th className="p-3 text-center">Quantity</th>
+                    <th className="p-3">Price</th>
+                    <th className="p-3 text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cart.map((item) => (
+                    <motion.tr
+                      key={item._id}
+                      variants={fadeInUp}
+                      className={`border-b ${
+                        theme === "light" ? "border-gray-200" : "border-gray-700"
+                      }`}
+                    >
+                      {/* Image */}
+                      <td className="p-3">
+                        <motion.img
+                          whileHover={{ scale: 1.05 }}
+                          src={item.image}
+                          alt={item.name}
+                          className="w-20 h-20 rounded-xl object-cover shadow-sm"
+                        />
+                      </td>
+
+                      {/* Name */}
+                      <td className="p-3 font-semibold">{item.name}</td>
+
+                      {/* Quantity Control */}
+                      <td className="p-3 text-center">
+                        <div className="flex justify-center items-center gap-2">
+                          <button
+                            onClick={() => decreaseQuantity(item._id)}
+                            className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-200 transition disabled:opacity-50"
+                            disabled={item.quantity <= 1}
+                          >
+                            <FaMinus />
+                          </button>
+                          <span className="px-3 font-bold">{item.quantity}</span>
+                          <button
+                            onClick={() => increaseQuantity(item._id)}
+                            className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-200 transition"
+                          >
+                            <FaPlus />
+                          </button>
+                        </div>
+                      </td>
+
+                      {/* Price */}
+                      <td className="p-3 font-bold">Rs. {item.price * item.quantity}</td>
+
+                      {/* Remove */}
+                      <td className="p-3 text-center">
+                        <motion.button
+                          whileHover={{ scale: 1.1 }}
+                          onClick={() => removeFromCart(item._id)}
+                          className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition flex items-center justify-center gap-1"
+                        >
+                          <FaTrashAlt />
+                          <span className="hidden sm:inline">Remove</span>
+                        </motion.button>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </table>
+            </motion.div>
+
+            {/* Total and Buttons */}
+            <motion.div
+              variants={fadeInUp}
+              className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4"
+            >
+              <p className="text-2xl font-bold">
+                Total:{" "}
+                <span className="text-orange-500">Rs. {totalPrice.toLocaleString()}</span>
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                <button
+                  onClick={clearCart}
+                  className="bg-gray-500 text-white px-5 py-3 rounded-lg hover:bg-gray-600 transition"
+                >
+                  Clear Cart
+                </button>
+                <button
+                  onClick={() => navigate("/order")}
+                  className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition font-semibold shadow-md"
+                >
+                  Proceed to Checkout
+                </button>
+              </div>
+            </motion.div>
+          </>
         )}
-      </div>
+      </motion.div>
     </div>
   );
-  
 };
 
 export default Cart;

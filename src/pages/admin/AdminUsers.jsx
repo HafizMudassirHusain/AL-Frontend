@@ -1,206 +1,285 @@
+// src/pages/admin/AdminUsers.jsx  (or wherever you keep it)
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { ThemeContext } from "../../context/ThemeContext";
+import { motion } from "framer-motion";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("name");
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 5;
+  const usersPerPage = 6;
   const token = localStorage.getItem("token");
 
-// ✅ Fix: Parse user role from localStorage
-const userData = JSON.parse(localStorage.getItem("user")); // ✅ Parse entire user object
-const userRole = userData?.role; // ✅ Extract role
-const userId = userData?.userId || localStorage.getItem("userId");
- console.log("userRoleData: ",userData)
- console.log("userRole: ",userRole)
- console.log("userid: ",token)
+  // parse stored user (if present)
+  const userData = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("user"));
+    } catch {
+      return null;
+    }
+  })();
+  const userRole = userData?.role;
+  const userId = userData?._id || userData?.userId || localStorage.getItem("userId");
 
+  const { theme } = useContext(ThemeContext);
+
+  // colors (consistent with other pages)
+  const primaryFrom = "#FF5E62";
+  const primaryTo = "#FF9966";
+  const accentYellow = "#FFD43B";
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
-  // ✅ Fetch All Users
   const fetchUsers = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/users`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/users`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setUsers(response.data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
+      setUsers(res.data || []);
+    } catch (err) {
+      console.error("Error fetching users:", err);
     }
   };
 
-  // ✅ Promote/Demote User (Only Super Admin)
-  const updateUserRole = async (userId, newRole) => {
-    if (!window.confirm("Are you sure you want to change this user's role?")) return;
-
+  const updateUserRole = async (targetUserId, newRole) => {
+    if (!window.confirm("Change this user's role?")) return;
     try {
       await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/auth/users/${userId}/role`,
+        `${import.meta.env.VITE_API_BASE_URL}/api/auth/users/${targetUserId}/role`,
         { role: newRole },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      setUsers(users.map(user => (user._id === userId ? { ...user, role: newRole } : user)));
-    } catch (error) {
-      console.error("Error updating user role:", error);
+      setUsers((prev) => prev.map(u => u._id === targetUserId ? { ...u, role: newRole } : u));
+    } catch (err) {
+      console.error("Error updating role:", err);
+      alert("Failed to update role.");
     }
   };
 
-  // ✅ Delete User (Only Super Admin)
-  const deleteUser = async (userId) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
-
+  const deleteUser = async (targetUserId) => {
+    if (!window.confirm("Permanently delete this user?")) return;
     try {
-      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/auth/users/${userId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/auth/users/${targetUserId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      setUsers(users.filter(user => user._id !== userId));
-    } catch (error) {
-      console.error("Error deleting user:", error);
+      setUsers((prev) => prev.filter(u => u._id !== targetUserId));
+    } catch (err) {
+      console.error("Error deleting user:", err);
+      alert("Failed to delete user.");
     }
   };
 
-  // ✅ Search Users
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(search.toLowerCase()) ||
-    user.email.toLowerCase().includes(search.toLowerCase()) ||
-    user.role.toLowerCase().includes(search.toLowerCase())
+  // Filter & sort logic
+  const filteredUsers = users.filter(u =>
+    u.name.toLowerCase().includes(search.toLowerCase()) ||
+    u.email.toLowerCase().includes(search.toLowerCase()) ||
+    (u.role || "").toLowerCase().includes(search.toLowerCase())
   );
 
-  // ✅ Sort Users
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     if (sortBy === "name") return a.name.localeCompare(b.name);
     if (sortBy === "email") return a.email.localeCompare(b.email);
-    if (sortBy === "role") return a.role.localeCompare(b.role);
+    if (sortBy === "role") return (a.role || "").localeCompare(b.role || "");
     return 0;
   });
 
-  // ✅ Pagination Logic
+  // Pagination calculations
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = sortedUsers.slice(indexOfFirstUser, indexOfLastUser);
-  const { theme, setTheme } = useContext(ThemeContext);
+  const totalPages = Math.max(1, Math.ceil(sortedUsers.length / usersPerPage));
+
+  // small helpers for classes
+  const lightCard = "bg-white text-gray-800";
+  const darkCard = "bg-[#111111] text-white";
+  const cardBg = theme === "light" ? lightCard : darkCard;
 
   return (
-    <div className={` border w-full p-10 md:w-[90%] sm:w-[90%] ${theme === 'light' ? 'bg-gray-100' : 'bg-gray-900'}`}>
-      <h1 className={`text-3xl font-bold mb-6 ${theme === 'light' ? 'text-black' : 'text-white'}`}>User Management</h1>
-
-      {/* Search & Sorting */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="w-1/3">
-        <label htmlFor="search" >Search User</label>
-        <br />
-        <input
-          type="text"
-          id="search"
-          placeholder="Search users..."
-          className={`p-2 border rounded  focus:outline-none focus:ring-2 ${
-            theme === 'light' ? 'focus:ring-blue-500 text-black' : 'focus:ring-blue-300 text-white'
-          }`}
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        </div>
-        <select
-          className={`p-2 border rounded focus:outline-none focus:ring-2 ${
-            theme === 'light' ? 'focus:ring-blue-500 bg-white text-black' : 'focus:ring-blue-300 text-white bg-black'
-          }`}
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className={`p-6 md:p-8 rounded-2xl transition-colors duration-300 ${theme === "light" ? "bg-gray-50" : "bg-gray-900"}`}
+    >
+      <header className="mb-6 text-center">
+        <h1
+          className="text-3xl md:text-4xl font-extrabold leading-tight"
+          style={{
+            background: `linear-gradient(90deg, ${primaryFrom}, ${primaryTo})`,
+            WebkitBackgroundClip: "text",
+            backgroundClip: "text",
+            color: "transparent",
+          }}
         >
-          <option value="name">Sort by Name</option>
-          <option value="email">Sort by Email</option>
-          <option value="role">Sort by Role</option>
-        </select>
+          User Management
+        </h1>
+        <p className="mt-2 text-sm md:text-base text-gray-500 dark:text-gray-300">
+          View, promote or remove users. Actions limited to admins / super-admins.
+        </p>
+      </header>
+
+      {/* Controls */}
+      <div className="flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-between mb-5">
+        <div className="flex gap-3 w-full md:w-2/3">
+          <input
+            value={search}
+            onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
+            placeholder="Search by name, email or role..."
+            className={`flex-1 px-4 py-2 rounded-xl shadow-sm border focus:outline-none focus:ring-2 ${theme === "light" ? "bg-white border-gray-200 focus:ring-orange-300 text-gray-800" : "bg-gray-800 border-gray-700 focus:ring-orange-500 text-white"}`}
+          />
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className={`px-4 py-2 rounded-xl shadow-sm border ${theme === "light" ? "bg-white border-gray-200 text-gray-800" : "bg-gray-800 border-gray-700 text-white"}`}
+          >
+            <option value="name">Sort: Name</option>
+            <option value="email">Sort: Email</option>
+            <option value="role">Sort: Role</option>
+          </select>
+        </div>
+
+        <div className="flex gap-3 items-center w-full md:w-auto">
+          <div className="text-sm text-gray-500 dark:text-gray-300 mr-2 hidden md:block">
+            Page {currentPage} / {totalPages}
+          </div>
+
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 rounded-full font-medium transition ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : "shadow-md" } ${theme === "light" ? "bg-white border" : "bg-gray-800 border-gray-700"}`}
+          >
+            Prev
+          </button>
+
+          <button
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 rounded-full font-medium transition ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "shadow-md"} ${theme === "light" ? "bg-gradient-to-r from-[#FF5E62] to-[#FF9966] text-white" : "bg-gradient-to-r from-[#FF5E62] to-[#FF9966] text-white"}`}
+          >
+            Next
+          </button>
+        </div>
       </div>
 
-      {/* User Table */}
-      <div className="overflow-x-auto">
-        <table className={`w-full border-collapse ${theme === 'light' ? 'border-gray-300' : 'border-gray-600'}`}>
-          <thead>
-            <tr className={`${theme === 'light' ? 'bg-gray-200' : 'bg-gray-700'}`}>
-              <th className="border p-2">Name</th>
-              <th className="border p-2">Email</th>
-              <th className="border p-2">Role</th>
-              {(userRole === "admin" || userRole === "super-admin") && <th className="border p-2">Actions</th>}
-            </tr>
-          </thead>
-          <tbody>
-            {currentUsers.length > 0 ? (
-              currentUsers.map((user) => (
-                <tr key={user._id} className={`border ${theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-gray-800'}`}>
-                  <td className="border p-2">{user.name}</td>
-                  <td className="border p-2">{user.email}</td>
-                  <td className="border p-2">
-                    {(userRole === "admin" || userRole === "super-admin") && user._id !== userId ? (
-                      <select
-                        value={user.role}
-                        onChange={(e) => updateUserRole(user._id, e.target.value)}
-                        className={`p-2 border rounded ${
-                          theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'
-                        }`}
-                      >
-                        <option value="customer">Customer</option>
-                        <option value="admin">Admin</option>
-                        <option value="super-admin">Super Admin</option>
-                      </select>
-                    ) : (
-                      user.role
-                    )}
-                  </td>
-                  {(userRole === "admin" || userRole === "super-admin") && (
-                    <td className="border p-2 flex items-center space-x-2">
-                      {user.role !== "super-admin" && user._id !== userId && (
-                        <button
-                          onClick={() => deleteUser(user._id)}
-                          className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700 transition duration-300"
+      {/* Table */}
+      <div className={`overflow-hidden rounded-2xl shadow-lg border ${theme === "light" ? "border-gray-200" : "border-gray-800"}`}>
+        <table className="w-full table-fixed">
+       <thead>
+  <tr>
+    <th
+      className={`text-left p-3 font-semibold ${
+        theme === "light" ? "bg-gray-100 text-gray-900" : "bg-[#0f0f0f] text-white"
+      }`}
+    >
+      <span
+        className="font-bold text-transparent bg-clip-text"
+        style={{
+          backgroundImage: `linear-gradient(90deg, ${primaryFrom}, ${primaryTo})`,
+          WebkitBackgroundClip: "text",
+        }}
+      >
+        Name
+      </span>
+    </th>
+
+    <th
+      className={`text-left p-3 font-semibold ${
+        theme === "light" ? "bg-gray-100 text-gray-900" : "bg-[#0f0f0f] text-white"
+      }`}
+    >
+      Email
+    </th>
+
+    <th
+      className={`text-left p-3 font-semibold ${
+        theme === "light" ? "bg-gray-100 text-gray-900" : "bg-[#0f0f0f] text-white"
+      }`}
+    >
+      Role
+    </th>
+
+    {(userRole === "admin" || userRole === "super-admin") && (
+      <th
+        className={`text-center p-3 font-semibold ${
+          theme === "light" ? "bg-gray-100 text-gray-900" : "bg-[#0f0f0f] text-white"
+        }`}
+      >
+        Actions
+      </th>
+    )}
+  </tr>
+</thead>
+
+
+          <tbody className={`${theme === "light" ? "bg-white" : "bg-[#0b0b0b]"}`}>
+            {currentUsers.length === 0 ? (
+              <tr>
+                <td colSpan={userRole ? 4 : 3} className="p-6 text-center text-gray-500">No users found</td>
+              </tr>
+            ) : currentUsers.map((u, idx) => (
+              <motion.tr
+                key={u._id}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.03 }}
+                className={`${idx % 2 === 0 ? (theme === "light" ? "bg-white" : "bg-[#0b0b0b]") : (theme === "light" ? "bg-gray-50" : "bg-[#071010]")} hover:shadow-md`}
+              >
+                <td className="p-4 align-middle">
+                  <div className="font-medium text-sm">{u.name}</div>
+                </td>
+
+                <td className="p-4 align-middle">
+                  <div className="text-sm text-gray-600 dark:text-gray-300">{u.email}</div>
+                </td>
+
+                <td className="p-4 align-middle">
+                  { (userRole === "admin" || userRole === "super-admin") && u._id !== userId ? (
+                    <select
+                      value={u.role}
+                      onChange={(e) => updateUserRole(u._id, e.target.value)}
+                      className={`px-3 py-1 rounded-md ${theme === "light" ? "bg-white border" : "bg-gray-800 border-gray-700 text-white"}`}
+                    >
+                      <option value="customer">Customer</option>
+                      <option value="admin">Admin</option>
+                      <option value="super-admin">Super Admin</option>
+                    </select>
+                  ) : (
+                    <span className="px-2 py-1 rounded-md text-sm font-medium" style={{ background: u.role === "super-admin" ? accentYellow : "transparent" }}>
+                      {u.role}
+                    </span>
+                  )}
+                </td>
+
+                {(userRole === "admin" || userRole === "super-admin") && (
+                  <td className="p-4 text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      {u.role !== "super-admin" && u._id !== userId && (
+                        <motion.button
+                          whileHover={{ scale: 1.03 }}
+                          whileTap={{ scale: 0.97 }}
+                          onClick={() => deleteUser(u._id)}
+                          className="px-3 py-1 rounded-md bg-red-500 text-white shadow-sm hover:bg-red-600"
                         >
                           Delete
-                        </button>
+                        </motion.button>
                       )}
-                    </td>
-                  )}
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4" className="text-center p-4">No users found.</td>
-              </tr>
-            )}
+                    </div>
+                  </td>
+                )}
+              </motion.tr>
+            ))}
           </tbody>
         </table>
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex justify-center mt-4">
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`px-3 py-1 border rounded ${
-            theme === 'light' ? 'bg-gray-300' : 'bg-gray-700'
-          } disabled:opacity-50`}
-        >
-          Previous
-        </button>
-        <span className={`px-4 ${theme === 'light' ? 'text-black' : 'text-white'}`}>{currentPage}</span>
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={indexOfLastUser >= sortedUsers.length}
-          className={`px-3 py-1 border rounded ${
-            theme === 'light' ? 'bg-gray-300' : 'bg-gray-700'
-          } disabled:opacity-50`}
-        >
-          Next
-        </button>
+      {/* footer info */}
+      <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+        Showing {currentUsers.length} of {sortedUsers.length} users
       </div>
-    </div>
+    </motion.div>
   );
 };
 

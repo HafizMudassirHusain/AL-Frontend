@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { FiEdit, FiTrash2, FiPlus } from "react-icons/fi";
 
 const AdminAddMenu = () => {
   const [menu, setMenu] = useState([]);
@@ -18,7 +19,9 @@ const AdminAddMenu = () => {
 
   const fetchMenu = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/menu`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/api/menu`
+      );
       setMenu(response.data);
     } catch (error) {
       console.error("Error fetching menu:", error);
@@ -37,17 +40,19 @@ const AdminAddMenu = () => {
 
     try {
       if (editItem) {
-        // Update Existing Menu Item
-        await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/menu/${editItem._id}`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        setMessage("Menu item updated successfully!");
+        await axios.put(
+          `${import.meta.env.VITE_API_BASE_URL}/api/menu/${editItem._id}`,
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        setMessage("✅ Menu item updated successfully!");
       } else {
-        // Add New Menu Item
-        await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/menu`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-        setMessage("Menu item added successfully!");
+        await axios.post(
+          `${import.meta.env.VITE_API_BASE_URL}/api/menu`,
+          formData,
+          { headers: { "Content-Type": "multipart/form-data" } }
+        );
+        setMessage("✅ Menu item added successfully!");
       }
 
       setEditItem(null);
@@ -56,9 +61,10 @@ const AdminAddMenu = () => {
       setPrice("");
       setDescription("");
       setImage(null);
-      fetchMenu(); // Refresh menu list
+      fetchMenu();
+      setTimeout(() => setMessage(""), 2500);
     } catch (error) {
-      setMessage("Error saving menu item");
+      setMessage("❌ Error saving menu item", error);
     }
   };
 
@@ -69,6 +75,7 @@ const AdminAddMenu = () => {
     setPrice(item.price);
     setDescription(item.description);
     setImage(null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleDelete = async (id) => {
@@ -82,155 +89,158 @@ const AdminAddMenu = () => {
     }
   };
 
-  // Animation variants
+  // Framer motion animations
   const fadeInUp = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    hidden: { opacity: 0, y: 30 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
 
-  const staggerContainer = {
+  const stagger = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-      },
-    },
+    visible: { opacity: 1, transition: { staggerChildren: 0.15 } },
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12">
-      <div className="container mx-auto px-4">
-        {/* Hero Section */}
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12">
+      <div className="container mx-auto px-6">
+        {/* HEADER */}
         <motion.div
           initial="hidden"
           animate="visible"
-          variants={staggerContainer}
+          variants={stagger}
           className="text-center mb-12"
         >
           <motion.h1
             variants={fadeInUp}
-            className="text-4xl font-bold text-gray-800 mb-4"
+            className="text-4xl font-bold text-gray-900 mb-3"
           >
             {editItem ? "Edit Menu Item" : "Add New Menu Item"}
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            className="text-gray-600 max-w-2xl mx-auto"
           >
-            Manage your menu items here.
+            Easily manage and update your restaurant menu in one place.
           </motion.p>
         </motion.div>
 
-        {/* Add/Edit Menu Form */}
+        {/* FORM */}
         <motion.div
           variants={fadeInUp}
-          className="max-w-2xl mx-auto bg-white shadow-lg rounded-lg p-8"
+          className="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-8 border border-orange-100"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
             {message && (
-              <p className="text-center text-green-500 font-semibold">{message}</p>
+              <p className="text-center font-semibold text-orange-600">
+                {message}
+              </p>
             )}
 
-            <div>
-              <label htmlFor="name" className="block text-gray-700 font-semibold mb-2">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Name"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Item name"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Category
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Drinks, Snacks"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Price (Rs)
+                </label>
+                <input
+                  type="number"
+                  placeholder="Enter price"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Image
+                </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500"
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+              </div>
             </div>
 
             <div>
-              <label htmlFor="category" className="block text-gray-700 font-semibold mb-2">
-                Category
-              </label>
-              <input
-                type="text"
-                id="category"
-                placeholder="Category"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="price" className="block text-gray-700 font-semibold mb-2">
-                Price
-              </label>
-              <input
-                type="number"
-                id="price"
-                placeholder="Price"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                required
-              />
-            </div>
-
-            <div>
-              <label htmlFor="description" className="block text-gray-700 font-semibold mb-2">
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
                 Description
               </label>
               <textarea
-                id="description"
-                placeholder="Description"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                rows="3"
+                placeholder="Short description about the dish..."
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
               />
             </div>
 
-            <div>
-              <label htmlFor="image" className="block text-gray-700 font-semibold mb-2">
-                Image
-              </label>
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
-                onChange={(e) => setImage(e.target.files[0])}
-              />
-            </div>
-
-            <button
+            <motion.button
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.97 }}
               type="submit"
-              className="w-full bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition duration-300"
+              className="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300"
             >
+              <FiPlus size={18} />
               {editItem ? "Update Item" : "Add Item"}
-            </button>
+            </motion.button>
           </form>
         </motion.div>
 
-        {/* Menu Items Table */}
+        {/* MENU TABLE */}
         <motion.div
           initial="hidden"
           animate="visible"
-          variants={staggerContainer}
-          className="mt-12"
+          variants={stagger}
+          className="mt-16"
         >
-          <h2 className="text-3xl font-bold text-gray-800 text-center mb-6">Menu Items</h2>
+          <h2 className="text-3xl font-bold text-gray-900 text-center mb-6">
+            Menu Items
+          </h2>
+
           {menu.length === 0 ? (
             <p className="text-center text-gray-600">No items added yet.</p>
           ) : (
-            <div className="overflow-x-auto overflow-y-auto h-[500px] bg-white shadow-lg rounded-lg">
-              <table className="w-full border-collapse ">
-                <thead>
-                  <tr className="bg-gray-200">
-                    <th className="p-4 text-left">Name</th>
-                    <th className="p-4 text-left">Category</th>
-                    <th className="p-4 text-left">Actions</th>
+            <div className="overflow-x-auto rounded-2xl shadow-lg bg-white border border-orange-100">
+              <table className="w-full text-left border-collapse">
+                <thead className="bg-orange-100 text-gray-800">
+                  <tr>
+                    <th className="p-4 font-semibold">Image</th>
+                    <th className="p-4 font-semibold">Name</th>
+                    <th className="p-4 font-semibold">Category</th>
+                    <th className="p-4 font-semibold">Price</th>
+                    <th className="p-4 font-semibold">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -238,22 +248,38 @@ const AdminAddMenu = () => {
                     <motion.tr
                       key={item._id}
                       variants={fadeInUp}
-                      className="border-b hover:bg-gray-50 transition duration-300"
+                      className="border-b hover:bg-orange-50 transition duration-200"
                     >
-                      <td className="p-4">{item.name}</td>
-                      <td className="p-4">{item.category}</td>
-                      <td className="p-4">
+                      <td className="p-3">
+                        {item.image ? (
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className="h-12 w-12 rounded-md object-cover"
+                          />
+                        ) : (
+                          <span className="text-gray-400 italic">No Image</span>
+                        )}
+                      </td>
+                      <td className="p-3 font-medium text-gray-800">
+                        {item.name}
+                      </td>
+                      <td className="p-3">{item.category}</td>
+                      <td className="p-3 font-semibold text-orange-500">
+                        Rs. {item.price}
+                      </td>
+                      <td className="p-3">
                         <button
                           onClick={() => handleEdit(item)}
-                          className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition duration-300 mr-2"
+                          className="text-blue-600 hover:text-blue-800 transition mx-2"
                         >
-                          Edit
+                          <FiEdit size={18} />
                         </button>
                         <button
                           onClick={() => handleDelete(item._id)}
-                          className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition duration-300"
+                          className="text-red-500 hover:text-red-700 transition mx-2"
                         >
-                          Delete
+                          <FiTrash2 size={18} />
                         </button>
                       </td>
                     </motion.tr>

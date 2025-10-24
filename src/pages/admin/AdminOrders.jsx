@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { motion } from "framer-motion";
-import Modal from 'react-modal'
-import Papa from "papaparse"; // ✅ Import PapaParse for CSV
+import Modal from "react-modal";
+import Papa from "papaparse";
 import { ThemeContext } from "../../context/ThemeContext";
 
 const AdminOrders = () => {
@@ -13,8 +13,7 @@ const AdminOrders = () => {
   const [sortBy, setSortBy] = useState("createdAt");
   const { user } = useAuth();
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const openModal = (order) => setSelectedOrder(order);
-  const closeModal = () => setSelectedOrder(null);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     fetchOrders();
@@ -24,7 +23,7 @@ const AdminOrders = () => {
   const fetchOrders = async () => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setOrders(response.data);
     } catch (error) {
@@ -35,64 +34,43 @@ const AdminOrders = () => {
   // Update Order Status
   const updateStatus = async (orderId, status) => {
     try {
-      await axios.put(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${orderId}/status`, { status }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      });
+      await axios.put(
+        `${import.meta.env.VITE_API_BASE_URL}/api/orders/${orderId}/status`,
+        { status },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
 
-      setOrders(orders.map(order =>
-        order._id === orderId ? { ...order, status } : order
-      ));
+      setOrders((prev) =>
+        prev.map((order) =>
+          order._id === orderId ? { ...order, status } : order
+        )
+      );
     } catch (error) {
       console.error("Error updating order status:", error);
     }
   };
 
-  // Order Summary Stats
-  const totalRevenue = orders.reduce((sum, order) => sum + order.totalPrice, 0);
-  const pendingOrders = orders.filter(order => order.status === "Pending").length;
-
-  // Filter & Search Orders
-  const filteredOrders = filter === "All" ? orders : orders.filter(order => order.status === filter);
-  const searchedOrders = filteredOrders.filter(order =>
-    order.customerName.toLowerCase().includes(search.toLowerCase()) ||
-    order.phone.includes(search)
-  );
-
-  // Sorting Orders
-  const sortedOrders = [...searchedOrders].sort((a, b) => {
-    if (sortBy === "totalPrice") return b.totalPrice - a.totalPrice;
-    if (sortBy === "status") return a.status.localeCompare(b.status);
-    return new Date(b.createdAt) - new Date(a.createdAt);
-  });
-
-  // Page Animation
-  const pageVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-  };
-
+  // Delete Order
   const deleteOrder = async (orderId) => {
     if (!window.confirm("Are you sure you want to delete this order?")) return;
-
     try {
       await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/orders/${orderId}`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-
-      setOrders(orders.filter(order => order._id !== orderId)); // Update UI after deletion
+      setOrders(orders.filter((order) => order._id !== orderId));
     } catch (error) {
       console.error("Error deleting order:", error);
     }
   };
 
-  // ✅ Convert orders to CSV format
+  // Export Orders to CSV
   const exportToCSV = () => {
-    const csvData = orders.map(order => ({
+    const csvData = orders.map((order) => ({
       "Order ID": order._id,
       "Customer Name": order.customerName,
-      "Phone": order.phone,
+      Phone: order.phone,
       "Total Price": order.totalPrice,
-      "Status": order.status,
+      Status: order.status,
       "Order Date": new Date(order.createdAt).toLocaleString(),
     }));
 
@@ -106,50 +84,93 @@ const AdminOrders = () => {
     document.body.removeChild(link);
   };
 
-  const { theme, setTheme } = useContext(ThemeContext);
+  // Stats
+  const totalRevenue = orders.reduce((sum, order) => sum + order.totalPrice, 0);
+  const pendingOrders = orders.filter((order) => order.status === "Pending").length;
 
+  // Filter + Search + Sort
+  const filteredOrders =
+    filter === "All" ? orders : orders.filter((o) => o.status === filter);
+  const searchedOrders = filteredOrders.filter(
+    (o) =>
+      o.customerName.toLowerCase().includes(search.toLowerCase()) ||
+      o.phone.includes(search)
+  );
+
+  const sortedOrders = [...searchedOrders].sort((a, b) => {
+    if (sortBy === "totalPrice") return b.totalPrice - a.totalPrice;
+    if (sortBy === "status") return a.status.localeCompare(b.status);
+    return new Date(b.createdAt) - new Date(a.createdAt);
+  });
+
+  // Modal Control
+  const openModal = (order) => setSelectedOrder(order);
+  const closeModal = () => setSelectedOrder(null);
+
+  // Animations
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+  };
+
+  const accent = "from-orange-500 to-amber-500";
 
   return (
     <>
       <motion.div
-        className="text-center mt-10"
+        className={`min-h-screen p-8 ${
+          theme === "light"
+            ? "bg-gradient-to-b from-white via-orange-50 to-orange-100"
+            : "bg-gray-900 text-white"
+        }`}
         initial="hidden"
         animate="visible"
-        variants={pageVariants}
+        variants={fadeIn}
       >
-        <h1 className="text-3xl font-bold mb-5">Manage Orders</h1>
+        <h1 className="text-4xl font-extrabold text-center mb-10 text-gray-800">
+          🧾 Manage Orders
+        </h1>
 
-        {/* Order Summary Stats */}
-        <div className="grid grid-cols-3 gap-6 mb-5">
-          <div className="bg-blue-500 text-white p-4 rounded shadow-md">
-            <h2 className="text-lg font-semibold">Total Orders</h2>
-            <p className="text-2xl">{orders.length}</p>
+        {/* Summary Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+          <motion.div
+            className={`bg-gradient-to-r ${accent} text-white rounded-xl p-5 shadow-lg`}
+            variants={fadeIn}
+          >
+            <h2 className="text-lg font-semibold opacity-90">Total Orders</h2>
+            <p className="text-3xl font-bold mt-1">{orders.length}</p>
+          </motion.div>
+
+          <div className="bg-yellow-400 text-white rounded-xl p-5 shadow-lg">
+            <h2 className="text-lg font-semibold opacity-90">Pending Orders</h2>
+            <p className="text-3xl font-bold mt-1">{pendingOrders}</p>
           </div>
-          <div className="bg-yellow-500 text-white p-4 rounded shadow-md">
-            <h2 className="text-lg font-semibold">Pending Orders</h2>
-            <p className="text-2xl">{pendingOrders}</p>
-          </div>
-          <div className="bg-green-500 text-white p-4 rounded shadow-md">
-            <h2 className="text-lg font-semibold">Total Revenue</h2>
-            <p className="text-2xl">Rs. {totalRevenue}</p>
+
+          <div className="bg-green-500 text-white rounded-xl p-5 shadow-lg">
+            <h2 className="text-lg font-semibold opacity-90">Total Revenue</h2>
+            <p className="text-3xl font-bold mt-1">Rs. {totalRevenue}</p>
           </div>
         </div>
 
-        {/* Search & Sorting UI */}
-        <motion.div className="flex flex-wrap justify-center my-4 gap-4"
+        {/* Controls */}
+        <motion.div
+          className="flex flex-wrap justify-center my-4 gap-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.2 }}
         >
           <input
             type="text"
             placeholder="Search by customer or phone"
-            className="p-2 border rounded w-64"
+            className="p-2 border rounded w-64 shadow-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
-          <select onChange={(e) => setFilter(e.target.value)} className="p-2 border rounded">
+          <select
+            onChange={(e) => setFilter(e.target.value)}
+            className="p-2 border rounded shadow-sm"
+          >
             <option value="All">All</option>
             <option value="Pending">Pending</option>
             <option value="Preparing">Preparing</option>
@@ -157,73 +178,64 @@ const AdminOrders = () => {
             <option value="Cancelled">Cancelled</option>
           </select>
 
-          <select onChange={(e) => setSortBy(e.target.value)} className="p-2 border rounded">
+          <select
+            onChange={(e) => setSortBy(e.target.value)}
+            className="p-2 border rounded shadow-sm"
+          >
             <option value="createdAt">Newest First</option>
             <option value="totalPrice">Highest Price</option>
             <option value="status">Sort by Status</option>
           </select>
 
-          {/* ✅ CSV Export Button */}
-          <button onClick={exportToCSV} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700 mb-4">
-            📥 Export Orders to CSV
+          <button
+            onClick={exportToCSV}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition shadow-md"
+          >
+            📥 Export CSV
           </button>
         </motion.div>
 
-        {/* Order Table */}
-        <div className="p-5 overflow-y-auto" style={{ maxHeight: '500px' }}>
+        {/* Orders Table */}
+        <div className="overflow-y-auto max-h-[550px] rounded-xl bg-white/80 backdrop-blur-md border border-orange-200 shadow-lg">
           {sortedOrders.length === 0 ? (
-            <p>No orders found.</p>
+            <p className="text-gray-600 py-10 text-center">No orders found.</p>
           ) : (
             <motion.table
-              className="w-full border-collapse border border-gray-300 "
+              className="w-full border-collapse text-sm"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
             >
-              <thead className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'
-                          }`}>
-                <tr >
-                  <th className="border p-2">Customer</th>
-                  <th className="border p-2">Phone</th>
-                  <th className="border p-2">Total Price</th>
-                  <th className="border p-2">Status</th>
-                  <th className="border p-2">Deletion</th>
-                  <th className="border p-2">Details</th>
-                  <th className="border p-2">Action</th>
+              <thead className="bg-orange-500 text-white">
+                <tr>
+                  <th className="p-3">Customer</th>
+                  <th className="p-3">Phone</th>
+                  <th className="p-3">Total Price</th>
+                  <th className="p-3">Status</th>
+                  <th className="p-3">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {sortedOrders.map((order) => (
+                {sortedOrders.map((order, i) => (
                   <motion.tr
                     key={order._id}
-                    className="border"
+                    className="border-b hover:bg-orange-50 transition"
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ delay: i * 0.05 }}
                   >
-                    <td className="border p-2">{order.customerName}</td>
-                    <td className="border p-2">{order.phone}</td>
-                    <td className="border p-2">Rs. {order.totalPrice}</td>
-                    <td className="border p-2">{order.status}</td>
-                    <td className="border p-2">
-                      <button onClick={() => deleteOrder(order._id)}
-                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700">
-                        Delete
-                      </button>
+                    <td className="p-3 font-medium text-gray-800">
+                      {order.customerName}
                     </td>
-                    <td>
-                      <button onClick={() => openModal(order)} className="bg-blue-500 text-white px-3 py-1 rounded">
-                        View Details
-                      </button>
+                    <td className="p-3">{order.phone}</td>
+                    <td className="p-3 font-semibold text-gray-700">
+                      Rs. {order.totalPrice}
                     </td>
-                    <td className="border p-2">
+                    <td className="p-3">
                       <motion.select
                         value={order.status}
                         onChange={(e) => updateStatus(order._id, e.target.value)}
-                        className={`p-2 border rounded ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'
-                          }`}
-                        whileHover={{ scale: 1.05 }} // Add hover animation
-                        whileTap={{ scale: 0.95 }} // Add tap animation
+                        className="p-2 rounded-md border bg-white shadow-sm"
+                        whileHover={{ scale: 1.05 }}
                       >
                         <option value="Pending">Pending</option>
                         <option value="Preparing">Preparing</option>
@@ -231,63 +243,73 @@ const AdminOrders = () => {
                         <option value="Cancelled">Cancelled</option>
                       </motion.select>
                     </td>
+                    <td className="p-3 flex justify-center gap-2">
+                      <button
+                        onClick={() => openModal(order)}
+                        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                      >
+                        View
+                      </button>
+                      <button
+                        onClick={() => deleteOrder(order._id)}
+                        className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </motion.tr>
                 ))}
               </tbody>
             </motion.table>
           )}
         </div>
-
       </motion.div>
+
+      {/* Modal */}
       <Modal
         isOpen={!!selectedOrder}
         onRequestClose={closeModal}
-        className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50 p-4"
+        className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50 p-4"
       >
         {selectedOrder && (
-          <div className="bg-white rounded-2xl shadow-lg p-6 w-11/12 sm:w-10/12 md:w-3/4 lg:max-w-lg transform transition-all scale-95 md:scale-100">
-            {/* Modal Header */}
-            <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">Order Details</h2>
+          <motion.div
+            className="bg-white rounded-2xl shadow-xl p-6 w-full sm:w-3/4 lg:w-1/2 relative"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+          >
+            <h2 className="text-2xl font-bold text-orange-600 mb-4 text-center">
+              Order #{selectedOrder._id.slice(-6)}
+            </h2>
 
-            {/* Customer Info */}
-            <div className="border-b pb-3">
-              <p className="text-lg"><strong>Customer:</strong> {selectedOrder.customerName}</p>
-              <p className="text-lg"><strong>Phone:</strong> {selectedOrder.phone}</p>
-              <p className="text-lg"><strong>Address:</strong> {selectedOrder.address}</p>
+            <div className="text-left space-y-2 mb-4">
+              <p><strong>Customer:</strong> {selectedOrder.customerName}</p>
+              <p><strong>Phone:</strong> {selectedOrder.phone}</p>
+              <p><strong>Address:</strong> {selectedOrder.address}</p>
+              <p><strong>Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
             </div>
 
-            {/* Items List */}
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold text-gray-700">Items Ordered:</h3>
-              <ul className="mt-2 space-y-2">
-                {selectedOrder.items.map((item, index) => (
-                  <li key={index} className="flex justify-between p-2 bg-gray-100 rounded-md text-sm md:text-base">
-                    <span>{item.name} x{item.quantity}</span>
-                    <span className="font-semibold">Rs. {item.price}</span>
-                  </li>
-                ))}
-              </ul>
+            <div className="bg-orange-50 rounded-lg p-3 max-h-40 overflow-y-auto">
+              {selectedOrder.items.map((item, idx) => (
+                <div key={idx} className="flex justify-between py-1 text-gray-700">
+                  <span>{item.name} × {item.quantity}</span>
+                  <span>Rs. {item.price}</span>
+                </div>
+              ))}
             </div>
 
-            {/* Total Price */}
-            <p className="text-xl font-bold text-gray-900 mt-4 text-center">
-              Total: Rs. {selectedOrder.totalPrice}
+            <p className="text-lg font-semibold text-center mt-4">
+              Total: <span className="text-orange-600 font-bold">Rs. {selectedOrder.totalPrice}</span>
             </p>
 
-            {/* Close Button */}
-            <div className="flex justify-center mt-6">
-              <button
-                onClick={closeModal}
-                className="px-5 py-2 bg-orange-500 text-white font-semibold rounded-lg shadow-md transition-transform transform hover:scale-105 active:scale-95"
-              >
-                Close
-              </button>
-            </div>
-          </div>
+            <button
+              onClick={closeModal}
+              className="mt-6 w-full py-2 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
+            >
+              Close
+            </button>
+          </motion.div>
         )}
       </Modal>
-
-
     </>
   );
 };
