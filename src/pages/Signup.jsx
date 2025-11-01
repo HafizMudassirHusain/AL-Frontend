@@ -32,9 +32,16 @@ const Signup = () => {
   };
 
   return (
-    <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-gray-100' : 'bg-gray-900'}`}>
-      <div className={`w-full max-w-md p-8 rounded-lg shadow-lg ${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'}`}>
-        <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
+    <div className={`min-h-screen ${theme === 'light' ? 'bg-gray-50' : 'bg-gray-900'} flex items-center justify-center px-4`}>
+      <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-4xl overflow-hidden rounded-2xl shadow-2xl border border-orange-100">
+        {/* Brand side */}
+        <div className="hidden md:flex flex-col justify-center items-center brand-gradient text-white p-10">
+          <h2 className="text-3xl font-extrabold mb-2">Create your account</h2>
+          <p className="opacity-90 text-center">Join us and enjoy exclusive offers.</p>
+        </div>
+        {/* Form side */}
+        <div className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} p-8 md:p-10`}>
+          <h2 className="text-3xl font-bold mb-6 brand-text-gradient">Sign Up</h2>
 
         {message && <p className="text-center text-red-500 mb-4">{message}</p>}
 
@@ -49,9 +56,7 @@ const Signup = () => {
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
-                theme === 'light' ? 'focus:ring-blue-500' : 'focus:ring-blue-300'
-              }`}
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${theme === 'light' ? 'border-gray-300 focus:ring-orange-500' : 'border-gray-600 bg-gray-700 focus:ring-orange-400'}`}
               required
             />
           </div>
@@ -66,9 +71,7 @@ const Signup = () => {
               placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
-                theme === 'light' ? 'focus:ring-blue-500' : 'focus:ring-blue-300'
-              }`}
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${theme === 'light' ? 'border-gray-300 focus:ring-orange-500' : 'border-gray-600 bg-gray-700 focus:ring-orange-400'}`}
               required
             />
           </div>
@@ -83,9 +86,7 @@ const Signup = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
-                theme === 'light' ? 'focus:ring-blue-500' : 'focus:ring-blue-300'
-              }`}
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${theme === 'light' ? 'border-gray-300 focus:ring-orange-500' : 'border-gray-600 bg-gray-700 focus:ring-orange-400'}`}
               required
             />
           </div>
@@ -98,9 +99,7 @@ const Signup = () => {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${
-                theme === 'light' ? 'focus:ring-blue-500' : 'focus:ring-blue-300'
-              }`}
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${theme === 'light' ? 'border-gray-300 focus:ring-orange-500' : 'border-gray-600 bg-gray-700 focus:ring-orange-400'}`}
             >
               <option value="customer">Customer</option>
               <option value="admin">Admin</option>
@@ -109,16 +108,17 @@ const Signup = () => {
 
           <button
             type="submit"
-            className="w-full p-3 bg-blue-500 text-white rounded-lg font-semibold hover:bg-blue-600"
+            className="w-full p-3 rounded-lg font-semibold brand-gradient text-white hover:opacity-95"
           >
             Register
           </button>
         </form>
 
-        <p className="text-center mt-4">
-          Already have an account?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">Login</a>
-        </p>
+          <p className="text-center mt-4">
+            Already have an account?{" "}
+            <a href="/login" className="text-orange-600 hover:underline">Login</a>
+          </p>
+        </div>
       </div>
     </div>
   );

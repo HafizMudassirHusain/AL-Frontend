@@ -14,6 +14,7 @@ const AdminOrders = () => {
   const { user } = useAuth();
   const [selectedOrder, setSelectedOrder] = useState(null);
   const { theme } = useContext(ThemeContext);
+  const [viewMode, setViewMode] = useState("table"); // 'table' | 'board'
 
   useEffect(() => {
     fetchOrders();
@@ -159,6 +160,20 @@ const AdminOrders = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
+          <div className="flex gap-2">
+            <button
+              onClick={() => setViewMode("table")}
+              className={`px-4 py-2 rounded ${viewMode === 'table' ? 'bg-orange-500 text-white' : 'border'}`}
+            >
+              Table
+            </button>
+            <button
+              onClick={() => setViewMode("board")}
+              className={`px-4 py-2 rounded ${viewMode === 'board' ? 'bg-orange-500 text-white' : 'border'}`}
+            >
+              Board
+            </button>
+          </div>
           <input
             type="text"
             placeholder="Search by customer or phone"
@@ -195,74 +210,109 @@ const AdminOrders = () => {
           </button>
         </motion.div>
 
-        {/* Orders Table */}
-        <div className="overflow-y-auto max-h-[550px] rounded-xl bg-white/80 backdrop-blur-md border border-orange-200 shadow-lg">
-          {sortedOrders.length === 0 ? (
-            <p className="text-gray-600 py-10 text-center">No orders found.</p>
-          ) : (
-            <motion.table
-              className="w-full border-collapse text-sm"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <thead className="bg-orange-500 text-white">
-                <tr>
-                  <th className="p-3">Customer</th>
-                  <th className="p-3">Phone</th>
-                  <th className="p-3">Total Price</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedOrders.map((order, i) => (
-                  <motion.tr
-                    key={order._id}
-                    className="border-b hover:bg-orange-50 transition"
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                  >
-                    <td className="p-3 font-medium text-gray-800">
-                      {order.customerName}
-                    </td>
-                    <td className="p-3">{order.phone}</td>
-                    <td className="p-3 font-semibold text-gray-700">
-                      Rs. {order.totalPrice}
-                    </td>
-                    <td className="p-3">
-                      <motion.select
-                        value={order.status}
-                        onChange={(e) => updateStatus(order._id, e.target.value)}
-                        className="p-2 rounded-md border bg-white shadow-sm"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="Preparing">Preparing</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Cancelled">Cancelled</option>
-                      </motion.select>
-                    </td>
-                    <td className="p-3 flex justify-center gap-2">
-                      <button
-                        onClick={() => openModal(order)}
-                        className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
-                      >
-                        View
-                      </button>
-                      <button
-                        onClick={() => deleteOrder(order._id)}
-                        className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </motion.table>
-          )}
-        </div>
+        {/* Orders Table / Board */}
+        {viewMode === 'table' ? (
+          <div className="overflow-y-auto max-h-[550px] rounded-xl bg-white/80 backdrop-blur-md border border-orange-200 shadow-lg">
+            {sortedOrders.length === 0 ? (
+              <p className="text-gray-600 py-10 text-center">No orders found.</p>
+            ) : (
+              <motion.table
+                className="w-full border-collapse text-sm"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <thead className="bg-orange-500 text-white">
+                  <tr>
+                    <th className="p-3">Customer</th>
+                    <th className="p-3">Phone</th>
+                    <th className="p-3">Total Price</th>
+                    <th className="p-3">Status</th>
+                    <th className="p-3">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedOrders.map((order, i) => (
+                    <motion.tr
+                      key={order._id}
+                      className="border-b hover:bg-orange-50 transition"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05 }}
+                    >
+                      <td className="p-3 font-medium text-gray-800">
+                        {order.customerName}
+                      </td>
+                      <td className="p-3">{order.phone}</td>
+                      <td className="p-3 font-semibold text-gray-700">
+                        Rs. {order.totalPrice}
+                      </td>
+                      <td className="p-3">
+                        <motion.select
+                          value={order.status}
+                          onChange={(e) => updateStatus(order._id, e.target.value)}
+                          className="p-2 rounded-md border bg-white shadow-sm"
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          <option value="Pending">Pending</option>
+                          <option value="Preparing">Preparing</option>
+                          <option value="Completed">Completed</option>
+                          <option value="Cancelled">Cancelled</option>
+                        </motion.select>
+                      </td>
+                      <td className="p-3 flex justify-center gap-2">
+                        <button
+                          onClick={() => openModal(order)}
+                          className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        >
+                          View
+                        </button>
+                        <button
+                          onClick={() => deleteOrder(order._id)}
+                          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </motion.tr>
+                  ))}
+                </tbody>
+              </motion.table>
+            )}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {['Pending','Preparing','Completed','Cancelled'].map((col) => (
+              <div key={col} className="bg-white/80 backdrop-blur-md border border-orange-200 rounded-xl p-3">
+                <h3 className="font-semibold mb-2">{col}</h3>
+                <div className="space-y-3 max-h-[550px] overflow-y-auto">
+                  {orders.filter(o => o.status === col).map((order) => (
+                    <div key={order._id} className="rounded-lg border p-3">
+                      <div className="flex justify-between text-sm">
+                        <span className="font-medium">{order.customerName}</span>
+                        <span>Rs. {order.totalPrice}</span>
+                      </div>
+                      <div className="text-xs text-gray-500">{new Date(order.createdAt).toLocaleString()}</div>
+                      <div className="flex gap-2 mt-2">
+                        {col !== 'Pending' && (
+                          <button onClick={() => updateStatus(order._id, 'Pending')} className="px-2 py-1 border rounded text-xs">Set Pending</button>
+                        )}
+                        {col !== 'Preparing' && (
+                          <button onClick={() => updateStatus(order._id, 'Preparing')} className="px-2 py-1 border rounded text-xs">Preparing</button>
+                        )}
+                        {col !== 'Completed' && (
+                          <button onClick={() => updateStatus(order._id, 'Completed')} className="px-2 py-1 border rounded text-xs">Done</button>
+                        )}
+                        {col !== 'Cancelled' && (
+                          <button onClick={() => updateStatus(order._id, 'Cancelled')} className="px-2 py-1 border rounded text-xs">Cancel</button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </motion.div>
 
       {/* Modal */}

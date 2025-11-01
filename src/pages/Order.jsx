@@ -15,6 +15,7 @@ const Order = () => {
   const [address, setAddress] = useState("");
   const [message, setMessage] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
@@ -35,6 +36,25 @@ const Order = () => {
     }
 
     try {
+      if (paymentMethod === "card") {
+        try {
+          const sessionRes = await axios.post(
+            `${import.meta.env.VITE_API_BASE_URL}/api/payments/create-checkout-session`,
+            { items: cart, customerName }
+          );
+          if (sessionRes.data?.url) {
+            window.location.href = sessionRes.data.url;
+            return;
+          }
+        } catch (err) {
+          if (err?.response?.status === 404) {
+            setMessage("Card payments are temporarily unavailable. Please choose Cash on Delivery.");
+            return;
+          }
+          throw err;
+        }
+      }
+
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/orders`,
         {
@@ -106,6 +126,17 @@ const Order = () => {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Payment Method */}
+          <div className="flex gap-4 mb-2">
+            <label className="flex items-center gap-2">
+              <input type="radio" name="payment" value="cod" checked={paymentMethod === 'cod'} onChange={() => setPaymentMethod('cod')} />
+              <span>Cash on Delivery</span>
+            </label>
+            <label className="flex items-center gap-2">
+              <input type="radio" name="payment" value="card" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} />
+              <span>Card (Stripe)</span>
+            </label>
+          </div>
           <div>
             <label
               htmlFor="customerName"

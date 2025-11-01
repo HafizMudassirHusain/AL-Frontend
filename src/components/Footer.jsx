@@ -25,7 +25,7 @@ const Footer = () => {
                 alt="MZ Kitchen Logo"
                 className="w-16 h-16 rounded-2xl shadow-md border border-[#FF9966]/20"
               />
-              <h2 className="text-2xl font-bold bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] bg-clip-text text-transparent">
+              <h2 className="text-2xl font-bold brand-text-gradient">
                 MZ Kitchen
               </h2>
             </div>

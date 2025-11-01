@@ -60,21 +60,10 @@ const CustomerOrders = () => {
   };
 
   return (
-    <div
-      className={`min-h-screen flex items-center justify-center px-4 ${
-        theme === "light" ? "bg-gray-100" : "bg-gray-900"
-      }`}
-    >
-      <div
-        className={`w-full max-w-5xl p-8 rounded-2xl shadow-2xl transition-all duration-300 ${
-          theme === "light"
-            ? "bg-white text-gray-900"
-            : "bg-gray-800 text-gray-100"
-        }`}
-      >
-        <h1 className="text-3xl font-bold text-center mb-6 text-orange-500">
-          Your Orders
-        </h1>
+    <div className={`min-h-screen px-4 py-12 ${theme === "light" ? "bg-gray-50" : "bg-gray-900"}`}>
+      <div className="container mx-auto max-w-5xl">
+        <h1 className="text-3xl font-extrabold text-center mb-8 brand-text-gradient">Your Orders</h1>
+        <div className={`rounded-2xl shadow-xl p-6 transition-all duration-300 ${theme === 'light' ? 'bg-white' : 'bg-gray-800'}`}>
 
         {orders.length === 0 ? (
           <p className="text-center text-gray-400">
@@ -144,6 +133,7 @@ const CustomerOrders = () => {
         >
           💡 Click an order ID to view and track your order status.
         </p>
+        </div>
       </div>
 
       {/* MODAL with tracking progress bar */}

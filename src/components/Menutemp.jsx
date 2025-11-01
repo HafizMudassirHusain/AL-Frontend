@@ -98,10 +98,14 @@ TiltCard.propTypes = {
 // ✅ Main Menu Component
 const Menu = () => {
   const [menu, setMenu] = useState([]);
-  const [filteredMenu, setFilteredMenu] = useState([]);
+  const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [sort, setSort] = useState("createdAt:desc");
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(8);
+  const [total, setTotal] = useState(0);
   const { addToCart } = useCart();
   const location = useLocation();
   const scrollRef = useRef(null);
@@ -116,7 +120,6 @@ const Menu = () => {
           (item) => item.category !== "deals"
         );
         setMenu(menuWithoutDeals);
-        setFilteredMenu(menuWithoutDeals);
         const uniqueCategories = [
           "All",
           ...new Set(menuWithoutDeals.map((item) => item.category)),
@@ -126,24 +129,42 @@ const Menu = () => {
       .catch((error) => console.error("Error fetching menu:", error));
   }, []);
 
+  const fetchItems = async () => {
+    try {
+      const params = new URLSearchParams();
+      if (selectedCategory !== "All") params.set("category", selectedCategory);
+      if (searchQuery) params.set("q", searchQuery);
+      if (sort) params.set("sort", sort);
+      if (!isHomePage) {
+        params.set("page", String(page));
+        params.set("limit", String(limit));
+      }
+      const url = `${import.meta.env.VITE_API_BASE_URL}/api/menu?${params.toString()}`;
+      const res = await axios.get(url);
+      const totalCount = res.headers["x-total-count"];
+      setTotal(totalCount ? parseInt(totalCount) : res.data.length);
+      // Exclude deals consistently
+      const withoutDeals = res.data.filter((i) => i.category !== "deals");
+      setItems(isHomePage ? withoutDeals.slice(0, 6) : withoutDeals);
+    } catch (e) {
+      console.error("Error fetching filtered items:", e);
+    }
+  };
+
+  useEffect(() => {
+    fetchItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCategory, searchQuery, sort, page, limit, isHomePage]);
+
   const filterMenu = (category) => {
     setSelectedCategory(category);
-    const filtered =
-      category === "All"
-        ? menu
-        : menu.filter((item) => item.category === category);
-    setFilteredMenu(filtered);
+    setPage(1);
   };
 
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearchQuery(value);
-    const filtered = menu.filter(
-      (item) =>
-        item.name.toLowerCase().includes(value) ||
-        item.description.toLowerCase().includes(value)
-    );
-    setFilteredMenu(filtered);
+    setPage(1);
   };
 
   const scrollLeft = () =>
@@ -152,7 +173,6 @@ const Menu = () => {
     scrollRef.current.scrollBy({ left: 150, behavior: "smooth" });
 
   const specials = menu.filter((item) => item.isSpecial);
-  const displayedMenu = isHomePage ? filteredMenu.slice(0, 6) : filteredMenu;
 
   return (
     <div
@@ -173,15 +193,30 @@ const Menu = () => {
         </p>
       </section>
 
-      {/* ✅ Search Bar */}
+      {/* ✅ Search + Sort */}
       <div className="flex justify-center mb-10">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleSearch}
-          placeholder="Search your favorite dish..."
-          className="w-full sm:w-2/3 md:w-1/2 px-5 py-3 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FF9966]"
-        />
+        <div className="flex w-full sm:w-2/3 md:w-1/2 gap-3">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={handleSearch}
+            placeholder="Search your favorite dish..."
+            className="flex-1 px-5 py-3 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#FF9966]"
+          />
+          {!isHomePage && (
+            <select
+              value={sort}
+              onChange={(e) => { setSort(e.target.value); setPage(1); }}
+              className="px-4 py-3 rounded-full border border-gray-300 dark:border-gray-600 shadow-sm"
+            >
+              <option value="createdAt:desc">Newest</option>
+              <option value="price:asc">Price: Low → High</option>
+              <option value="price:desc">Price: High → Low</option>
+              <option value="name:asc">Name: A → Z</option>
+              <option value="name:desc">Name: Z → A</option>
+            </select>
+          )}
+        </div>
       </div>
 
       {/* ✅ Category Scroll */}
@@ -242,17 +277,17 @@ const Menu = () => {
       )}
 
       {/* ✅ Menu Grid with Empty/Loading States */}
-      {menu.length === 0 ? (
+      {menu.length === 0 && items.length === 0 ? (
         <div className="text-center text-gray-500 dark:text-gray-400">
           Loading menu... 🍳
         </div>
-      ) : filteredMenu.length === 0 ? (
+      ) : items.length === 0 ? (
         <div className="text-center text-gray-500 dark:text-gray-400">
           No items found 😔
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {displayedMenu.map((item, i) => (
+          {items.map((item, i) => (
             <TiltCard
               key={item._id}
               item={item}
@@ -261,6 +296,36 @@ const Menu = () => {
               addToCart={addToCart}
             />
           ))}
+        </div>
+      )}
+
+      {/* ✅ Pagination */}
+      {!isHomePage && (
+        <div className="flex items-center justify-center gap-3 mt-10">
+          <button
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            className={`px-4 py-2 rounded-full border ${page === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-orange-50'}`}
+          >
+            Prev
+          </button>
+          <span className="text-sm text-gray-600 dark:text-gray-300">Page {page}</span>
+          <button
+            onClick={() => setPage((p) => p + 1)}
+            disabled={total && limit ? page * limit >= total : false}
+            className={`px-4 py-2 rounded-full border ${(total && limit ? page * limit >= total : false) ? 'opacity-50 cursor-not-allowed' : 'hover:bg-orange-50'}`}
+          >
+            Next
+          </button>
+          <select
+            value={limit}
+            onChange={(e) => { setLimit(parseInt(e.target.value)); setPage(1); }}
+            className="ml-2 px-3 py-2 rounded-full border"
+          >
+            <option value={8}>8</option>
+            <option value={12}>12</option>
+            <option value={16}>16</option>
+          </select>
         </div>
       )}
 

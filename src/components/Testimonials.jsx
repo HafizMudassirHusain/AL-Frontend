@@ -122,7 +122,7 @@ const Testimonials = () => {
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10">
         <motion.h2
-          className="text-4xl md:text-5xl font-extrabold text-center mb-14 text-orange-500 drop-shadow-[0_2px_10px_rgba(255,165,0,0.4)]"
+          className="text-4xl md:text-5xl font-extrabold text-center mb-14 brand-text-gradient drop-shadow-[0_2px_10px_rgba(255,165,0,0.25)]"
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -158,6 +158,7 @@ const Testimonials = () => {
                 transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
               }}
             >
+              <div className="absolute top-4 right-4 text-3xl opacity-20">“</div>
               <motion.img
                 src={testimonials[currentIndex].image}
                 alt={testimonials[currentIndex].name}

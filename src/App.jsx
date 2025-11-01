@@ -10,6 +10,9 @@ import CustomerOrders from "./pages/CustomerOrders";
 import Footer from "./components/Footer";
 import AboutUs from "./pages/AboutUs";
 import ContactUs from "./pages/ContactUs";
+import NotFound from "./pages/NotFound";
+import OrderSuccess from "./pages/OrderSuccess";
+import OrderCancel from "./pages/OrderCancel";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminOrders from "./pages/admin/AdminOrders";
@@ -38,6 +41,8 @@ const { user } = useAuth();
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/order" element={<Order />} />
+        <Route path="/order-success" element={<OrderSuccess />} />
+        <Route path="/order-cancel" element={<OrderCancel />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/about" element={<AboutUs />} />
@@ -64,6 +69,11 @@ const { user } = useAuth();
 
         </Route>
       </Routes>
+
+      {/* Fallback */}
+      {/* <Routes>
+        <Route path="*" element={<NotFound />} />
+      </Routes> */}
 
       {/* Footer */}
       <Footer />

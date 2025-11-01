@@ -29,7 +29,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative flex items-center justify-center h-[100vh] overflow-hidden">
+    <section className="relative flex items-center justify-center h-[90vh] overflow-hidden">
       <Swiper
         modules={[Pagination, Autoplay, EffectFade]}
         pagination={{ clickable: true }}
@@ -42,13 +42,13 @@ const HeroSection = () => {
           <SwiperSlide key={index}>
             {/* ✅ Dynamic background */}
             <div
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-cover bg-center hero-vignette"
               style={{
                 backgroundImage: `url(${slide.image})`,
               }}
             >
               {/* Gradient overlay for contrast */}
-              <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90 z-[1]" />
+              <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80 z-[1]" />
             </div>
 
             {/* ✅ Hero Text Content */}
@@ -59,7 +59,7 @@ const HeroSection = () => {
                 animate="visible"
                 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-[0_4px_20px_rgba(255,107,0,0.3)]"
               >
-                <span className="bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] bg-clip-text text-transparent">
+                <span className="brand-text-gradient">
                   {slide.text}
                 </span>
               </motion.h1>
@@ -74,15 +74,32 @@ const HeroSection = () => {
                 {slide.subtext}
               </motion.p>
 
-              {/* CTA Button with same gradient theme */}
-              <motion.button
-                onClick={handleScrollToOffers}
-                whileHover={{ scale: 1.07 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] text-white font-semibold px-10 py-3 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(255,107,0,0.4)] transition-all duration-300"
-              >
-                Order Now 🍽️
-              </motion.button>
+              {/* CTAs */}
+              <div className="flex gap-3">
+                <motion.button
+                  onClick={handleScrollToOffers}
+                  whileHover={{ scale: 1.07 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="brand-gradient text-white font-semibold px-8 py-3 rounded-full shadow-lg hover:shadow-[0_0_25px_rgba(255,107,0,0.4)] transition-all duration-300"
+                >
+                  Order Now 🍽️
+                </motion.button>
+                <motion.button
+                  onClick={() => window.location.assign('/menu')}
+                  whileHover={{ scale: 1.07 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-8 py-3 rounded-full bg-white/90 text-orange-600 font-semibold shadow-lg hover:bg-white transition-all duration-300"
+                >
+                  Explore Menu
+                </motion.button>
+              </div>
+
+              {/* Trust badges */}
+              <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-3 text-sm text-white/90">
+                <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20">⭐ 4.8/5 — 5k+ reviews</div>
+                <div className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20">🚚 30 min avg delivery</div>
+                <div className="hidden md:block px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20">✅ Halal Certified</div>
+              </div>
             </div>
           </SwiperSlide>
         ))}

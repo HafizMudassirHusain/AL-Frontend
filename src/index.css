@@ -5,6 +5,44 @@ body {
 }
 
 
+/* ================= Brand Tokens ================= */
+:root {
+  --brand-primary-from: 255, 94, 98;   /* #FF5E62 */
+  --brand-primary-to: 255, 212, 59;    /* #FFD43B */
+  --brand-surface: 255, 255, 255;      /* #FFFFFF */
+  --brand-text: 17, 24, 39;            /* #111827 */
+}
+
+.dark {
+  --brand-surface: 15, 23, 42;         /* #0F172A */
+  --brand-text: 229, 231, 235;         /* #E5E7EB */
+}
+
+.brand-gradient {
+  background-image: linear-gradient(
+    to right,
+    rgb(var(--brand-primary-from)) 0%,
+    rgb(var(--brand-primary-to)) 100%
+  );
+}
+
+.brand-text-gradient {
+  background-image: linear-gradient(
+    to right,
+    rgb(var(--brand-primary-from)) 0%,
+    rgb(var(--brand-primary-to)) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.surface {
+  background-color: rgb(var(--brand-surface));
+  color: rgb(var(--brand-text));
+}
+
+
 /* width */
 ::-webkit-scrollbar {
     width: 10px;

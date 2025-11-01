@@ -82,7 +82,7 @@ const OurServices = () => {
         >
           <motion.h1
             variants={fadeInUp}
-            className="text-5xl font-extrabold bg-gradient-to-r from-orange-400 via-pink-500 to-yellow-400 bg-clip-text text-transparent drop-shadow-sm mb-4"
+            className="text-5xl font-extrabold brand-text-gradient drop-shadow-sm mb-4"
           >
             Our Premium Services
           </motion.h1>
@@ -114,7 +114,7 @@ const OurServices = () => {
               <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_50%,rgba(255,255,255,0)_100%)] animate-shine pointer-events-none"></div>
 
               <div className="flex justify-center mb-5">
-                <div className="w-16 h-16 flex items-center justify-center rounded-2xl bg-gradient-to-br from-orange-400 via-pink-500 to-yellow-400 text-white text-3xl shadow-lg">
+                <div className="w-16 h-16 flex items-center justify-center rounded-2xl brand-gradient text-white text-3xl shadow-lg">
                   {service.icon}
                 </div>
               </div>

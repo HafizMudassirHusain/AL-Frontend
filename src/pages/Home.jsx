@@ -8,8 +8,9 @@ import Gallery from "../components/Menutemp";
 import Testimonials from "../components/Testimonials";
 import OurServices from "../components/OurServices";
 import HeroSection from "../components/Hero";
+import Branches from "../components/Branches";
 import logo from "../assets/logo.jpeg";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaPizzaSlice, FaDrumstickBite, FaPepperHot, FaIceCream, FaHamburger, FaWhatsapp } from "react-icons/fa";
 import '../index.css'
 
 const Home = () => {
@@ -51,9 +52,28 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen font-sans bg-gradient-to-b from-orange-50 to-white text-gray-800">
+    <div className="min-h-screen font-sans surface">
       {/* ✅ Hero Section */}
       <HeroSection bghero={bghero} />
+
+      {/* ✅ Stats Bar */}
+      <section className="relative -mt-10 z-10">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl border border-orange-200/30 dark:border-gray-700/60 rounded-3xl p-6 shadow-xl">
+            {[
+              { label: 'Years Serving', value: '9+' },
+              { label: 'Branches', value: '17+' },
+              { label: 'Dishes', value: '120+' },
+              { label: 'Orders Served', value: '100k+' },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <div className="text-3xl md:text-4xl font-extrabold brand-text-gradient">{stat.value}</div>
+                <div className="text-xs md:text-sm text-gray-500 dark:text-gray-300 mt-1">{stat.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ✅ About Section */}
    <section className="relative py-24 overflow-hidden">
@@ -90,7 +110,7 @@ const Home = () => {
         whileInView={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
-        <h2 className="text-5xl font-extrabold mb-6 bg-gradient-to-r from-orange-500 via-pink-500 to-yellow-400 bg-clip-text text-transparent">
+        <h2 className="text-5xl font-extrabold mb-6 brand-text-gradient">
           About MZ Kitchen
         </h2>
         <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 mb-8">
@@ -118,7 +138,7 @@ const Home = () => {
 
       {/* ✅ Special Offers Section */}
    {/* ✅ Enhanced Special Offers Section */}
-<section className="relative bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 py-24 overflow-hidden">
+<section id="offers-section" className="relative bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 py-24 overflow-hidden">
   {/* ✨ Animated Gradient Glow Layers */}
   <div className="absolute top-[-10%] left-[-10%] w-72 h-72 bg-yellow-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
   <div className="absolute bottom-[-10%] right-[-10%] w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse-slow delay-2000"></div>
@@ -260,12 +280,75 @@ const Home = () => {
   </div>
 </section>
 
-
+      {/* ✅ Browse by Category */}
+      <section className="py-16">
+        <div className="container mx-auto px-6">
+          <h3 className="text-3xl font-extrabold text-center mb-8 brand-text-gradient">Browse by Category</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+            {[
+              { name: 'Biryani', icon: <FaPepperHot /> },
+              { name: 'Karahi', icon: <FaDrumstickBite /> },
+              { name: 'BBQ', icon: <FaPepperHot /> },
+              { name: 'Burgers', icon: <FaHamburger /> },
+              { name: 'Rolls', icon: <FaPizzaSlice /> },
+              { name: 'Desserts', icon: <FaIceCream /> },
+            ].map((cat) => (
+              <button
+                key={cat.name}
+                onClick={() => navigate('/menu')}
+                className="group rounded-2xl p-4 bg-white/80 dark:bg-gray-900/60 backdrop-blur-xl border border-orange-200/40 dark:border-gray-700/50 shadow-sm hover:shadow-lg transition"
+              >
+                <div className="text-2xl mb-2 brand-text-gradient">{cat.icon}</div>
+                <div className="text-sm font-semibold">{cat.name}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ✅ Services, Gallery & Testimonials */}
       <OurServices />
       <Gallery />
       <Testimonials />
+
+      {/* ✅ CTA Band */}
+      <section className="py-16">
+        <div className="container mx-auto px-6">
+          <div className="brand-gradient rounded-3xl p-10 md:p-14 text-center text-white shadow-xl">
+            <h3 className="text-3xl md:text-4xl font-extrabold mb-3">Hungry? Let’s Fix That 🍛</h3>
+            <p className="opacity-90 mb-6">Fresh, flavorful meals delivered fast across Karachi.</p>
+            <button onClick={() => navigate('/menu')} className="px-6 py-3 rounded-full bg-white text-orange-600 font-semibold hover:opacity-90">
+              Explore Menu
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ✅ Newsletter */}
+      <section className="pb-20">
+        <div className="container mx-auto px-6">
+          <div className="bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl border border-orange-200/30 dark:border-gray-700/60 rounded-3xl p-8 md:p-10 text-center">
+            <h4 className="text-2xl font-bold mb-2 brand-text-gradient">Get exclusive offers</h4>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">Join our newsletter to receive special deals and seasonal updates.</p>
+            <div className="max-w-xl mx-auto flex gap-3">
+              <input type="email" placeholder="Enter your email" className="flex-1 px-4 py-3 rounded-full border border-gray-300 dark:border-gray-700 bg-white/90 dark:bg-gray-800/80 focus:outline-none" />
+              <button className="px-6 py-3 rounded-full brand-gradient text-white font-semibold hover:opacity-90">Subscribe</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <Branches />
+
+      {/* ✅ WhatsApp Floating Action Button */}
+      <a
+        href="https://wa.me/923442241275"
+        target="_blank"
+        rel="noreferrer"
+        className="fixed bottom-6 left-6 z-40 flex items-center gap-2 px-4 py-3 rounded-full bg-green-500 text-white shadow-xl hover:bg-green-600"
+        aria-label="Contact on WhatsApp"
+      >
+        <FaWhatsapp /> Chat
+      </a>
     </div>
   );
 };

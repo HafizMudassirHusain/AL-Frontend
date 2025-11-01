@@ -62,11 +62,11 @@ const Cart = () => {
             </button>
           </motion.div>
         ) : (
-          <>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
             {/* Cart Table */}
             <motion.div
               variants={fadeInUp}
-              className={`rounded-2xl shadow-lg p-6 overflow-x-auto backdrop-blur-md ${
+              className={`lg:col-span-2 rounded-2xl shadow-lg p-6 overflow-x-auto backdrop-blur-md ${
                 theme === "light"
                   ? "bg-white/90 border border-orange-100"
                   : "bg-gray-800/80 border border-gray-700"
@@ -150,32 +150,22 @@ const Cart = () => {
               </table>
             </motion.div>
 
-            {/* Total and Buttons */}
-            <motion.div
+            {/* Summary Card */}
+            <motion.aside
               variants={fadeInUp}
-              className="mt-8 flex flex-col sm:flex-row justify-between items-center gap-4"
+              className={`sticky top-24 rounded-2xl shadow-lg p-6 h-max ${theme === 'light' ? 'bg-white border border-orange-100' : 'bg-gray-800 border border-gray-700'}`}
             >
-              <p className="text-2xl font-bold">
-                Total:{" "}
-                <span className="text-orange-500">Rs. {totalPrice.toLocaleString()}</span>
-              </p>
-
-              <div className="flex flex-wrap gap-4">
-                <button
-                  onClick={clearCart}
-                  className="bg-gray-500 text-white px-5 py-3 rounded-lg hover:bg-gray-600 transition"
-                >
-                  Clear Cart
-                </button>
-                <button
-                  onClick={() => navigate("/order")}
-                  className="bg-orange-500 text-white px-6 py-3 rounded-lg hover:bg-orange-600 transition font-semibold shadow-md"
-                >
-                  Proceed to Checkout
-                </button>
+              <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between"><span>Subtotal</span><span>Rs. {totalPrice.toLocaleString()}</span></div>
+                <div className="flex justify-between"><span>Delivery</span><span>Free</span></div>
+                <div className="flex justify-between font-semibold pt-2 border-t"><span>Total</span><span className="text-orange-500">Rs. {totalPrice.toLocaleString()}</span></div>
               </div>
-            </motion.div>
-          </>
+              <button onClick={() => navigate('/order')} className="mt-6 w-full brand-gradient text-white font-semibold py-3 rounded-lg hover:opacity-95">Proceed to Checkout</button>
+              <button onClick={() => navigate('/menu')} className="mt-3 w-full py-2 rounded-lg border hover:bg-orange-50 dark:hover:bg-gray-700">Continue Shopping</button>
+              <button onClick={clearCart} className="mt-3 w-full py-2 rounded-lg bg-gray-500 text-white hover:bg-gray-600">Clear Cart</button>
+            </motion.aside>
+          </div>
         )}
       </motion.div>
     </div>

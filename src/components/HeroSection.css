@@ -19,3 +19,12 @@
   opacity: 1;
 }
 
+/* Soft vignette for slides */
+.hero-vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 100%);
+}
+

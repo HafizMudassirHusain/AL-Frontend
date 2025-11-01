@@ -24,25 +24,29 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} shadow-lg fixed top-0 min-w-full z-50`}>
+    <nav className={`${theme === 'light' ? 'bg-white/80 text-black' : 'bg-gray-900/70 text-white'} backdrop-blur-md border-b border-white/10 shadow-md fixed top-0 min-w-full z-50`}>
       <div className="container mx-auto px-6 py-3 flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <img src={logo} alt="MZ Kitchen" className="w-12 rounded-xl h-12 mr-2" />
-          <h1 className="text-2xl font-bold">MZ Kitchen</h1>
+          <h1 className="text-2xl font-bold brand-text-gradient">MZ Kitchen</h1>
         </Link>
 
         <div className="hidden lg:flex space-x-6 items-center">
-          <Link to="/" className={`relative hover:text-orange-500 transition duration-300 ${location.pathname === "/" ? "text-orange-500 font-semibold" : ""}`}>
+          <Link to="/" className={`group relative pb-1 hover:text-orange-500 transition ${location.pathname === "/" ? "text-orange-500 font-semibold" : ""}`}>
             Home
+            <span className={`absolute left-0 -bottom-0.5 h-0.5 transition-all duration-300 ${location.pathname === "/" ? "w-full bg-orange-500" : "w-0 group-hover:w-full bg-orange-400"}`}></span>
           </Link>
-          <Link to="/menu" className={`relative hover:text-orange-500 transition duration-300 ${location.pathname === "/menu" ? "text-orange-500 font-semibold" : ""}`}>
+          <Link to="/menu" className={`group relative pb-1 hover:text-orange-500 transition ${location.pathname === "/menu" ? "text-orange-500 font-semibold" : ""}`}>
             Menu
+            <span className={`absolute left-0 -bottom-0.5 h-0.5 transition-all duration-300 ${location.pathname === "/menu" ? "w-full bg-orange-500" : "w-0 group-hover:w-full bg-orange-400"}`}></span>
           </Link>
-          <Link to="/about" className={`relative hover:text-orange-500 transition duration-300 ${location.pathname === "/about" ? "text-orange-500 font-semibold" : ""}`}>
+          <Link to="/about" className={`group relative pb-1 hover:text-orange-500 transition ${location.pathname === "/about" ? "text-orange-500 font-semibold" : ""}`}>
             About
+            <span className={`absolute left-0 -bottom-0.5 h-0.5 transition-all duration-300 ${location.pathname === "/about" ? "w-full bg-orange-500" : "w-0 group-hover:w-full bg-orange-400"}`}></span>
           </Link>
-          <Link to="/contact" className={`relative hover:text-orange-500 transition duration-300 ${location.pathname === "/contact" ? "text-orange-500 font-semibold" : ""}`}>
+          <Link to="/contact" className={`group relative pb-1 hover:text-orange-500 transition ${location.pathname === "/contact" ? "text-orange-500 font-semibold" : ""}`}>
             Contact
+            <span className={`absolute left-0 -bottom-0.5 h-0.5 transition-all duration-300 ${location.pathname === "/contact" ? "w-full bg-orange-500" : "w-0 group-hover:w-full bg-orange-400"}`}></span>
           </Link>
           <button 
             onClick={() => setTheme(theme === 'light' ? "dark" : "light")}

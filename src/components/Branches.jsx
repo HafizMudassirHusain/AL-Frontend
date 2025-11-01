@@ -1,68 +1,58 @@
-// import React from 'react';
-// import branch1 from '../assets/branch1.jpg';
-// import branch2 from '../assets/branch2.webp';
-// import branch3 from '../assets/branch3.jpg';
-// import { motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-// const Branches = () => {
-//   const branches = [
-//     {
-//       name: 'Gulshan-e-Johar',
-//       address: 'House #12, Ground Floor, Gulistan-e-Johar, Karachi',
-//       image: branch1,
-//       phone: '03XX-XXXXXXX',
-//       hours: '10:00 AM - 10:00 PM',
-//     },
-//     {
-//       name: 'Gulshan Iqbal',
-//       address: 'Block 2, Gulshan Iqbal, Karachi',
-//       image: branch2,
-//       phone: '03XX-XXXXXXX',
-//       hours: '10:00 AM - 10:00 PM',
-//     },
-//     {
-//       name: 'North Nazimabad',
-//       address: 'Main Road, North Nazimabad, Karachi',
-//       image: branch3,
-//       phone: '03XX-XXXXXXX',
-//       hours: '10:00 AM - 10:00 PM',
-//     },
-//   ];
+const Branches = () => {
+  const branches = [
+    {
+      name: 'Gulistan-e-Johar',
+      address: 'House #12, Ground Floor, Gulistan-e-Johar, Karachi',
+      map: 'https://maps.google.com',
+      phone: '03XX-XXXXXXX',
+      hours: '10:00 AM - 10:00 PM',
+    },
+    {
+      name: 'Gulshan Iqbal',
+      address: 'Block 2, Gulshan Iqbal, Karachi',
+      map: 'https://maps.google.com',
+      phone: '03XX-XXXXXXX',
+      hours: '10:00 AM - 10:00 PM',
+    },
+    {
+      name: 'North Nazimabad',
+      address: 'Main Road, North Nazimabad, Karachi',
+      map: 'https://maps.google.com',
+      phone: '03XX-XXXXXXX',
+      hours: '10:00 AM - 10:00 PM',
+    },
+  ];
 
-//   return (
-//     <div className="bg-gray-100 py-12">
-//       <div className="container mx-auto px-6">
-//         <h2 className="text-3xl font-bold text-center mb-8">Our Branches</h2>
-//         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-//           {branches.map((branch, index) => (
-//             <motion.div
-//               key={index}
-//               className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
-//               whileHover={{ scale: 1.05 }}
-//               whileTap={{ scale: 0.95 }}
-//             >
-//               <img src={branch.image} alt={branch.name} className="w-full h-48 object-cover" />
-//               <div className="p-6">
-//                 <h3 className="text-xl font-semibold mb-2">{branch.name}</h3>
-//                 <p className="text-gray-600 mb-4">{branch.address}</p>
-//                 <div className="space-y-2">
-//                   <p className="text-gray-600">
-//                     <span className="font-semibold">Phone:</span> {branch.phone}
-//                   </p>
-//                   <p className="text-gray-600">
-//                     <span className="font-semibold">Opening Hours:</span> {branch.hours}
-//                   </p>
-//                 </div>
-//                 <button className="mt-4 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition duration-300">
-//                   Get Directions
-//                 </button>
-//               </div>
-//             </motion.div>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
+  return (
+    <section className="py-20">
+      <div className="container mx-auto px-6">
+        <h2 className="text-4xl font-extrabold text-center mb-10 brand-text-gradient">Our Branches</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {branches.map((branch, index) => (
+            <motion.div
+              key={index}
+              whileHover={{ y: -6, scale: 1.01 }}
+              className="relative overflow-hidden rounded-2xl border bg-white/70 dark:bg-gray-800/60 backdrop-blur-xl border-orange-200/40 dark:border-gray-700/50 shadow-md hover:shadow-xl transition"
+            >
+              <div className="p-6">
+                <h3 className="text-xl font-bold mb-1">{branch.name}</h3>
+                <p className="text-gray-600 dark:text-gray-300 mb-3">{branch.address}</p>
+                <div className="text-sm text-gray-500 dark:text-gray-400 space-y-1">
+                  <p><span className="font-medium">Phone:</span> {branch.phone}</p>
+                  <p><span className="font-medium">Hours:</span> {branch.hours}</p>
+                </div>
+                <a href={branch.map} target="_blank" rel="noreferrer" className="inline-block mt-4 px-4 py-2 rounded-full brand-gradient text-white font-semibold hover:opacity-90">
+                  Get Directions
+                </a>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
 
-// export default Branches;
+export default Branches;
