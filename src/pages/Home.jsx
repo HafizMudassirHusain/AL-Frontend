@@ -17,6 +17,7 @@ const Home = () => {
   const navigate = useNavigate();
   const { addToCart, cart } = useCart();
   const [deals, setDeals] = useState([]);
+  const [featured, setFeatured] = useState(null);
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -30,6 +31,10 @@ const Home = () => {
       }
     };
     fetchDeals();
+    // pick a featured dish
+    axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/menu?sort=price:desc&limit=1&page=1`).then(res => {
+      if (Array.isArray(res.data) && res.data.length > 0) setFeatured(res.data[0]);
+    }).catch(() => {});
   }, []);
 
   const scrollLeft = () => scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
@@ -279,6 +284,30 @@ const Home = () => {
     </motion.p>
   </div>
 </section>
+
+      {/* ✅ Featured Dish */}
+      {featured && (
+        <section className="relative py-20">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${featured.image})`, backgroundAttachment: 'fixed', filter: 'blur(2px)', opacity: 0.2 }}
+          />
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center rounded-3xl border border-orange-200/40 dark:border-gray-700/50 bg-white/70 dark:bg-gray-900/60 backdrop-blur-xl p-8 shadow-xl">
+              <div>
+                <h3 className="text-3xl md:text-4xl font-extrabold mb-3 brand-text-gradient">Chef’s Pick</h3>
+                <h4 className="text-2xl font-bold mb-2">{featured.name}</h4>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">{featured.description}</p>
+                <div className="text-xl font-extrabold text-orange-600 mb-6">Rs. {featured.price}</div>
+                <button onClick={() => handleOrderNow(featured)} className="brand-gradient text-white px-6 py-3 rounded-full font-semibold hover:opacity-95">Order this</button>
+              </div>
+              <div className="rounded-2xl overflow-hidden shadow-lg">
+                <img src={featured.image} alt={featured.name} className="w-full h-72 object-cover" />
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ✅ Browse by Category */}
       <section className="py-16">

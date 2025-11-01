@@ -28,7 +28,7 @@ const TiltCard = ({ item, theme, i, addToCart }) => {
         x.set(125);
         y.set(125);
       }}
-      className={`group relative rounded-2xl overflow-hidden border backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 
+      className={`group relative rounded-2xl overflow-hidden border backdrop-blur-xl transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl 
         ${
           theme === "light"
             ? "bg-white/60 border-orange-100 hover:shadow-[0_10px_40px_rgba(255,107,0,0.25)]"

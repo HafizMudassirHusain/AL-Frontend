@@ -136,7 +136,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 py-12">
+    <div className="min-h-screen bg-gradient-to-br from-[#0b0b0b] via-[#111] to-[#0b0b0b] py-12">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
@@ -145,12 +145,7 @@ const AdminDashboard = () => {
           variants={staggerContainer}
           className="text-center mb-12"
         >
-          <motion.h1
-            variants={fadeInUp}
-            className="text-4xl font-extrabold text-white mb-3"
-          >
-            📊 Admin Dashboard
-          </motion.h1>
+          <motion.h1 variants={fadeInUp} className="text-4xl font-extrabold mb-3 brand-text-gradient">📊 Admin Dashboard</motion.h1>
           <motion.p
             variants={fadeInUp}
             className="text-lg text-gray-300 max-w-2xl mx-auto"
@@ -160,12 +155,7 @@ const AdminDashboard = () => {
         </motion.div>
 
         {/* Stats Cards */}
-        <motion.div
-          initial="hidden"
-          animate="visible"
-          variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
-        >
+        <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {[
             { title: "Total Orders", value: orders.length, color: "from-orange-500 to-orange-600" },
             { title: "Pending Orders", value: pendingOrders, color: "from-yellow-400 to-yellow-500" },
@@ -174,7 +164,7 @@ const AdminDashboard = () => {
             <motion.div
               key={index}
               variants={fadeInUp}
-              className={`bg-gradient-to-br ${card.color} shadow-xl rounded-2xl p-6 text-center text-white transform hover:scale-105 transition duration-300`}
+              className={`bg-gradient-to-br ${card.color} shadow-xl rounded-2xl p-6 text-center text-white transform hover:scale-105 transition duration-300 border border-white/10 backdrop-blur-md`}
             >
               <h2 className="text-lg font-semibold opacity-90">{card.title}</h2>
               <p className="text-3xl font-bold mt-2">{card.value}</p>
@@ -200,7 +190,7 @@ const AdminDashboard = () => {
         </motion.div>
 
         {/* Revenue Trend */}
-        <motion.div variants={fadeInUp} className="bg-gray-800/60 backdrop-blur-lg shadow-lg rounded-2xl p-6 mb-12">
+        <motion.div variants={fadeInUp} className="bg-gray-900/60 backdrop-blur-lg shadow-lg rounded-2xl p-6 mb-12 border border-white/10">
           <h2 className="text-xl font-semibold text-orange-400 mb-4">Revenue Trend</h2>
           <div className="h-64">
             <Line
@@ -218,7 +208,7 @@ const AdminDashboard = () => {
         </motion.div>
 
         {/* Order Status */}
-        <motion.div variants={fadeInUp} className="bg-gray-800/60 backdrop-blur-lg shadow-lg rounded-2xl p-6 mb-12">
+        <motion.div variants={fadeInUp} className="bg-gray-900/60 backdrop-blur-lg shadow-lg rounded-2xl p-6 mb-12 border border-white/10">
           <h2 className="text-xl font-semibold text-orange-400 mb-4">Order Status Breakdown</h2>
           <div className="h-64">
             <Pie
@@ -234,7 +224,7 @@ const AdminDashboard = () => {
         </motion.div>
 
         {/* Orders Per Day */}
-        <motion.div variants={fadeInUp} className="bg-gray-800/60 backdrop-blur-lg shadow-lg rounded-2xl p-6">
+        <motion.div variants={fadeInUp} className="bg-gray-900/60 backdrop-blur-lg shadow-lg rounded-2xl p-6 border border-white/10">
           <h2 className="text-xl font-semibold text-orange-400 mb-4">Orders Per Day</h2>
           <div className="h-64">
             <Bar
