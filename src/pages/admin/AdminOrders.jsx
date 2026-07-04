@@ -112,22 +112,22 @@ const AdminOrders = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
 
-  const accent = "from-orange-500 to-amber-500";
+  const accent = "from-[#C89B3F] to-[#E8C06A]";
 
   return (
     <>
       <motion.div
         className={`min-h-screen p-8 ${
           theme === "light"
-            ? "bg-gradient-to-b from-white via-orange-50 to-orange-100"
+            ? "bg-gradient-to-b from-white via-[#FAF6EE] to-[#F4EEE2]"
             : "bg-gray-900 text-white"
         }`}
         initial="hidden"
         animate="visible"
         variants={fadeIn}
       >
-        <h1 className="text-4xl font-extrabold text-center mb-10 text-gray-800">
-          🧾 Manage Orders
+        <h1 className="font-display text-4xl font-semibold capitalize text-center mb-10 text-[#D9A44D]">
+          Manage Orders
         </h1>
 
         {/* Summary Stats */}
@@ -161,13 +161,13 @@ const AdminOrders = () => {
           <div className="flex gap-2">
             <button
               onClick={() => setViewMode("table")}
-              className={`px-4 py-2 rounded ${viewMode === 'table' ? 'bg-orange-500 text-white' : 'border'}`}
+              className={`px-4 py-2 rounded ${viewMode === 'table' ? 'bg-[#D9A44D] text-[#1c1812]' : 'border'}`}
             >
               Table
             </button>
             <button
               onClick={() => setViewMode("board")}
-              className={`px-4 py-2 rounded ${viewMode === 'board' ? 'bg-orange-500 text-white' : 'border'}`}
+              className={`px-4 py-2 rounded ${viewMode === 'board' ? 'bg-[#D9A44D] text-[#1c1812]' : 'border'}`}
             >
               Board
             </button>
@@ -210,7 +210,7 @@ const AdminOrders = () => {
 
         {/* Orders Table / Board */}
         {viewMode === 'table' ? (
-          <div className="overflow-y-auto max-h-[550px] rounded-xl bg-white/80 backdrop-blur-md border border-orange-200 shadow-lg">
+          <div className="overflow-y-auto max-h-[550px] rounded-xl bg-white/80 backdrop-blur-md border border-[#D9A44D]/25 shadow-lg">
             {sortedOrders.length === 0 ? (
               <p className="text-gray-600 py-10 text-center">No orders found.</p>
             ) : (
@@ -219,7 +219,7 @@ const AdminOrders = () => {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
               >
-                <thead className="bg-orange-500 text-white">
+                <thead className="bg-[#D9A44D] text-[#1c1812]">
                   <tr>
                     <th className="p-3">Customer</th>
                     <th className="p-3">Phone</th>
@@ -232,7 +232,7 @@ const AdminOrders = () => {
                   {sortedOrders.map((order, i) => (
                     <motion.tr
                       key={order._id}
-                      className="border-b hover:bg-orange-50 transition"
+                      className="border-b hover:bg-[#D9A44D]/10 transition"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.05 }}
@@ -280,7 +280,7 @@ const AdminOrders = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {['Pending','Preparing','Completed','Cancelled'].map((col) => (
-              <div key={col} className="bg-white/80 backdrop-blur-md border border-orange-200 rounded-xl p-3">
+              <div key={col} className="bg-white/80 backdrop-blur-md border border-[#D9A44D]/25 rounded-xl p-3">
                 <h3 className="font-semibold mb-2">{col}</h3>
                 <div className="space-y-3 max-h-[550px] overflow-y-auto">
                   {orders.filter(o => o.status === col).map((order) => (
@@ -325,7 +325,7 @@ const AdminOrders = () => {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
           >
-            <h2 className="text-2xl font-bold text-orange-600 mb-4 text-center">
+            <h2 className="text-2xl font-bold text-[#D9A44D] mb-4 text-center">
               Order #{selectedOrder._id.slice(-6)}
             </h2>
 
@@ -336,7 +336,7 @@ const AdminOrders = () => {
               <p><strong>Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
             </div>
 
-            <div className="bg-orange-50 rounded-lg p-3 max-h-40 overflow-y-auto">
+            <div className="bg-[#D9A44D]/10 rounded-lg p-3 max-h-40 overflow-y-auto">
               {selectedOrder.items.map((item, idx) => (
                 <div key={idx} className="flex justify-between py-1 text-gray-700">
                   <span>{item.name} × {item.quantity}</span>
@@ -346,12 +346,12 @@ const AdminOrders = () => {
             </div>
 
             <p className="text-lg font-semibold text-center mt-4">
-              Total: <span className="text-orange-600 font-bold">Rs. {selectedOrder.totalPrice}</span>
+              Total: <span className="text-[#D9A44D] font-bold">Rs. {selectedOrder.totalPrice}</span>
             </p>
 
             <button
               onClick={closeModal}
-              className="mt-6 w-full py-2 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-lg font-semibold hover:opacity-90 transition"
+              className="mt-6 w-full py-2 bg-gradient-to-r from-[#C89B3F] to-[#E8C06A] text-white rounded-lg font-semibold hover:opacity-90 transition"
             >
               Close
             </button>

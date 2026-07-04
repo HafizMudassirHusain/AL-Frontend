@@ -93,8 +93,8 @@ const AdminDashboard = () => {
       {
         label: "Total Revenue (Rs.)",
         data: Object.values(revenueByDate),
-        borderColor: "#f97316",
-        backgroundColor: "rgba(249, 115, 22, 0.3)",
+        borderColor: "#D9A44D",
+        backgroundColor: "rgba(217, 164, 77, 0.3)",
         tension: 0.4,
         fill: true,
       },
@@ -147,7 +147,7 @@ const AdminDashboard = () => {
           variants={staggerContainer}
           className="text-center mb-12"
         >
-          <motion.h1 variants={fadeInUp} className="text-4xl font-extrabold mb-3 brand-text-gradient">📊 Admin Dashboard</motion.h1>
+          <motion.h1 variants={fadeInUp} className="font-display text-4xl font-semibold capitalize mb-3 text-[#D9A44D]">Admin Dashboard</motion.h1>
           <motion.p
             variants={fadeInUp}
             className="text-lg text-gray-300 max-w-2xl mx-auto"
@@ -159,7 +159,7 @@ const AdminDashboard = () => {
         {/* Stats Cards */}
         <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {[
-            { title: "Total Orders", value: orders.length, color: "from-orange-500 to-orange-600" },
+            { title: "Total Orders", value: orders.length, color: "from-[#C89B3F] to-[#E8C06A]" },
             { title: "Pending Orders", value: pendingOrders, color: "from-yellow-400 to-yellow-500" },
             { title: "Total Revenue", value: `Rs. ${totalRevenue}`, color: "from-green-500 to-green-600" },
           ].map((card, index) => (
@@ -182,7 +182,7 @@ const AdminDashboard = () => {
               onClick={() => setFilter(type)}
               className={`px-5 py-2.5 rounded-lg font-medium transition-all duration-300 ${
                 filter === type
-                  ? "bg-orange-500 text-white shadow-md"
+                  ? "bg-[#D9A44D] text-[#1c1812] shadow-md"
                   : "bg-gray-700 text-gray-300 hover:bg-gray-600"
               }`}
             >
@@ -193,7 +193,7 @@ const AdminDashboard = () => {
 
         {/* Revenue Trend */}
         <motion.div variants={fadeInUp} className="bg-gray-900/60 backdrop-blur-lg shadow-lg rounded-2xl p-6 mb-12 border border-white/10">
-          <h2 className="text-xl font-semibold text-orange-400 mb-4">Revenue Trend</h2>
+          <h2 className="text-xl font-semibold text-[#D9A44D] mb-4">Revenue Trend</h2>
           <div className="h-64">
             <Line
               data={revenueChartData}
@@ -211,7 +211,7 @@ const AdminDashboard = () => {
 
         {/* Order Status */}
         <motion.div variants={fadeInUp} className="bg-gray-900/60 backdrop-blur-lg shadow-lg rounded-2xl p-6 mb-12 border border-white/10">
-          <h2 className="text-xl font-semibold text-orange-400 mb-4">Order Status Breakdown</h2>
+          <h2 className="text-xl font-semibold text-[#D9A44D] mb-4">Order Status Breakdown</h2>
           <div className="h-64">
             <Pie
               data={orderStatusChartData}
@@ -227,7 +227,7 @@ const AdminDashboard = () => {
 
         {/* Orders Per Day */}
         <motion.div variants={fadeInUp} className="bg-gray-900/60 backdrop-blur-lg shadow-lg rounded-2xl p-6 border border-white/10">
-          <h2 className="text-xl font-semibold text-orange-400 mb-4">Orders Per Day</h2>
+          <h2 className="text-xl font-semibold text-[#D9A44D] mb-4">Orders Per Day</h2>
           <div className="h-64">
             <Bar
               data={ordersPerDayChartData}

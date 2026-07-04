@@ -33,12 +33,12 @@ const AdminAnalytics = () => {
   const [dateFilter, setDateFilter] = useState("today");
   const { theme } = useContext(ThemeContext);
 
-  // === Restaurant Color Palette ===
-  const accent = "#e63946"; // red accent
-  const softBg = theme === "light" ? "#fff8f6" : "#121212";
-  const cardBg = theme === "light" ? "#ffffff" : "#1e1e1e";
-  const textColor = theme === "light" ? "#1a1a1a" : "#f5f5f5";
-  const border = theme === "light" ? "#e5e5e5" : "#2b2b2b";
+  // === Restaurant Color Palette (luxury gold) ===
+  const accent = "#D9A44D"; // gold accent
+  const softBg = theme === "light" ? "#FAF6EE" : "#16130F";
+  const cardBg = theme === "light" ? "#FFFDF8" : "#231E18";
+  const textColor = theme === "light" ? "#282016" : "#ECE3D0";
+  const border = theme === "light" ? "#e8ddc9" : "#3a3128";
 
   useEffect(() => {
     fetchOrders();
@@ -89,7 +89,7 @@ const AdminAnalytics = () => {
         label: "Revenue (Rs.)",
         data: Object.values(revenueByDate),
         borderColor: accent,
-        backgroundColor: "rgba(230, 57, 70, 0.2)",
+        backgroundColor: "rgba(217, 164, 77, 0.2)",
         fill: true,
         tension: 0.3,
       },
@@ -132,10 +132,10 @@ const AdminAnalytics = () => {
       {/* Header */}
       <div className="py-6 px-6 md:px-12 border-b" style={{ borderColor: border }}>
         <h1
-          className="text-3xl md:text-4xl font-bold text-center md:text-left"
+          className="font-display text-3xl md:text-4xl font-semibold capitalize text-center md:text-left"
           style={{ color: accent }}
         >
-          📊 Admin Analytics Dashboard
+          Admin Analytics Dashboard
         </h1>
         <p className="mt-1 text-gray-500 text-center md:text-left">
           Track your restaurant’s performance and insights at a glance

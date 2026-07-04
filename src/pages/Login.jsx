@@ -72,11 +72,6 @@ const Login = () => {
               Sign up
             </Link>
           </p>
-          <div className="mt-6 text-xs text-center text-gray-500">
-            <p>superadmin@gmail.com SuperSecure123</p>
-            <p>hmudassir511@gmail.com admin123456</p>
-            <p>cus@gmail.com cus123</p>
-          </div>
         </div>
       </div>
     </div>

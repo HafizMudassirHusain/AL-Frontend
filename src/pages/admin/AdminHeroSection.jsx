@@ -80,9 +80,9 @@ const AdminHeroSection = () => {
         initial="hidden"
         animate="visible"
         variants={fadeIn}
-        className="text-4xl font-extrabold text-white text-center mb-10"
+        className="font-display text-4xl font-semibold capitalize text-[#D9A44D] text-center mb-10"
       >
-        🖼️ Manage Hero Slides
+        Manage Hero Slides
       </motion.h1>
 
       {/* Add New Slide Section */}
@@ -92,7 +92,7 @@ const AdminHeroSection = () => {
         variants={fadeIn}
         className="bg-gray-800/70 backdrop-blur-md shadow-lg rounded-2xl p-6 mb-10 max-w-4xl mx-auto"
       >
-        <h2 className="text-xl text-orange-400 font-semibold mb-4">Add New Slide</h2>
+        <h2 className="text-xl text-[#D9A44D] font-semibold mb-4">Add New Slide</h2>
 
         <div className="flex flex-col md:flex-row gap-4 items-center">
           <input
@@ -100,25 +100,25 @@ const AdminHeroSection = () => {
             placeholder="Slide Title"
             value={newSlide.text}
             onChange={(e) => setNewSlide({ ...newSlide, text: e.target.value })}
-            className="flex-1 bg-gray-900/50 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-orange-500 transition"
+            className="flex-1 bg-gray-900/50 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-[#D9A44D] transition"
           />
           <input
             type="text"
             placeholder="Slide Subtext"
             value={newSlide.subtext}
             onChange={(e) => setNewSlide({ ...newSlide, subtext: e.target.value })}
-            className="flex-1 bg-gray-900/50 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-orange-500 transition"
+            className="flex-1 bg-gray-900/50 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-[#D9A44D] transition"
           />
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setNewSlide({ ...newSlide, image: e.target.files[0] })}
-            className="flex-1 text-gray-300 bg-gray-900/50 border border-gray-700 rounded-lg p-2 focus:border-orange-500"
+            className="flex-1 text-gray-300 bg-gray-900/50 border border-gray-700 rounded-lg p-2 focus:border-[#D9A44D]"
           />
           <button
             onClick={handleAddSlide}
             disabled={loading}
-            className={`bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium transition-all ${
+            className={`bg-[#D9A44D] hover:bg-[#E8C06A] text-[#1c1812] px-6 py-2 rounded-lg font-medium transition-all ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
           >
@@ -134,7 +134,7 @@ const AdminHeroSection = () => {
         variants={fadeIn}
         className="bg-gray-800/70 backdrop-blur-md shadow-lg rounded-2xl p-6 overflow-x-auto"
       >
-        <h2 className="text-xl text-orange-400 font-semibold mb-4">Existing Slides</h2>
+        <h2 className="text-xl text-[#D9A44D] font-semibold mb-4">Existing Slides</h2>
 
         <table className="w-full text-left border-collapse text-gray-300">
           <thead>

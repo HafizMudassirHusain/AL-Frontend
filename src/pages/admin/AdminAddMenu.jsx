@@ -112,7 +112,7 @@ const AdminAddMenu = () => {
         >
           <motion.h1
             variants={fadeInUp}
-            className="text-4xl font-bold text-gray-900 mb-3"
+            className="font-display text-4xl font-semibold capitalize text-[#b9863a] mb-3"
           >
             {editItem ? "Edit Menu Item" : "Add New Menu Item"}
           </motion.h1>
@@ -127,11 +127,11 @@ const AdminAddMenu = () => {
         {/* FORM */}
         <motion.div
           variants={fadeInUp}
-          className="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-8 border border-orange-100"
+          className="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-8 border border-[#D9A44D]/25"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
             {message && (
-              <p className="text-center font-semibold text-orange-600">
+              <p className="text-center font-semibold text-[#D9A44D]">
                 {message}
               </p>
             )}
@@ -144,7 +144,7 @@ const AdminAddMenu = () => {
                 <input
                   type="text"
                   placeholder="Item name"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D9A44D] focus:outline-none"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -158,7 +158,7 @@ const AdminAddMenu = () => {
                 <input
                   type="text"
                   placeholder="e.g. Drinks, Snacks"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D9A44D] focus:outline-none"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   required
@@ -172,7 +172,7 @@ const AdminAddMenu = () => {
                 <input
                   type="number"
                   placeholder="Enter price"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D9A44D] focus:outline-none"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   required
@@ -186,7 +186,7 @@ const AdminAddMenu = () => {
                 <input
                   type="file"
                   accept="image/*"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#D9A44D]"
                   onChange={(e) => setImage(e.target.files[0])}
                 />
               </div>
@@ -199,7 +199,7 @@ const AdminAddMenu = () => {
               <textarea
                 rows="3"
                 placeholder="Short description about the dish..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D9A44D] focus:outline-none"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
@@ -210,7 +210,7 @@ const AdminAddMenu = () => {
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300"
+              className="w-full flex items-center justify-center gap-2 bg-[#D9A44D] hover:bg-[#E8C06A] text-[#1c1812] font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300"
             >
               <FiPlus size={18} />
               {editItem ? "Update Item" : "Add Item"}
@@ -232,9 +232,9 @@ const AdminAddMenu = () => {
           {menu.length === 0 ? (
             <p className="text-center text-gray-600">No items added yet.</p>
           ) : (
-            <div className="overflow-x-auto rounded-2xl shadow-lg bg-white border border-orange-100">
+            <div className="overflow-x-auto rounded-2xl shadow-lg bg-white border border-[#D9A44D]/25">
               <table className="w-full text-left border-collapse">
-                <thead className="bg-orange-100 text-gray-800">
+                <thead className="bg-[#D9A44D]/15 text-[#b9863a]">
                   <tr>
                     <th className="p-4 font-semibold">Image</th>
                     <th className="p-4 font-semibold">Name</th>
@@ -248,7 +248,7 @@ const AdminAddMenu = () => {
                     <motion.tr
                       key={item._id}
                       variants={fadeInUp}
-                      className="border-b hover:bg-orange-50 transition duration-200"
+                      className="border-b hover:bg-[#D9A44D]/10 transition duration-200"
                     >
                       <td className="p-3">
                         {item.image ? (
@@ -265,7 +265,7 @@ const AdminAddMenu = () => {
                         {item.name}
                       </td>
                       <td className="p-3">{item.category}</td>
-                      <td className="p-3 font-semibold text-orange-500">
+                      <td className="p-3 font-semibold text-[#D9A44D]">
                         Rs. {item.price}
                       </td>
                       <td className="p-3">

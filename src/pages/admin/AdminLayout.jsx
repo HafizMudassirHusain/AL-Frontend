@@ -31,7 +31,7 @@ const AdminLayout = () => {
     <div className="flex">
       {/* Sidebar */}
       <motion.div
-        className={`bg-gray-900 text-white w-64 min-h-screen p-5 transition-all ${
+        className={`bg-[#121009] text-[#ECE3D0] border-r border-[#D9A44D]/20 w-64 min-h-screen p-5 transition-all ${
           sidebarOpen ? "block" : "hidden"
         } md:block`}
         initial={{ x: -100 }}
@@ -39,7 +39,7 @@ const AdminLayout = () => {
         transition={{ duration: 0.3 }}
       >
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-bold">Admin Panel</h2>
+          <h2 className="font-display text-xl font-semibold uppercase tracking-[0.12em] text-gold">Admin Panel</h2>
           {isMobile && (
             <button onClick={toggleSidebar} className="md:hidden">
               <FiX size={24} />
@@ -50,48 +50,48 @@ const AdminLayout = () => {
         <nav className="mt-5">
           <Link
             to="/admin/dashboard"
-            className={`flex items-center p-3 hover:bg-gray-700 rounded ${
-              location.pathname === "/admin/dashboard" ? "bg-gray-700" : ""
+            className={`flex items-center p-3 hover:bg-[#D9A44D]/10 hover:text-[#D9A44D] transition-colors ${
+              location.pathname === "/admin/dashboard" ? "bg-[#D9A44D]/15 text-[#D9A44D] border-l-2 border-[#D9A44D]" : ""
             }`}
           >
             <FiHome className="mr-2" /> Dashboard
           </Link>
           <Link
             to="/admin/orders"
-            className={`flex items-center p-3 hover:bg-gray-700 rounded ${
-              location.pathname === "/admin/orders" ? "bg-gray-700" : ""
+            className={`flex items-center p-3 hover:bg-[#D9A44D]/10 hover:text-[#D9A44D] transition-colors ${
+              location.pathname === "/admin/orders" ? "bg-[#D9A44D]/15 text-[#D9A44D] border-l-2 border-[#D9A44D]" : ""
             }`}
           >
             <FiList className="mr-2" /> Manage Orders
           </Link>
           <Link
             to="/admin/menu"
-            className={`flex items-center p-3 hover:bg-gray-700 rounded ${
-              location.pathname === "/admin/menu" ? "bg-gray-700" : ""
+            className={`flex items-center p-3 hover:bg-[#D9A44D]/10 hover:text-[#D9A44D] transition-colors ${
+              location.pathname === "/admin/menu" ? "bg-[#D9A44D]/15 text-[#D9A44D] border-l-2 border-[#D9A44D]" : ""
             }`}
           >
             🍽 Manage Menu
           </Link>
           <Link
             to="/admin/analytics"
-            className={`flex items-center p-3 hover:bg-gray-700 rounded ${
-              location.pathname === "/admin/analytics" ? "bg-gray-700" : ""
+            className={`flex items-center p-3 hover:bg-[#D9A44D]/10 hover:text-[#D9A44D] transition-colors ${
+              location.pathname === "/admin/analytics" ? "bg-[#D9A44D]/15 text-[#D9A44D] border-l-2 border-[#D9A44D]" : ""
             }`}
           >
             <FiBarChart className="mr-2" /> Analytics
           </Link>
           <Link
             to="/admin/users"
-            className={`flex items-center p-3 hover:bg-gray-700 rounded ${
-              location.pathname === "/admin/users" ? "bg-gray-700" : ""
+            className={`flex items-center p-3 hover:bg-[#D9A44D]/10 hover:text-[#D9A44D] transition-colors ${
+              location.pathname === "/admin/users" ? "bg-[#D9A44D]/15 text-[#D9A44D] border-l-2 border-[#D9A44D]" : ""
             }`}
           >
             <FiUsers className="mr-2" /> User Management
           </Link>
           <Link
             to="/admin/hero-section"
-            className={`flex items-center p-3 hover:bg-gray-700 rounded ${
-              location.pathname === "/admin/hero-section" ? "bg-gray-700" : ""
+            className={`flex items-center p-3 hover:bg-[#D9A44D]/10 hover:text-[#D9A44D] transition-colors ${
+              location.pathname === "/admin/hero-section" ? "bg-[#D9A44D]/15 text-[#D9A44D] border-l-2 border-[#D9A44D]" : ""
             }`}
           >
             🌟 Admin Hero Section

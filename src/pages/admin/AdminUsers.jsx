@@ -26,9 +26,9 @@ const AdminUsers = () => {
   const { theme } = useContext(ThemeContext);
 
   // colors (consistent with other pages)
-  const primaryFrom = "#FF5E62";
-  const primaryTo = "#FF9966";
-  const accentYellow = "#FFD43B";
+  const primaryFrom = "#C89B3F";
+  const primaryTo = "#D9A44D";
+  const accentYellow = "#E8C06A";
 
   useEffect(() => {
     fetchUsers();
@@ -101,7 +101,7 @@ const AdminUsers = () => {
     >
       <header className="mb-6 text-center">
         <h1
-          className="text-3xl md:text-4xl font-extrabold leading-tight"
+          className="font-display text-3xl md:text-4xl font-semibold capitalize leading-tight"
           style={{
             background: `linear-gradient(90deg, ${primaryFrom}, ${primaryTo})`,
             WebkitBackgroundClip: "text",
@@ -123,7 +123,7 @@ const AdminUsers = () => {
             value={search}
             onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
             placeholder="Search by name, email or role..."
-            className={`flex-1 px-4 py-2 rounded-xl shadow-sm border focus:outline-none focus:ring-2 ${theme === "light" ? "bg-white border-gray-200 focus:ring-orange-300 text-gray-800" : "bg-gray-800 border-gray-700 focus:ring-orange-500 text-white"}`}
+            className={`flex-1 px-4 py-2 rounded-xl shadow-sm border focus:outline-none focus:ring-2 ${theme === "light" ? "bg-white border-gray-200 focus:ring-[#D9A44D] text-gray-800" : "bg-gray-800 border-gray-700 focus:ring-[#D9A44D] text-white"}`}
           />
           <select
             value={sortBy}
@@ -152,7 +152,7 @@ const AdminUsers = () => {
           <button
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 rounded-full font-medium transition ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "shadow-md"} ${theme === "light" ? "bg-gradient-to-r from-[#FF5E62] to-[#FF9966] text-white" : "bg-gradient-to-r from-[#FF5E62] to-[#FF9966] text-white"}`}
+            className={`px-4 py-2 rounded-full font-medium transition ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : "shadow-md"} ${theme === "light" ? "bg-gradient-to-r from-[#C89B3F] to-[#E8C06A] text-white" : "bg-gradient-to-r from-[#C89B3F] to-[#E8C06A] text-white"}`}
           >
             Next
           </button>
