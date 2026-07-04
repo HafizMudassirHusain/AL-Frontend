@@ -80,34 +80,34 @@ const Order = () => {
 
   return (
     <section
-      className={`min-h-screen flex items-center justify-center bg-gradient-to-b from-orange-500 via-amber-500 to-yellow-400 ${
-        theme === "dark" ? "text-white" : "text-black"
+      className={`min-h-screen flex items-center justify-center surface py-16 px-4 ${
+        theme === "light" ? "light" : ""
       }`}
     >
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
-        className={`w-full max-w-lg p-8 md:p-10 rounded-2xl shadow-2xl relative overflow-hidden backdrop-blur-md border ${
-          theme === "light"
-            ? "bg-white/90 border-orange-200"
-            : "bg-gray-900/60 border-orange-400/30"
-        }`}
+        className="w-full max-w-lg p-8 md:p-10 lux-card shadow-2xl relative overflow-hidden"
       >
         {/* Glow background */}
-        <div className="absolute -top-20 -right-20 w-60 h-60 bg-orange-400/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-40 h-40 bg-amber-500/30 rounded-full blur-3xl" />
+        <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#D9A44D]/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#D9A44D]/10 rounded-full blur-3xl" />
 
-        <h1 className="text-3xl font-extrabold text-center mb-6 bg-gradient-to-r from-orange-300 via-yellow-200 to-amber-300 text-transparent bg-clip-text drop-shadow-md">
-          Place Your Order
-        </h1>
+        <div className="text-center mb-8">
+          <p className="lux-script text-2xl mb-1">Reservation</p>
+          <h1 className="font-display text-3xl font-semibold capitalize text-gold">
+            Place Your Order
+          </h1>
+          <div className="lux-divider" />
+        </div>
 
         {!user && (
-          <p className="text-center mb-4 text-sm md:text-base text-red-100 bg-red-500/20 p-3 rounded-lg">
+          <p className="text-center mb-4 text-sm md:text-base text-red-300 bg-red-500/10 border border-red-500/30 p-3">
             To save and track your orders,{" "}
             <Link
               to="/login"
-              className="text-orange-300 font-semibold underline hover:text-yellow-200 transition"
+              className="text-gold font-semibold underline hover:text-[#E8C06A] transition"
             >
               login first
             </Link>
@@ -119,7 +119,7 @@ const Order = () => {
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center mb-4 text-sm text-yellow-200 bg-black/20 p-2 rounded-md"
+            className="text-center mb-4 text-sm text-gold bg-[#D9A44D]/10 border border-[#D9A44D]/30 p-2"
           >
             {message}
           </motion.p>
@@ -148,11 +148,9 @@ const Order = () => {
               type="text"
               id="customerName"
               placeholder="Enter your name"
-              className={`w-full p-3 rounded-lg border focus:outline-none focus:ring-2 transition-all ${
-                theme === "light"
-                  ? "border-orange-200 focus:ring-orange-500 bg-white/90"
-                  : "border-orange-400/40 focus:ring-amber-400 bg-gray-800/80"
-              } ${user ? "cursor-not-allowed opacity-70" : ""}`}
+              className={`w-full p-3 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-all ${
+                user ? "cursor-not-allowed opacity-70" : ""
+              }`}
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               disabled={!!user}
@@ -170,11 +168,7 @@ const Order = () => {
               type="text"
               id="phone"
               placeholder="Enter phone number"
-              className={`w-full p-3 rounded-lg border focus:outline-none focus:ring-2 transition-all ${
-                theme === "light"
-                  ? "border-orange-200 focus:ring-orange-500 bg-white/90"
-                  : "border-orange-400/40 focus:ring-amber-400 bg-gray-800/80"
-              }`}
+              className="w-full p-3 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-all"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />
@@ -190,33 +184,25 @@ const Order = () => {
             <textarea
               id="address"
               placeholder="Enter delivery address"
-              className={`w-full p-3 rounded-lg border focus:outline-none focus:ring-2 transition-all resize-none h-24 ${
-                theme === "light"
-                  ? "border-orange-200 focus:ring-orange-500 bg-white/90"
-                  : "border-orange-400/40 focus:ring-amber-400 bg-gray-800/80"
-              }`}
+              className="w-full p-3 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-all resize-none h-24"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
             />
           </div>
 
-          <p className="text-lg font-bold text-center">
+          <p className="font-display text-xl font-semibold text-center">
             Total:{" "}
-            <span className="text-orange-300">Rs. {totalPrice.toFixed(2)}</span>
+            <span className="text-gold">Rs. {totalPrice.toFixed(2)}</span>
           </p>
 
           <motion.button
-            whileHover={{ scale: user ? 1.05 : 1 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: user ? 1.03 : 1 }}
+            whileTap={{ scale: 0.97 }}
             type="submit"
-            className={`w-full p-3 rounded-lg text-white font-semibold shadow-md transition-all duration-300 ${
-              user
-                ? "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-yellow-500"
-                : "bg-gray-400 cursor-not-allowed"
-            }`}
+            className={`btn-lux w-full ${user ? "" : "opacity-50 cursor-not-allowed"}`}
             disabled={!user}
           >
-            Confirm Order
+            Confirm Order <span className="btn-dash" />
           </motion.button>
         </form>
       </motion.div>
@@ -234,11 +220,11 @@ const Order = () => {
             <motion.div
               initial={{ y: 40 }}
               animate={{ y: 0 }}
-              className="bg-gradient-to-b from-orange-500 to-amber-500 text-white px-10 py-8 rounded-3xl shadow-2xl text-center"
+              className="lux-card text-[#ECE3D0] px-10 py-8 shadow-2xl text-center"
             >
-              <CheckCircle size={64} className="mx-auto mb-3 text-white" />
-              <h2 className="text-2xl font-bold mb-1">Order Placed!</h2>
-              <p className="text-sm text-white/90">
+              <CheckCircle size={64} className="mx-auto mb-3 text-gold" />
+              <h2 className="font-display text-2xl font-semibold capitalize text-gold mb-1">Order Placed!</h2>
+              <p className="text-sm text-muted-warm">
                 Your order has been successfully placed 🎉
               </p>
             </motion.div>

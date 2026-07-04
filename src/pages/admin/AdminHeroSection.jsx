@@ -47,7 +47,10 @@ const AdminHeroSection = () => {
 
     fetch(`${import.meta.env.VITE_API_BASE_URL}/api/slides`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
       body: JSON.stringify(slideData),
     })
       .then((res) => res.json())
@@ -59,7 +62,10 @@ const AdminHeroSection = () => {
   };
 
   const handleDeleteSlide = (id) => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/slides/${id}`, { method: "DELETE" })
+    fetch(`${import.meta.env.VITE_API_BASE_URL}/api/slides/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+    })
       .then(() => setSlides(slides.filter((slide) => slide._id !== id)));
   };
 

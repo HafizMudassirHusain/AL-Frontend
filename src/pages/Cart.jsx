@@ -29,9 +29,7 @@ const Cart = () => {
 
   return (
     <div
-      className={`min-h-screen ${
-        theme === "light" ? "bg-[#fff9f3] text-gray-800" : "bg-[#1a1a1a] text-gray-100"
-      } py-16 px-4`}
+      className={`min-h-screen surface ${theme === "light" ? "light" : ""} py-16 px-4`}
     >
       <motion.div
         initial="hidden"
@@ -41,11 +39,13 @@ const Cart = () => {
       >
         {/* Header */}
         <motion.div variants={fadeInUp} className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-3 flex items-center justify-center gap-2">
-            <FaShoppingCart className="text-orange-500" />
+          <p className="lux-script text-2xl mb-2">Almost There</p>
+          <h1 className="font-display text-4xl md:text-5xl font-semibold capitalize text-gold flex items-center justify-center gap-3">
+            <FaShoppingCart />
             Your Cart
           </h1>
-          <p className="text-lg text-gray-500">
+          <div className="lux-divider" />
+          <p className="text-base text-muted-warm">
             Review your selected items before placing the order.
           </p>
         </motion.div>
@@ -53,12 +53,9 @@ const Cart = () => {
         {/* If empty */}
         {cart.length === 0 ? (
           <motion.div variants={fadeInUp} className="text-center py-20">
-            <p className="text-xl text-gray-400">🛒 Your cart is empty.</p>
-            <button
-              onClick={() => navigate("/menu")}
-              className="mt-6 px-6 py-3 bg-orange-500 text-white rounded-lg shadow-md hover:bg-orange-600 transition duration-300"
-            >
-              Browse Menu
+            <p className="text-xl text-muted-warm">Your cart is empty.</p>
+            <button onClick={() => navigate("/menu")} className="btn-lux mt-6">
+              Browse Menu <span className="btn-dash" />
             </button>
           </motion.div>
         ) : (
@@ -66,21 +63,11 @@ const Cart = () => {
             {/* Cart Table */}
             <motion.div
               variants={fadeInUp}
-              className={`lg:col-span-2 rounded-2xl shadow-lg p-6 overflow-x-auto backdrop-blur-md ${
-                theme === "light"
-                  ? "bg-white/90 border border-orange-100"
-                  : "bg-gray-800/80 border border-gray-700"
-              }`}
+              className="lg:col-span-2 lux-card shadow-lg p-6 overflow-x-auto"
             >
               <table className="w-full border-collapse">
                 <thead>
-                  <tr
-                    className={`text-left ${
-                      theme === "light"
-                        ? "bg-orange-100 text-gray-700"
-                        : "bg-gray-700 text-gray-200"
-                    }`}
-                  >
+                  <tr className="text-left bg-[#D9A44D]/10 text-gold font-display uppercase tracking-[0.1em] text-sm">
                     <th className="p-3">Image</th>
                     <th className="p-3">Product</th>
                     <th className="p-3 text-center">Quantity</th>
@@ -93,9 +80,7 @@ const Cart = () => {
                     <motion.tr
                       key={item._id}
                       variants={fadeInUp}
-                      className={`border-b ${
-                        theme === "light" ? "border-gray-200" : "border-gray-700"
-                      }`}
+                      className="border-b border-[#D9A44D]/15"
                     >
                       {/* Image */}
                       <td className="p-3">
@@ -115,7 +100,7 @@ const Cart = () => {
                         <div className="flex justify-center items-center gap-2">
                           <button
                             onClick={() => decreaseQuantity(item._id)}
-                            className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-200 transition disabled:opacity-50"
+                            className="border border-[#D9A44D]/60 text-gold px-3 py-1 hover:bg-[#D9A44D]/10 transition disabled:opacity-40"
                             disabled={item.quantity <= 1}
                           >
                             <FaMinus />
@@ -123,7 +108,7 @@ const Cart = () => {
                           <span className="px-3 font-bold">{item.quantity}</span>
                           <button
                             onClick={() => increaseQuantity(item._id)}
-                            className="bg-orange-100 text-orange-600 px-3 py-1 rounded-full hover:bg-orange-200 transition"
+                            className="border border-[#D9A44D]/60 text-gold px-3 py-1 hover:bg-[#D9A44D]/10 transition"
                           >
                             <FaPlus />
                           </button>
@@ -138,7 +123,7 @@ const Cart = () => {
                         <motion.button
                           whileHover={{ scale: 1.1 }}
                           onClick={() => removeFromCart(item._id)}
-                          className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 transition flex items-center justify-center gap-1"
+                          className="border border-red-500/70 text-red-400 px-3 py-2 hover:bg-red-500/10 transition flex items-center justify-center gap-1"
                         >
                           <FaTrashAlt />
                           <span className="hidden sm:inline">Remove</span>
@@ -153,17 +138,19 @@ const Cart = () => {
             {/* Summary Card */}
             <motion.aside
               variants={fadeInUp}
-              className={`sticky top-24 rounded-2xl shadow-lg p-6 h-max ${theme === 'light' ? 'bg-white border border-orange-100' : 'bg-gray-800 border border-gray-700'}`}
+              className="sticky top-24 lux-card shadow-lg p-6 h-max"
             >
-              <h2 className="text-xl font-bold mb-4">Order Summary</h2>
+              <h2 className="font-display text-xl font-semibold uppercase tracking-[0.1em] text-gold mb-4">
+                Order Summary
+              </h2>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between"><span>Subtotal</span><span>Rs. {totalPrice.toLocaleString()}</span></div>
                 <div className="flex justify-between"><span>Delivery</span><span>Free</span></div>
-                <div className="flex justify-between font-semibold pt-2 border-t"><span>Total</span><span className="text-orange-500">Rs. {totalPrice.toLocaleString()}</span></div>
+                <div className="flex justify-between font-semibold pt-2 border-t border-[#D9A44D]/25"><span>Total</span><span className="text-gold">Rs. {totalPrice.toLocaleString()}</span></div>
               </div>
-              <button onClick={() => navigate('/order')} className="mt-6 w-full brand-gradient text-white font-semibold py-3 rounded-lg hover:opacity-95">Proceed to Checkout</button>
-              <button onClick={() => navigate('/menu')} className="mt-3 w-full py-2 rounded-lg border hover:bg-orange-50 dark:hover:bg-gray-700">Continue Shopping</button>
-              <button onClick={clearCart} className="mt-3 w-full py-2 rounded-lg bg-gray-500 text-white hover:bg-gray-600">Clear Cart</button>
+              <button onClick={() => navigate('/order')} className="btn-lux mt-6 w-full">Proceed To Checkout <span className="btn-dash" /></button>
+              <button onClick={() => navigate('/menu')} className="btn-lux-outline mt-3 w-full">Continue Shopping</button>
+              <button onClick={clearCart} className="mt-3 w-full py-2 border border-red-500/50 text-red-400 hover:bg-red-500/10 transition font-display uppercase tracking-[0.1em] text-sm">Clear Cart</button>
             </motion.aside>
           </div>
         )}

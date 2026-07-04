@@ -8,7 +8,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
-  const { theme, setTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,16 +17,18 @@ const Login = () => {
   };
 
   return (
-    <div className={`min-h-screen ${theme === 'light' ? 'bg-gray-50' : 'bg-gray-900'} flex items-center justify-center px-4`}>
-      <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-4xl overflow-hidden rounded-2xl shadow-2xl border border-orange-100">
+    <div className={`min-h-screen surface ${theme === 'light' ? 'light' : ''} flex items-center justify-center px-4 py-16`}>
+      <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-4xl overflow-hidden shadow-2xl border border-[#D9A44D]/25">
         {/* Brand side */}
-        <div className="hidden md:flex flex-col justify-center items-center brand-gradient text-white p-10">
-          <h2 className="text-3xl font-extrabold mb-2">Welcome back</h2>
-          <p className="opacity-90 text-center">Sign in to manage your orders and account.</p>
+        <div className="hidden md:flex flex-col justify-center items-center bg-[#1E1A15] border-r border-[#D9A44D]/20 text-[#ECE3D0] p-10">
+          <p className="lux-script text-2xl mb-3">Welcome Back</p>
+          <h2 className="font-display text-3xl font-semibold capitalize text-gold mb-3">Fine Dining Awaits</h2>
+          <div className="lux-divider" />
+          <p className="text-muted-warm text-center text-sm">Sign in to manage your orders and account.</p>
         </div>
         {/* Form side */}
-        <div className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} p-8 md:p-10`}>
-          <h1 className="text-3xl font-bold mb-6 brand-text-gradient">Login</h1>
+        <div className="lux-card p-8 md:p-10">
+          <h1 className="font-display text-3xl font-semibold capitalize text-gold mb-6">Login</h1>
           <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium mb-1">
@@ -36,7 +38,7 @@ const Login = () => {
               type="email"
               id="email"
               placeholder="Enter your email"
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${theme === 'light' ? 'border-gray-300 focus:ring-orange-500' : 'border-gray-600 bg-gray-700 focus:ring-orange-400'}`}
+              className="w-full p-3 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-colors"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -49,26 +51,24 @@ const Login = () => {
               type="password"
               id="password"
               placeholder="Enter your password"
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${theme === 'light' ? 'border-gray-300 focus:ring-orange-500' : 'border-gray-600 bg-gray-700 focus:ring-orange-400'}`}
+              className="w-full p-3 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-colors"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <button
             type="submit"
-            className={`w-full px-4 py-2 rounded-lg font-semibold ${
-              email && password
-                ? "brand-gradient text-white hover:opacity-95"
-                : "bg-gray-400 text-gray-700 cursor-not-allowed"
+            className={`btn-lux w-full ${
+              email && password ? "" : "opacity-50 cursor-not-allowed"
             }`}
             disabled={!email || !password}
           >
-            Login
+            Login <span className="btn-dash" />
           </button>
           </form>
           <p className="text-center mt-6">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-orange-600 hover:underline">
+            Don&apos;t have an account?{" "}
+            <Link to="/signup" className="text-gold hover:underline">
               Sign up
             </Link>
           </p>

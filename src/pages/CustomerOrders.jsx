@@ -60,30 +60,24 @@ const CustomerOrders = () => {
   };
 
   return (
-    <div className={`min-h-screen px-4 py-12 ${theme === "light" ? "bg-gray-50" : "bg-gray-900"}`}>
+    <div className={`min-h-screen px-4 py-12 surface ${theme === "light" ? "light" : ""}`}>
       <div className="container mx-auto max-w-5xl">
-        <h1 className="text-3xl font-extrabold text-center mb-8 brand-text-gradient">Your Orders</h1>
-        <div className={`rounded-2xl shadow-xl p-6 transition-all duration-300 ${theme === 'light' ? 'bg-white' : 'bg-gray-800'}`}>
+        <div className="text-center mb-10">
+          <p className="lux-script text-2xl mb-2">Track Your Meal</p>
+          <h1 className="font-display text-4xl font-semibold capitalize text-gold">Your Orders</h1>
+          <div className="lux-divider" />
+        </div>
+        <div className="lux-card shadow-xl p-6 transition-all duration-300">
 
         {orders.length === 0 ? (
-          <p className="text-center text-gray-400">
-            You havent placed any orders yet.
+          <p className="text-center text-muted-warm">
+            You haven&apos;t placed any orders yet.
           </p>
         ) : (
           <div className="overflow-x-auto">
-            <table
-              className={`w-full border-collapse rounded-lg overflow-hidden ${
-                theme === "light" ? "border-gray-300" : "border-gray-700"
-              }`}
-            >
+            <table className="w-full border-collapse overflow-hidden">
               <thead>
-                <tr
-                  className={`text-left text-sm ${
-                    theme === "light"
-                      ? "bg-orange-100 text-gray-800"
-                      : "bg-orange-600 text-white"
-                  }`}
-                >
+                <tr className="text-left text-sm bg-[#D9A44D]/10 text-gold font-display uppercase tracking-[0.08em]">
                   <th className="p-3 font-semibold">Order ID</th>
                   <th className="p-3 font-semibold">Total Price</th>
                   <th className="p-3 font-semibold">Date</th>
@@ -94,14 +88,10 @@ const CustomerOrders = () => {
                 {orders.map((order) => (
                   <tr
                     key={order._id}
-                    className={`transition-all ${
-                      theme === "light"
-                        ? "hover:bg-orange-50"
-                        : "hover:bg-gray-700"
-                    }`}
+                    className="transition-all border-b border-[#D9A44D]/10 hover:bg-[#D9A44D]/5"
                   >
                     <td
-                      className="p-3 text-sm text-orange-500 font-medium cursor-pointer hover:underline"
+                      className="p-3 text-sm text-gold font-medium cursor-pointer hover:underline"
                       onClick={() => setSelectedOrder(order)}
                     >
                       {order._id}
@@ -126,12 +116,8 @@ const CustomerOrders = () => {
           </div>
         )}
 
-        <p
-          className={`mt-6 text-center text-sm ${
-            theme === "light" ? "text-gray-600" : "text-gray-400"
-          }`}
-        >
-          💡 Click an order ID to view and track your order status.
+        <p className="mt-6 text-center text-sm text-muted-warm">
+          Click an order ID to view and track your order status.
         </p>
         </div>
       </div>
@@ -147,11 +133,7 @@ const CustomerOrders = () => {
             onClick={() => setSelectedOrder(null)}
           >
             <motion.div
-              className={`relative w-full max-w-lg p-6 rounded-2xl shadow-2xl transform transition-all ${
-                theme === "light"
-                  ? "bg-white text-gray-900"
-                  : "bg-gray-800 text-gray-100"
-              }`}
+              className="relative w-full max-w-lg p-6 lux-card text-[#ECE3D0] shadow-2xl transform transition-all"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
@@ -159,13 +141,13 @@ const CustomerOrders = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <button
-                className="absolute top-3 right-3 text-gray-400 hover:text-orange-500"
+                className="absolute top-3 right-3 text-muted-warm hover:text-gold"
                 onClick={() => setSelectedOrder(null)}
               >
                 ✕
               </button>
 
-              <h2 className="text-2xl font-semibold mb-4 text-orange-500">
+              <h2 className="font-display text-2xl font-semibold capitalize mb-4 text-gold">
                 Order Details
               </h2>
 
@@ -192,7 +174,7 @@ const CustomerOrders = () => {
 
               {/* TRACKING BAR */}
               <div className="mt-5 mb-6">
-                <h3 className="text-lg font-semibold mb-2 text-orange-500">
+                <h3 className="font-display text-lg font-semibold capitalize mb-2 text-gold">
                   Order Tracking
                 </h3>
                 <div className="flex items-center justify-between text-xs font-semibold mb-2">
@@ -204,7 +186,7 @@ const CustomerOrders = () => {
                     )
                   )}
                 </div>
-                <div className="relative w-full h-3 bg-gray-300 rounded-full overflow-hidden">
+                <div className="relative w-full h-3 bg-[#D9A44D]/15 rounded-full overflow-hidden">
                   <motion.div
                     className={`h-3 ${getStatusColor(selectedOrder.status)} rounded-full`}
                     initial={{ width: 0 }}
@@ -217,17 +199,13 @@ const CustomerOrders = () => {
               </div>
 
               {/* ITEM LIST */}
-              <div className="mt-4 border-t border-gray-400/30 pt-3">
-                <h3 className="text-lg font-semibold mb-2">Items</h3>
+              <div className="mt-4 border-t border-[#D9A44D]/20 pt-3">
+                <h3 className="font-display text-lg font-semibold capitalize mb-2">Items</h3>
                 <ul className="space-y-2 max-h-40 overflow-y-auto">
                   {selectedOrder.items?.map((item, idx) => (
                     <li
                       key={idx}
-                      className={`flex justify-between text-sm p-2 rounded-lg ${
-                        theme === "light"
-                          ? "bg-orange-50"
-                          : "bg-gray-700/60"
-                      }`}
+                      className="flex justify-between text-sm p-2 bg-[#D9A44D]/8 border border-[#D9A44D]/15"
                     >
                       <span>{item.name}</span>
                       <span className="font-medium">
@@ -238,7 +216,7 @@ const CustomerOrders = () => {
                 </ul>
               </div>
 
-              <div className="mt-4 text-right font-semibold text-lg text-orange-500">
+              <div className="mt-4 text-right font-display font-semibold text-lg text-gold">
                 Total: Rs. {selectedOrder.totalPrice}
               </div>
             </motion.div>

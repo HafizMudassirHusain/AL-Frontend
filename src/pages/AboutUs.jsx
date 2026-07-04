@@ -21,29 +21,29 @@ const staggerContainer = {
 const AboutUs = () => {
   const { theme } = useContext(ThemeContext);
 
-  const bg = theme === "light" ? "bg-white text-gray-900" : "bg-gray-900 text-gray-100";
-  const accent = theme === "light" ? "text-orange-500" : "text-orange-400";
-
   return (
-    <div className={`min-h-screen ${bg} transition-colors duration-500`}>
+    <div className={`min-h-screen surface ${theme === "light" ? "light" : ""} transition-colors duration-500`}>
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-yellow-500 opacity-20" />
+      <section className="relative overflow-hidden lux-section-alt">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
           className="container mx-auto px-6 py-24 text-center relative z-10"
         >
+          <motion.p variants={fadeInUp} className="lux-script text-2xl mb-3">
+            Since 2016
+          </motion.p>
           <motion.h1
             variants={fadeInUp}
-            className="text-5xl font-extrabold mb-6 tracking-tight"
+            className="font-display text-5xl font-semibold capitalize mb-4"
           >
-            About <span className="text-orange-500">Al-Rehman Kitchen</span>
+            About <span className="text-gold">MZ Kitchen</span>
           </motion.h1>
+          <motion.div variants={fadeInUp} className="lux-divider" />
           <motion.p
             variants={fadeInUp}
-            className="text-lg max-w-2xl mx-auto leading-relaxed text-gray-600 dark:text-gray-300"
+            className="text-base max-w-2xl mx-auto leading-relaxed text-muted-warm"
           >
             Since 2016, Al-Rehman Kitchen has been serving authentic, high-quality food made
             with love and passion — now reaching 17+ branches across Karachi.
@@ -60,18 +60,19 @@ const AboutUs = () => {
           className="grid md:grid-cols-2 gap-10 items-center"
         >
           <motion.div variants={fadeInUp}>
-            <h2 className="text-3xl font-bold mb-6">Our Story</h2>
-            <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
+            <p className="lux-script text-2xl mb-2">Our Journey</p>
+            <h2 className="font-display text-4xl font-semibold capitalize text-gold mb-6">Our Story</h2>
+            <p className="mb-4 leading-relaxed text-muted-warm">
               Al-Rehman Kitchen began with a simple goal — to bring people together through food.
               What started in Gulshan Iqbal has turned into a trusted name known for
               excellence, hygiene, and delicious flavors.
             </p>
-            <p className="mb-4 leading-relaxed text-gray-700 dark:text-gray-300">
+            <p className="mb-4 leading-relaxed text-muted-warm">
               Every dish we create reflects our love for traditional recipes, modern taste, and
               commitment to quality. We work with local suppliers and ensure that freshness is
               never compromised.
             </p>
-            <p className="leading-relaxed text-gray-700 dark:text-gray-300">
+            <p className="leading-relaxed text-muted-warm">
               From small beginnings to a beloved brand, our story continues with every satisfied
               smile we serve.
             </p>
@@ -83,14 +84,14 @@ const AboutUs = () => {
               alt="Al-Rehman Kitchen"
               whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 200 }}
-              className="rounded-2xl shadow-xl w-full max-w-md"
+              className="border border-[#D9A44D]/30 p-2 shadow-xl w-full max-w-md"
             />
           </motion.div>
         </motion.div>
       </section>
 
       {/* Mission & Vision */}
-      <section className="relative bg-gradient-to-r from-orange-500 to-yellow-500 py-16 text-white">
+      <section className="relative lux-section-alt py-20 border-y border-[#D9A44D]/15">
         <div className="container mx-auto px-6">
           <motion.div
             initial="hidden"
@@ -99,15 +100,15 @@ const AboutUs = () => {
             className="grid md:grid-cols-2 gap-10"
           >
             <motion.div variants={fadeInUp}>
-              <h3 className="text-3xl font-bold mb-4">Our Mission</h3>
-              <p className="leading-relaxed">
+              <h3 className="font-display text-3xl font-semibold capitalize text-gold mb-4">Our Mission</h3>
+              <p className="leading-relaxed text-muted-warm">
                 To inspire food lovers with authentic taste, creativity, and freshness — crafting
                 meals that nourish body and soul.
               </p>
             </motion.div>
             <motion.div variants={fadeInUp}>
-              <h3 className="text-3xl font-bold mb-4">Our Vision</h3>
-              <p className="leading-relaxed">
+              <h3 className="font-display text-3xl font-semibold capitalize text-gold mb-4">Our Vision</h3>
+              <p className="leading-relaxed text-muted-warm">
                 To be the go-to name in Pakistan’s culinary world, blending tradition and
                 innovation to bring unforgettable dining experiences.
               </p>
@@ -122,9 +123,9 @@ const AboutUs = () => {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-3xl font-bold text-center mb-12"
+          className="font-display text-4xl font-semibold capitalize text-center mb-12"
         >
-          Why Choose <span className="text-orange-500">Us?</span>
+          Why Choose <span className="text-gold">Us?</span>
         </motion.h2>
 
         <motion.div
@@ -143,28 +144,26 @@ const AboutUs = () => {
               key={i}
               variants={fadeInUp}
               whileHover={{ scale: 1.05 }}
-              className={`p-8 text-center rounded-2xl shadow-md hover:shadow-lg border transition-all duration-300 ${
-                theme === "light" ? "bg-white border-gray-200" : "bg-gray-800 border-gray-700"
-              }`}
+              className="p-8 text-center lux-card hover:border-[#D9A44D]/60 hover:shadow-[0_0_25px_rgba(217,164,77,0.15)] transition-all duration-300"
             >
-              <item.icon className="text-5xl text-orange-500 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-              <p className="text-gray-600 dark:text-gray-300">{item.desc}</p>
+              <item.icon className="text-4xl text-gold mx-auto mb-4" />
+              <h3 className="font-display text-xl font-semibold uppercase tracking-[0.08em] mb-2">{item.title}</h3>
+              <p className="text-muted-warm text-sm">{item.desc}</p>
             </motion.div>
           ))}
         </motion.div>
       </section>
 
       {/* Team Section */}
-      <section className="bg-gray-100 dark:bg-gray-800 py-16">
+      <section className="lux-section-alt py-20 border-t border-[#D9A44D]/15">
         <div className="container mx-auto px-6 text-center">
           <motion.h2
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-3xl font-bold mb-12"
+            className="font-display text-4xl font-semibold capitalize mb-12"
           >
-            Meet Our <span className="text-orange-500">Team</span>
+            Meet Our <span className="text-gold">Team</span>
           </motion.h2>
           <motion.div
             initial="hidden"
@@ -181,13 +180,11 @@ const AboutUs = () => {
                 key={i}
                 variants={fadeInUp}
                 whileHover={{ y: -8 }}
-                className={`p-6 rounded-2xl shadow-md ${
-                  theme === "light" ? "bg-white" : "bg-gray-700"
-                }`}
+                className="p-6 lux-card shadow-md"
               >
-                <member.icon className="text-5xl text-orange-500 mx-auto mb-4" />
-                <h4 className="text-xl font-semibold">{member.name}</h4>
-                <p className="text-gray-500 dark:text-gray-300">{member.role}</p>
+                <member.icon className="text-4xl text-gold mx-auto mb-4" />
+                <h4 className="font-display text-xl font-semibold uppercase tracking-[0.08em]">{member.name}</h4>
+                <p className="text-muted-warm text-sm mt-1">{member.role}</p>
               </motion.div>
             ))}
           </motion.div>
@@ -195,7 +192,7 @@ const AboutUs = () => {
       </section>
 
       {/* Footer Divider */}
-      <div className="h-2 bg-gradient-to-r from-orange-500 to-yellow-500"></div>
+      <div className="h-px brand-gradient"></div>
     </div>
   );
 };

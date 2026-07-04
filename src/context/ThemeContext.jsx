@@ -6,10 +6,8 @@ function ThemeContextProvider({ children }) {
   const getInitialTheme = () => {
     const saved = typeof window !== 'undefined' ? localStorage.getItem('theme') : null;
     if (saved === 'light' || saved === 'dark') return saved;
-    if (typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    return 'light';
+    // Luxury dark theme is the brand default
+    return 'dark';
   };
 
   const [theme, setTheme] = useState(getInitialTheme);
@@ -17,7 +15,9 @@ function ThemeContextProvider({ children }) {
   useEffect(() => {
     try {
       localStorage.setItem('theme', theme);
-    } catch {}
+    } catch {
+      // localStorage may be unavailable (private mode / quota exceeded)
+    }
   }, [theme]);
 
   return (

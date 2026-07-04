@@ -17,7 +17,9 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     try {
       localStorage.setItem("cart", JSON.stringify(cart));
-    } catch {}
+    } catch {
+      // localStorage may be unavailable (private mode / quota exceeded)
+    }
   }, [cart]);
   // Add item to cart or increase quantity
   const addToCart = (item) => {

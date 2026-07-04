@@ -38,28 +38,29 @@ const ContactUs = () => {
     );
   };
 
-  const bg = theme === "light" ? "bg-white text-gray-900" : "bg-gray-900 text-gray-100";
-
   return (
-    <div className={`min-h-screen ${bg} transition-colors duration-500`}>
+    <div className={`min-h-screen surface ${theme === "light" ? "light" : ""} transition-colors duration-500`}>
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-yellow-500 opacity-20" />
+      <section className="relative overflow-hidden lux-section-alt">
         <motion.div
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
           className="container mx-auto px-6 py-24 text-center relative z-10"
         >
+          <motion.p variants={fadeInUp} className="lux-script text-2xl mb-3">
+            Contact Us
+          </motion.p>
           <motion.h1
             variants={fadeInUp}
-            className="text-5xl font-extrabold mb-4 tracking-tight"
+            className="font-display text-5xl font-semibold capitalize mb-4"
           >
-            Get in <span className="text-orange-500">Touch</span>
+            Get In <span className="text-gold">Touch</span>
           </motion.h1>
+          <motion.div variants={fadeInUp} className="lux-divider" />
           <motion.p
             variants={fadeInUp}
-            className="text-lg max-w-2xl mx-auto text-gray-600 dark:text-gray-300"
+            className="text-base max-w-2xl mx-auto text-muted-warm"
           >
             Have questions, feedback, or collaboration ideas? We’d love to hear
             from you — just reach out below.
@@ -89,15 +90,11 @@ const ContactUs = () => {
               key={i}
               variants={fadeInUp}
               whileHover={{ scale: 1.05 }}
-              className={`p-8 text-center rounded-2xl shadow-md border transition-all duration-300 ${
-                theme === "light"
-                  ? "bg-white border-gray-200"
-                  : "bg-gray-800 border-gray-700"
-              }`}
+              className="p-8 text-center lux-card hover:border-[#D9A44D]/60 hover:shadow-[0_0_25px_rgba(217,164,77,0.15)] transition-all duration-300"
             >
-              <div className="text-5xl text-orange-500 mx-auto mb-4">{item.icon}</div>
-              <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-              <p className="text-gray-600 dark:text-gray-300">{item.desc}</p>
+              <div className="text-4xl text-gold mx-auto mb-4 flex justify-center">{item.icon}</div>
+              <h3 className="font-display text-xl font-semibold uppercase tracking-[0.08em] mb-2">{item.title}</h3>
+              <p className="text-muted-warm text-sm">{item.desc}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -114,12 +111,10 @@ const ContactUs = () => {
           {/* Contact Form */}
           <motion.div
             variants={fadeInUp}
-            className={`rounded-2xl shadow-md p-8 ${
-              theme === "light" ? "bg-white" : "bg-gray-800"
-            }`}
+            className="lux-card shadow-md p-8"
           >
-            <h2 className="text-3xl font-bold mb-6">
-              Send Us a <span className="text-orange-500">Message</span>
+            <h2 className="font-display text-3xl font-semibold capitalize mb-6">
+              Send Us A <span className="text-gold">Message</span>
             </h2>
             <form ref={form} onSubmit={sendEmail} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -132,11 +127,7 @@ const ContactUs = () => {
                     id="name"
                     name="name"
                     placeholder="Your Name"
-                    className={`w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-orange-500 ${
-                      theme === "light"
-                        ? "bg-white border-gray-300 text-gray-900"
-                        : "bg-gray-700 border-gray-600 text-gray-100"
-                    }`}
+                    className="w-full px-4 py-2 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-colors"
                     required
                   />
                 </div>
@@ -149,11 +140,7 @@ const ContactUs = () => {
                     id="email"
                     name="email"
                     placeholder="Your Email"
-                    className={`w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-orange-500 ${
-                      theme === "light"
-                        ? "bg-white border-gray-300 text-gray-900"
-                        : "bg-gray-700 border-gray-600 text-gray-100"
-                    }`}
+                    className="w-full px-4 py-2 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-colors"
                     required
                   />
                 </div>
@@ -168,11 +155,7 @@ const ContactUs = () => {
                   id="subject"
                   name="subject"
                   placeholder="Subject"
-                  className={`w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-orange-500 ${
-                    theme === "light"
-                      ? "bg-white border-gray-300 text-gray-900"
-                      : "bg-gray-700 border-gray-600 text-gray-100"
-                  }`}
+                  className="w-full px-4 py-2 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-colors"
                   required
                 />
               </div>
@@ -186,11 +169,7 @@ const ContactUs = () => {
                   name="message"
                   rows="5"
                   placeholder="Your Message"
-                  className={`w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-orange-500 ${
-                    theme === "light"
-                      ? "bg-white border-gray-300 text-gray-900"
-                      : "bg-gray-700 border-gray-600 text-gray-100"
-                  }`}
+                  className="w-full px-4 py-2 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-colors"
                   required
                 ></textarea>
               </div>
@@ -199,9 +178,9 @@ const ContactUs = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit"
-                className="w-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold py-3 rounded-lg shadow-lg hover:opacity-90 transition duration-300"
+                className="btn-lux w-full"
               >
-                Send Message
+                Send Message <span className="btn-dash" />
               </motion.button>
             </form>
           </motion.div>
@@ -209,7 +188,7 @@ const ContactUs = () => {
           {/* Map */}
           <motion.div
             variants={fadeInUp}
-            className="rounded-2xl overflow-hidden shadow-md"
+            className="overflow-hidden shadow-md border border-[#D9A44D]/25"
           >
             <iframe
               title="MZ Kitchen Location"
@@ -225,7 +204,7 @@ const ContactUs = () => {
       </section>
 
       {/* Footer Divider */}
-      <div className="h-2 bg-gradient-to-r from-orange-500 to-yellow-500"></div>
+      <div className="h-px brand-gradient"></div>
     </div>
   );
 };

@@ -39,7 +39,9 @@ const AdminDashboard = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders`);
+      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
       let filteredOrders = response.data;
 
       const today = new Date();

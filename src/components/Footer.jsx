@@ -11,33 +11,34 @@ import logo from "../assets/logo.jpeg";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-b from-[#1f1f1f] via-[#2a2a2a] to-[#141414] text-gray-300 py-16 overflow-hidden">
-      {/* Gradient Overlay for Soft Glow */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#FF5E62]/10 to-transparent pointer-events-none"></div>
-
+    <footer className="relative bg-[#121009] text-[#A49B8A] pt-16 pb-8 overflow-hidden border-t border-[#D9A44D]/20">
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
           {/* Logo and Info */}
-          <div className="space-y-4">
+          <div className="space-y-5">
             <div className="flex items-center gap-3">
-              <img
-                src={logo}
-                alt="MZ Kitchen Logo"
-                className="w-16 h-16 rounded-2xl shadow-md border border-[#FF9966]/20"
-              />
-              <h2 className="text-2xl font-bold brand-text-gradient">
-                MZ Kitchen
+              <span className="w-14 h-14 rounded-full border border-[#D9A44D] p-[2px] inline-flex">
+                <img
+                  src={logo}
+                  alt="MZ Kitchen Logo"
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </span>
+              <h2 className="font-display text-xl tracking-[0.12em] uppercase text-[#ECE3D0]">
+                MZ <span className="text-[#D9A44D]">Kitchen</span>
               </h2>
             </div>
-            <p className="text-gray-400 leading-relaxed">
-              Serving delicious food since 2016 — your flavor haven in Karachi 🍴
+            <p className="leading-relaxed text-sm">
+              Serving delicious food since 2016 — your flavor haven in Karachi.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-white">Quick Links</h3>
-            <ul className="space-y-2">
+            <h3 className="font-display text-lg uppercase tracking-[0.14em] mb-5 text-[#D9A44D]">
+              Quick Links
+            </h3>
+            <ul className="space-y-3">
               {[
                 { name: "Home", link: "/" },
                 { name: "Menu", link: "/menu" },
@@ -47,7 +48,7 @@ const Footer = () => {
                 <li key={index}>
                   <a
                     href={item.link}
-                    className="text-gray-400 hover:text-transparent bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] bg-clip-text transition-all duration-300"
+                    className="text-sm uppercase tracking-[0.1em] hover:text-[#D9A44D] transition-colors duration-300"
                   >
                     {item.name}
                   </a>
@@ -58,20 +59,20 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-white">
+            <h3 className="font-display text-lg uppercase tracking-[0.14em] mb-5 text-[#D9A44D]">
               Contact Info
             </h3>
-            <ul className="space-y-3 text-gray-400">
-              <li className="flex items-center gap-2 hover:text-[#FF9966] transition">
-                <FaMapMarkerAlt className="text-[#FF5E62]" />
+            <ul className="space-y-4 text-sm">
+              <li className="flex items-start gap-3 hover:text-[#ECE3D0] transition">
+                <FaMapMarkerAlt className="text-[#D9A44D] mt-1 shrink-0" />
                 House #12, Ground Floor, Gulistan-e-Johar, Karachi
               </li>
-              <li className="flex items-center gap-2 hover:text-[#FFD43B] transition">
-                <FaPhone className="text-[#FF9966]" />
+              <li className="flex items-center gap-3 hover:text-[#ECE3D0] transition">
+                <FaPhone className="text-[#D9A44D] shrink-0" />
                 03XX-XXXXXXX
               </li>
-              <li className="flex items-center gap-2 hover:text-[#FF9966] transition">
-                <FaClock className="text-[#FF5E62]" />
+              <li className="flex items-center gap-3 hover:text-[#ECE3D0] transition">
+                <FaClock className="text-[#D9A44D] shrink-0" />
                 10:00 AM - 10:00 PM
               </li>
             </ul>
@@ -79,18 +80,21 @@ const Footer = () => {
 
           {/* Social Media */}
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-white">Follow Us</h3>
-            <div className="flex space-x-5">
+            <h3 className="font-display text-lg uppercase tracking-[0.14em] mb-5 text-[#D9A44D]">
+              Follow Us
+            </h3>
+            <div className="flex space-x-4">
               {[
-                { icon: <FaFacebook />, link: "https://facebook.com" },
-                { icon: <FaTwitter />, link: "https://twitter.com" },
-                { icon: <FaInstagram />, link: "https://instagram.com" },
-                { icon: <FaLinkedin />, link: "https://linkedin.com" },
+                { icon: <FaFacebook />, link: "https://facebook.com", label: "Facebook" },
+                { icon: <FaTwitter />, link: "https://twitter.com", label: "Twitter" },
+                { icon: <FaInstagram />, link: "https://instagram.com", label: "Instagram" },
+                { icon: <FaLinkedin />, link: "https://linkedin.com", label: "LinkedIn" },
               ].map((social, index) => (
                 <a
                   key={index}
                   href={social.link}
-                  className="p-3 bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] rounded-full text-white hover:scale-110 transition-transform shadow-md hover:shadow-[0_0_15px_rgba(255,107,0,0.5)]"
+                  aria-label={social.label}
+                  className="w-10 h-10 flex items-center justify-center rounded-full border border-[#D9A44D]/60 text-[#D9A44D] hover:bg-[#D9A44D] hover:text-[#1c1812] transition-all duration-300"
                 >
                   {social.icon}
                 </a>
@@ -100,9 +104,9 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400 text-sm">
+        <div className="border-t border-[#D9A44D]/15 mt-12 pt-8 text-center text-sm">
           © {new Date().getFullYear()}{" "}
-          <span className="bg-gradient-to-r from-[#FF5E62] to-[#FFD43B] bg-clip-text text-transparent font-semibold">
+          <span className="text-[#D9A44D] font-display uppercase tracking-[0.1em]">
             MZ Kitchen
           </span>
           . All rights reserved.

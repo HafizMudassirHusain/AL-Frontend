@@ -93,11 +93,6 @@ const AdminUsers = () => {
   const currentUsers = sortedUsers.slice(indexOfFirstUser, indexOfLastUser);
   const totalPages = Math.max(1, Math.ceil(sortedUsers.length / usersPerPage));
 
-  // small helpers for classes
-  const lightCard = "bg-white text-gray-800";
-  const darkCard = "bg-[#111111] text-white";
-  const cardBg = theme === "light" ? lightCard : darkCard;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}

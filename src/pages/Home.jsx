@@ -1,5 +1,4 @@
-import bghero from '../assets/hero-bg.jpg';
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -10,15 +9,51 @@ import OurServices from "../components/OurServices";
 import HeroSection from "../components/Hero";
 import Branches from "../components/Branches";
 import logo from "../assets/logo.jpeg";
-import { FaChevronLeft, FaChevronRight, FaPizzaSlice, FaDrumstickBite, FaPepperHot, FaIceCream, FaHamburger, FaWhatsapp } from "react-icons/fa";
-import '../index.css'
+import ctaBg from "../assets/bg-image.jpg";
+import {
+  FaPizzaSlice,
+  FaDrumstickBite,
+  FaPepperHot,
+  FaIceCream,
+  FaHamburger,
+  FaWhatsapp,
+  FaStar,
+  FaMapMarkerAlt,
+  FaPhone,
+} from "react-icons/fa";
+import "../index.css";
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
+const SectionHeading = ({ kicker, title, subtitle }) => (
+  <motion.div
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}
+    variants={fadeUp}
+    className="text-center mb-14"
+  >
+    <p className="lux-script text-2xl mb-2">{kicker}</p>
+    <h2 className="font-display text-4xl md:text-5xl font-semibold tracking-[0.04em] capitalize text-gold">
+      {title}
+    </h2>
+    <div className="lux-divider" />
+    {subtitle && (
+      <p className="text-muted-warm max-w-xl mx-auto text-base leading-relaxed">
+        {subtitle}
+      </p>
+    )}
+  </motion.div>
+);
 
 const Home = () => {
   const navigate = useNavigate();
   const { addToCart, cart } = useCart();
   const [deals, setDeals] = useState([]);
   const [featured, setFeatured] = useState(null);
-  const scrollRef = useRef(null);
 
   useEffect(() => {
     const fetchDeals = async () => {
@@ -37,9 +72,6 @@ const Home = () => {
     }).catch(() => {});
   }, []);
 
-  const scrollLeft = () => scrollRef.current.scrollBy({ left: -300, behavior: "smooth" });
-  const scrollRight = () => scrollRef.current.scrollBy({ left: 300, behavior: "smooth" });
-
   const handleAddToCart = async (deal) => {
     const discountedPrice = (deal.price * 0.85).toFixed(0);
     const existingItem = cart.find((item) => item._id === deal._id);
@@ -57,14 +89,14 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen font-sans surface">
+    <div className="min-h-screen surface">
       {/* ✅ Hero Section */}
-      <HeroSection bghero={bghero} />
+      <HeroSection />
 
       {/* ✅ Stats Bar */}
-      <section className="relative -mt-10 z-10">
+      <section className="relative -mt-12 z-10">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl border border-orange-200/30 dark:border-gray-700/60 rounded-3xl p-6 shadow-xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lux-card p-8 shadow-2xl">
             {[
               { label: 'Years Serving', value: '9+' },
               { label: 'Branches', value: '17+' },
@@ -72,247 +104,226 @@ const Home = () => {
               { label: 'Orders Served', value: '100k+' },
             ].map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-3xl md:text-4xl font-extrabold brand-text-gradient">{stat.value}</div>
-                <div className="text-xs md:text-sm text-gray-500 dark:text-gray-300 mt-1">{stat.label}</div>
+                <div className="font-display text-3xl md:text-4xl font-semibold text-gold">
+                  {stat.value}
+                </div>
+                <div className="text-xs md:text-sm text-muted-warm uppercase tracking-[0.14em] mt-2">
+                  {stat.label}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ✅ About Section */}
-   <section className="relative py-24 overflow-hidden">
-  {/* ✨ Gradient Glow Background */}
-  <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-orange-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900" />
-
-  <div className="container relative mx-auto px-6">
-    <div className="flex flex-col md:flex-row items-center gap-14">
-      {/* 🖼️ Left: Image */}
-      <motion.div
-        className="w-full md:w-1/2 relative"
-        initial={{ opacity: 0, x: -80 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-      >
-        {/* Decorative floating gradient blob */}
-        <div className="absolute -top-10 -left-10 w-40 h-40 bg-gradient-to-tr from-orange-300/50 to-pink-400/40 blur-3xl rounded-full animate-pulse-slow"></div>
-
-        <div className="relative rounded-3xl overflow-hidden shadow-2xl group">
-          <img
-            src={logo}
-            alt="MZ Kitchen"
-            className="w-full h-auto rounded-3xl transition-transform duration-700 group-hover:scale-105"
+      {/* ✅ Today's Special (Deals) */}
+      <section id="offers-section" className="py-24 lux-section">
+        <div className="container mx-auto px-6">
+          <SectionHeading
+            kicker="Special Menu"
+            title="Today's Special"
+            subtitle="Special menu often comes different everyday — enjoy 15% off on today's handpicked dishes."
           />
-          {/* Subtle overlay on hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+          {deals.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {deals.map((deal, index) => {
+                const discountedPrice = (deal.price * 0.85).toFixed(0);
+                const isAddedToCart = cart.some((item) => item._id === deal._id);
+
+                return (
+                  <motion.div
+                    key={deal._id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1, duration: 0.5 }}
+                    className="relative lux-card overflow-hidden group text-left"
+                  >
+                    {/* Discount Badge */}
+                    <span className="absolute top-3 left-3 z-10 bg-[#D9A44D] text-[#1c1812] text-xs font-semibold tracking-[0.08em] px-2.5 py-1">
+                      15% OFF
+                    </span>
+
+                    {/* Added Badge */}
+                    {isAddedToCart && (
+                      <span className="absolute top-3 right-3 z-10 border border-[#D9A44D] text-[#D9A44D] bg-[#16130F]/80 text-xs font-semibold tracking-[0.08em] px-2.5 py-1">
+                        Added
+                      </span>
+                    )}
+
+                    {/* Image */}
+                    <div className="overflow-hidden">
+                      <img
+                        src={deal.image}
+                        alt={deal.name}
+                        className="w-full h-52 object-cover transform group-hover:scale-105 transition-transform duration-700"
+                      />
+                    </div>
+
+                    <div className="p-6">
+                      {/* Title & Description */}
+                      <h3 className="font-display text-xl font-semibold tracking-[0.08em] uppercase text-gold">
+                        {deal.name}
+                      </h3>
+                      <p className="text-sm text-muted-warm mt-2 line-clamp-2 leading-relaxed">
+                        {deal.description}
+                      </p>
+
+                      {/* Stars */}
+                      <div className="flex gap-1 mt-4 star-gold">
+                        {[...Array(5)].map((_, i) => (
+                          <FaStar key={i} size={16} />
+                        ))}
+                      </div>
+
+                      {/* Price */}
+                      <div className="font-display text-lg mt-4 text-[#ECE3D0]">
+                        <s className="text-muted-warm mr-2">Rs. {deal.price}</s>
+                        <span className="text-gold font-semibold">Rs. {discountedPrice}</span>
+                      </div>
+
+                      {/* Buttons */}
+                      <div className="flex flex-wrap gap-3 mt-5">
+                        <button
+                          onClick={() => handleOrderNow(deal)}
+                          className="btn-lux-outline !text-[12px] !py-2 !px-4"
+                        >
+                          Order Now <span className="btn-dash" />
+                        </button>
+                        <button
+                          onClick={() => handleAddToCart(deal)}
+                          disabled={isAddedToCart}
+                          className={`btn-lux !text-[12px] !py-2 !px-4 ${
+                            isAddedToCart ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          {isAddedToCart ? "In Cart" : "Add To Cart"}
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="text-muted-warm text-center text-lg">No special offers available.</p>
+          )}
+
+          <motion.p
+            className="text-center text-muted-warm mt-14 tracking-[0.08em] uppercase font-display"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 0.7 }}
+          >
+            Enjoy <span className="text-gold font-semibold">free delivery</span> on orders above Rs. 1000
+          </motion.p>
         </div>
-      </motion.div>
+      </section>
 
-      {/* 🧾 Right: Text */}
-      <motion.div
-        className="w-full md:w-1/2"
-        initial={{ opacity: 0, x: 80 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-      >
-        <h2 className="text-5xl font-extrabold mb-6 brand-text-gradient">
-          About MZ Kitchen
-        </h2>
-        <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 mb-8">
-          Founded in <span className="font-semibold text-orange-500">2016</span> with a single kitchen,
-          <strong> MZ Kitchen </strong> has now grown to over <strong>17+ branches</strong> across Karachi.
-          <br /><br />
-          Our story is built on one promise — serving <span className="text-orange-500 font-medium">fresh, high-quality meals</span>
-          made with care, consistency, and love. We’re proud to be a part of your everyday happiness through great taste
-          and exceptional service.
-        </p>
-
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => navigate("/about")}
-          className="relative inline-block px-10 py-3 text-white font-medium rounded-full overflow-hidden bg-gradient-to-r from-orange-500 via-pink-500 to-yellow-400 shadow-lg hover:shadow-orange-400/40 transition-all duration-300"
-        >
-          <span className="relative z-10">Read More</span>
-          <span className="absolute inset-0 bg-gradient-to-r from-yellow-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-        </motion.button>
-      </motion.div>
-    </div>
-  </div>
-</section>
-
-      {/* ✅ Special Offers Section */}
-   {/* ✅ Enhanced Special Offers Section */}
-<section id="offers-section" className="relative bg-gradient-to-br from-orange-500 via-orange-600 to-orange-700 py-24 overflow-hidden">
-  {/* ✨ Animated Gradient Glow Layers */}
-  <div className="absolute top-[-10%] left-[-10%] w-72 h-72 bg-yellow-400/20 rounded-full blur-3xl animate-pulse-slow"></div>
-  <div className="absolute bottom-[-10%] right-[-10%] w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse-slow delay-2000"></div>
-
-  <div className="container mx-auto px-6 text-center relative z-10">
-    {/* Title */}
-    <motion.h2
-      className="text-5xl md:text-6xl font-extrabold text-white mb-6 tracking-tight"
-      initial={{ opacity: 0, y: -30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <span className="inline-block bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 via-white to-yellow-200 animate-text-glow">
-        🔥 Exclusive Deals – 15% OFF 🔥
-      </span>
-    </motion.h2>
-
-    {/* Subtitle */}
-    <motion.p
-      className="text-white/90 mb-14 max-w-2xl mx-auto text-lg"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      transition={{ delay: 0.3, duration: 0.7 }}
-    >
-      Handpicked meals crafted with love — indulge in rich flavors and enjoy a <span className="text-yellow-300 font-semibold">15% discount</span> today!
-    </motion.p>
-
-    {/* Deals Carousel */}
-    <div className="relative flex items-center">
-      {/* Left Scroll Button */}
-      <button
-        onClick={scrollLeft}
-        className="absolute left-0 z-20 bg-white/70 backdrop-blur-md p-3 rounded-full shadow-lg hover:bg-white hover:scale-105 transition hidden sm:flex"
-        aria-label="Scroll Left"
-      >
-        <FaChevronLeft className="text-orange-700 text-lg" />
-      </button>
-
-      {/* Scrollable Deals */}
-      <div
-        ref={scrollRef}
-        className="flex gap-8 overflow-x-auto scroll-smooth px-10 py-6 hide-scrollbar"
-      >
-        {deals.length > 0 ? (
-          deals.map((deal, index) => {
-            const discountedPrice = (deal.price * 0.85).toFixed(0);
-            const isAddedToCart = cart.some((item) => item._id === deal._id);
-
-            return (
-              <motion.div
-                key={deal._id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                whileHover={{ scale: 1.05 }}
-                className="relative bg-white/15 backdrop-blur-md border border-white/20 rounded-2xl p-6 min-w-[260px] max-w-[280px] shadow-[0_8px_30px_rgba(0,0,0,0.2)] hover:shadow-[0_10px_35px_rgba(255,180,70,0.3)] transition-all duration-300 text-left group"
-              >
-                {/* Discount Badge */}
-                <span className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
-                  15% OFF
-                </span>
-
-                {/* Added Badge */}
-                {isAddedToCart && (
-                  <span className="absolute top-3 right-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
-                    Added
-                  </span>
-                )}
-
-                {/* Image */}
-                <div className="overflow-hidden rounded-xl mb-4 relative">
-                  <motion.img
-                    src={deal.image}
-                    alt={deal.name}
-                    className="w-full h-36 object-cover rounded-xl transform group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                </div>
-
-                {/* Title & Description */}
-                <h3 className="text-xl font-semibold text-white">{deal.name}</h3>
-                <p className="text-sm text-white/80 mt-1 line-clamp-2">
-                  {deal.description}
-                </p>
-
-                {/* Price */}
-                <div className="text-lg font-bold text-yellow-300 mt-3">
-                  <s className="text-gray-300 mr-1">Rs. {deal.price}</s> Rs. {discountedPrice}
-                </div>
-
-                {/* Buttons */}
-                <div className="flex flex-col gap-2 mt-4">
-                  <button
-                    onClick={() => handleAddToCart(deal)}
-                    disabled={isAddedToCart}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
-                      isAddedToCart
-                        ? "bg-gray-500 text-white cursor-not-allowed"
-                        : "bg-gradient-to-r from-yellow-400 to-orange-500 text-orange-900 font-semibold hover:opacity-90"
-                    }`}
-                  >
-                    {isAddedToCart ? "In Cart" : "Add to Cart"}
-                  </button>
-
-                  <button
-                    onClick={() => handleOrderNow(deal)}
-                    className="border border-yellow-400 text-yellow-300 px-4 py-2 rounded-lg text-sm font-medium hover:bg-yellow-400 hover:text-orange-800 transition-all duration-300"
-                  >
-                    Order Now
-                  </button>
-                </div>
-              </motion.div>
-            );
-          })
-        ) : (
-          <p className="text-white text-lg w-full">No special offers available.</p>
-        )}
-      </div>
-
-      {/* Right Scroll Button */}
-      <button
-        onClick={scrollRight}
-        className="absolute right-0 z-20 bg-white/70 backdrop-blur-md p-3 rounded-full shadow-lg hover:bg-white hover:scale-105 transition hidden sm:flex"
-        aria-label="Scroll Right"
-      >
-        <FaChevronRight className="text-orange-700 text-lg" />
-      </button>
-    </div>
-
-    {/* Footer Note */}
-    <motion.p
-      className="text-white text-lg mt-12 font-medium"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3, duration: 0.7 }}
-    >
-      🚚 Enjoy <span className="font-bold text-yellow-300">FREE DELIVERY</span> on orders above Rs. 1000!
-    </motion.p>
-  </div>
-</section>
-
-      {/* ✅ Featured Dish */}
-      {featured && (
-        <section className="relative py-20">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${featured.image})`, backgroundAttachment: 'fixed', filter: 'blur(2px)', opacity: 0.2 }}
+      {/* ✅ Our Story (About) */}
+      <section className="py-24 lux-section-alt">
+        <div className="container mx-auto px-6">
+          <SectionHeading
+            kicker="About Us"
+            title="Our Story"
+            subtitle="A journey of serving successful, high-quality food with the best services."
           />
-          <div className="container mx-auto px-6 relative z-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center rounded-3xl border border-orange-200/40 dark:border-gray-700/50 bg-white/70 dark:bg-gray-900/60 backdrop-blur-xl p-8 shadow-xl">
-              <div>
-                <h3 className="text-3xl md:text-4xl font-extrabold mb-3 brand-text-gradient">Chef’s Pick</h3>
-                <h4 className="text-2xl font-bold mb-2">{featured.name}</h4>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{featured.description}</p>
-                <div className="text-xl font-extrabold text-orange-600 mb-6">Rs. {featured.price}</div>
-                <button onClick={() => handleOrderNow(featured)} className="brand-gradient text-white px-6 py-3 rounded-full font-semibold hover:opacity-95">Order this</button>
+
+          <div className="flex flex-col md:flex-row items-center gap-14">
+            {/* Left: Image */}
+            <motion.div
+              className="w-full md:w-1/2"
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            >
+              <div className="relative border border-[#D9A44D]/30 p-3">
+                <img
+                  src={logo}
+                  alt="MZ Kitchen"
+                  className="w-full h-auto object-cover"
+                />
               </div>
-              <div className="rounded-2xl overflow-hidden shadow-lg">
-                <img src={featured.image} alt={featured.name} className="w-full h-72 object-cover" />
-              </div>
+            </motion.div>
+
+            {/* Right: Text */}
+            <motion.div
+              className="w-full md:w-1/2"
+              initial={{ opacity: 0, x: 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+            >
+              <p className="text-lg leading-relaxed text-muted-warm mb-8">
+                Founded in <span className="text-gold font-semibold">2016</span> with a single kitchen,
+                <strong className="text-[#ECE3D0]"> MZ Kitchen </strong> has now grown to over{" "}
+                <strong className="text-[#ECE3D0]">17+ branches</strong> across Karachi.
+                <br /><br />
+                Our story is built on one promise — serving{" "}
+                <span className="text-gold">fresh, high-quality meals</span>{" "}
+                made with care, consistency, and love. We&apos;re proud to be a part of your everyday
+                happiness through great taste and exceptional service.
+              </p>
+
+              <button onClick={() => navigate("/about")} className="btn-lux-outline">
+                More About Us <span className="btn-dash" />
+              </button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ✅ Featured Dish — Chef's Pick */}
+      {featured && (
+        <section className="py-24 lux-section">
+          <div className="container mx-auto px-6">
+            <SectionHeading
+              kicker="Chef's Pick"
+              title="Signature Dish"
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 items-center lux-card overflow-hidden">
+              <motion.div
+                className="p-10 md:p-14"
+                initial={{ opacity: 0, x: -40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7 }}
+              >
+                <div className="font-display text-4xl font-semibold text-gold mb-3">
+                  Rs. {featured.price}
+                </div>
+                <h4 className="font-display text-2xl uppercase tracking-[0.1em] text-[#ECE3D0] mb-4">
+                  {featured.name}
+                </h4>
+                <p className="text-muted-warm mb-8 leading-relaxed">{featured.description}</p>
+                <button onClick={() => handleOrderNow(featured)} className="btn-lux">
+                  Order This <span className="btn-dash" />
+                </button>
+              </motion.div>
+              <motion.div
+                className="h-72 md:h-full min-h-72"
+                initial={{ opacity: 0, x: 40 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7 }}
+              >
+                <img src={featured.image} alt={featured.name} className="w-full h-full object-cover" />
+              </motion.div>
             </div>
           </div>
         </section>
       )}
 
       {/* ✅ Browse by Category */}
-      <section className="py-16">
+      <section className="py-24 lux-section-alt">
         <div className="container mx-auto px-6">
-          <h3 className="text-3xl font-extrabold text-center mb-8 brand-text-gradient">Browse by Category</h3>
+          <SectionHeading
+            kicker="Quality Food For You"
+            title="Browse Categories"
+          />
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
             {[
               { name: 'Biryani', icon: <FaPepperHot /> },
@@ -325,10 +336,12 @@ const Home = () => {
               <button
                 key={cat.name}
                 onClick={() => navigate('/menu')}
-                className="group rounded-2xl p-4 bg-white/80 dark:bg-gray-900/60 backdrop-blur-xl border border-orange-200/40 dark:border-gray-700/50 shadow-sm hover:shadow-lg transition"
+                className="group lux-card p-6 hover:border-[#D9A44D]/60 hover:shadow-[0_0_25px_rgba(217,164,77,0.15)] transition-all duration-300"
               >
-                <div className="text-2xl mb-2 brand-text-gradient">{cat.icon}</div>
-                <div className="text-sm font-semibold">{cat.name}</div>
+                <div className="text-2xl mb-3 text-gold flex justify-center">{cat.icon}</div>
+                <div className="font-display text-sm uppercase tracking-[0.12em] text-[#ECE3D0]">
+                  {cat.name}
+                </div>
               </button>
             ))}
           </div>
@@ -340,28 +353,63 @@ const Home = () => {
       <Gallery />
       <Testimonials />
 
-      {/* ✅ CTA Band */}
-      <section className="py-16">
-        <div className="container mx-auto px-6">
-          <div className="brand-gradient rounded-3xl p-10 md:p-14 text-center text-white shadow-xl">
-            <h3 className="text-3xl md:text-4xl font-extrabold mb-3">Hungry? Let’s Fix That 🍛</h3>
-            <p className="opacity-90 mb-6">Fresh, flavorful meals delivered fast across Karachi.</p>
-            <button onClick={() => navigate('/menu')} className="px-6 py-3 rounded-full bg-white text-orange-600 font-semibold hover:opacity-90">
-              Explore Menu
+      {/* ✅ Dining Experience CTA Band */}
+      <section className="relative py-28 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${ctaBg})` }}
+        />
+        <div className="absolute inset-0 bg-[#16130F]/85" />
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+          >
+            <h3 className="font-display text-4xl md:text-5xl font-semibold capitalize text-[#ECE3D0] mb-6 leading-snug max-w-3xl mx-auto">
+              We&apos;re Ready To Have You{" "}
+              <span className="text-gold">The Best Dining Experiences</span>
+            </h3>
+
+            <div className="flex flex-wrap justify-center gap-8 text-muted-warm mb-10 text-sm">
+              <span className="flex items-center gap-2">
+                <FaMapMarkerAlt className="text-gold" />
+                Gulistan-e-Johar, Karachi
+              </span>
+              <span className="flex items-center gap-2">
+                <FaPhone className="text-gold" />
+                Call us: 0344-2241275
+              </span>
+            </div>
+
+            <button onClick={() => navigate('/order')} className="btn-lux">
+              Reserve A Table <span className="btn-dash" />
             </button>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* ✅ Newsletter */}
-      <section className="pb-20">
+      <section className="py-24 lux-section">
         <div className="container mx-auto px-6">
-          <div className="bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl border border-orange-200/30 dark:border-gray-700/60 rounded-3xl p-8 md:p-10 text-center">
-            <h4 className="text-2xl font-bold mb-2 brand-text-gradient">Get exclusive offers</h4>
-            <p className="text-gray-600 dark:text-gray-300 mb-6">Join our newsletter to receive special deals and seasonal updates.</p>
-            <div className="max-w-xl mx-auto flex gap-3">
-              <input type="email" placeholder="Enter your email" className="flex-1 px-4 py-3 rounded-full border border-gray-300 dark:border-gray-700 bg-white/90 dark:bg-gray-800/80 focus:outline-none" />
-              <button className="px-6 py-3 rounded-full brand-gradient text-white font-semibold hover:opacity-90">Subscribe</button>
+          <div className="lux-card p-10 md:p-14 text-center">
+            <p className="lux-script text-2xl mb-2">Stay In Touch</p>
+            <h4 className="font-display text-3xl font-semibold capitalize text-gold mb-3">
+              Get Exclusive Offers
+            </h4>
+            <p className="text-muted-warm mb-8">
+              Join our newsletter to receive special deals and seasonal updates.
+            </p>
+            <div className="max-w-xl mx-auto flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 px-5 py-3 bg-[#16130F] border border-[#D9A44D]/30 text-[#ECE3D0] placeholder-[#A49B8A] focus:outline-none focus:border-[#D9A44D] transition-colors"
+              />
+              <button className="btn-lux">
+                Subscribe <span className="btn-dash" />
+              </button>
             </div>
           </div>
         </div>

@@ -32,16 +32,18 @@ const Signup = () => {
   };
 
   return (
-    <div className={`min-h-screen ${theme === 'light' ? 'bg-gray-50' : 'bg-gray-900'} flex items-center justify-center px-4`}>
-      <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-4xl overflow-hidden rounded-2xl shadow-2xl border border-orange-100">
+    <div className={`min-h-screen surface ${theme === 'light' ? 'light' : ''} flex items-center justify-center px-4 py-16`}>
+      <div className="grid grid-cols-1 md:grid-cols-2 w-full max-w-4xl overflow-hidden shadow-2xl border border-[#D9A44D]/25">
         {/* Brand side */}
-        <div className="hidden md:flex flex-col justify-center items-center brand-gradient text-white p-10">
-          <h2 className="text-3xl font-extrabold mb-2">Create your account</h2>
-          <p className="opacity-90 text-center">Join us and enjoy exclusive offers.</p>
+        <div className="hidden md:flex flex-col justify-center items-center bg-[#1E1A15] border-r border-[#D9A44D]/20 text-[#ECE3D0] p-10">
+          <p className="lux-script text-2xl mb-3">Join Us</p>
+          <h2 className="font-display text-3xl font-semibold capitalize text-gold mb-3">Create Your Account</h2>
+          <div className="lux-divider" />
+          <p className="text-muted-warm text-center text-sm">Join us and enjoy exclusive offers.</p>
         </div>
         {/* Form side */}
-        <div className={`${theme === 'light' ? 'bg-white text-black' : 'bg-gray-800 text-white'} p-8 md:p-10`}>
-          <h2 className="text-3xl font-bold mb-6 brand-text-gradient">Sign Up</h2>
+        <div className="lux-card p-8 md:p-10">
+          <h2 className="font-display text-3xl font-semibold capitalize text-gold mb-6">Sign Up</h2>
 
         {message && <p className="text-center text-red-500 mb-4">{message}</p>}
 
@@ -56,7 +58,7 @@ const Signup = () => {
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${theme === 'light' ? 'border-gray-300 focus:ring-orange-500' : 'border-gray-600 bg-gray-700 focus:ring-orange-400'}`}
+              className="w-full p-3 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-colors"
               required
             />
           </div>
@@ -71,7 +73,7 @@ const Signup = () => {
               placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${theme === 'light' ? 'border-gray-300 focus:ring-orange-500' : 'border-gray-600 bg-gray-700 focus:ring-orange-400'}`}
+              className="w-full p-3 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-colors"
               required
             />
           </div>
@@ -86,7 +88,7 @@ const Signup = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${theme === 'light' ? 'border-gray-300 focus:ring-orange-500' : 'border-gray-600 bg-gray-700 focus:ring-orange-400'}`}
+              className="w-full p-3 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-colors"
               required
             />
           </div>
@@ -99,24 +101,20 @@ const Signup = () => {
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 ${theme === 'light' ? 'border-gray-300 focus:ring-orange-500' : 'border-gray-600 bg-gray-700 focus:ring-orange-400'}`}
+              className="w-full p-3 bg-transparent border border-[#D9A44D]/40 focus:outline-none focus:border-[#D9A44D] transition-colors"
             >
               <option value="customer">Customer</option>
-              <option value="admin">Admin</option>
             </select>
           </div>
 
-          <button
-            type="submit"
-            className="w-full p-3 rounded-lg font-semibold brand-gradient text-white hover:opacity-95"
-          >
-            Register
+          <button type="submit" className="btn-lux w-full">
+            Register <span className="btn-dash" />
           </button>
         </form>
 
           <p className="text-center mt-4">
             Already have an account?{" "}
-            <a href="/login" className="text-orange-600 hover:underline">Login</a>
+            <a href="/login" className="text-gold hover:underline">Login</a>
           </p>
         </div>
       </div>

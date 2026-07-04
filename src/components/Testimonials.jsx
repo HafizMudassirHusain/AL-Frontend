@@ -67,7 +67,7 @@ const Testimonials = () => {
         animate={{ scale: i < rating ? 1 : 0.9 }}
         transition={{ duration: 0.3, delay: i * 0.1 }}
         className={`text-2xl ${
-          i < rating ? "text-yellow-400" : "text-gray-400"
+          i < rating ? "star-gold" : "text-gray-500"
         }`}
       >
         ★
@@ -93,9 +93,12 @@ const Testimonials = () => {
       />
 
 
+      {/* Dark luxury overlay */}
+      <div className="absolute inset-0 bg-[#16130F]/85" />
+
       {/* Floating gradient glows */}
       <motion.div
-        className="absolute top-10 left-[-120px] w-96 h-96 bg-orange-500/20 blur-[120px]"
+        className="absolute top-10 left-[-120px] w-96 h-96 bg-[#D9A44D]/10 blur-[120px]"
         animate={{
           y: [0, 40, 0],
           opacity: [0.6, 1, 0.6],
@@ -107,7 +110,7 @@ const Testimonials = () => {
         }}
       ></motion.div>
       <motion.div
-        className="absolute bottom-10 right-[-120px] w-96 h-96 bg-yellow-400/20 blur-[120px]"
+        className="absolute bottom-10 right-[-120px] w-96 h-96 bg-[#D9A44D]/10 blur-[120px]"
         animate={{
           y: [0, -40, 0],
           opacity: [0.6, 1, 0.6],
@@ -121,20 +124,24 @@ const Testimonials = () => {
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10">
-        <motion.h2
-          className="text-4xl md:text-5xl font-extrabold text-center mb-14 brand-text-gradient drop-shadow-[0_2px_10px_rgba(255,165,0,0.25)]"
+        <motion.div
+          className="text-center mb-14"
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          What Our Customers Say 🍽️
-        </motion.h2>
+          <p className="lux-script text-2xl mb-2">Testimonials</p>
+          <h2 className="font-display text-4xl md:text-5xl font-semibold capitalize text-gold">
+            What Our Customers Say
+          </h2>
+          <div className="lux-divider" />
+        </motion.div>
 
         <div className="relative flex items-center justify-center">
           {/* Prev Button */}
           <button
             onClick={handlePrevious}
-            className="absolute left-0 z-10 p-3 bg-white/80 backdrop-blur-lg text-orange-600 rounded-full shadow-lg hover:scale-110 transition duration-300"
+            className="absolute left-0 z-10 w-11 h-11 flex items-center justify-center border border-[#D9A44D]/60 text-[#D9A44D] rounded-full hover:bg-[#D9A44D]/10 transition duration-300"
           >
             ◀
           </button>
@@ -143,10 +150,8 @@ const Testimonials = () => {
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
-              className={`relative max-w-lg w-full mx-auto text-center px-8 py-12 rounded-3xl shadow-2xl border border-white/10 transition-transform duration-500 hover:shadow-orange-500/20 ${
-                theme === "light"
-                  ? "bg-white/80 backdrop-blur-xl"
-                  : "bg-gray-900/70 backdrop-blur-xl"
+              className={`relative max-w-lg w-full mx-auto text-center px-8 py-12 shadow-2xl border border-[#D9A44D]/25 bg-[#1E1A15]/90 backdrop-blur-xl text-[#ECE3D0] transition-transform duration-500 ${
+                theme === "light" ? "light" : ""
               }`}
               initial={{ opacity: 0, rotateY: -30, scale: 0.9 }}
               animate={{ opacity: 1, rotateY: 0, scale: 1 }}
@@ -162,19 +167,17 @@ const Testimonials = () => {
               <motion.img
                 src={testimonials[currentIndex].image}
                 alt={testimonials[currentIndex].name}
-                className="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-orange-500 shadow-lg hover:scale-110 transition duration-500"
+                className="w-24 h-24 rounded-full mx-auto mb-4 border-2 border-[#D9A44D] shadow-lg hover:scale-110 transition duration-500"
                 whileHover={{ rotate: [0, 10, -10, 0] }}
               />
-              <h3 className="text-2xl font-semibold mb-2">
+              <h3 className="font-display text-2xl font-semibold uppercase tracking-[0.08em] mb-2">
                 {testimonials[currentIndex].name}
               </h3>
               <div className="flex justify-center mb-4">
                 {renderStars(testimonials[currentIndex].rating)}
               </div>
               <motion.p
-                className={`italic text-lg max-w-md mx-auto ${
-                  theme === "light" ? "text-gray-700" : "text-gray-300"
-                }`}
+                className="italic text-lg max-w-md mx-auto text-muted-warm"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
@@ -183,9 +186,9 @@ const Testimonials = () => {
               </motion.p>
 
               {/* Progress Bar */}
-              <div className="w-full bg-gray-300/40 rounded-full h-2 mt-8 overflow-hidden">
+              <div className="w-full bg-[#D9A44D]/15 rounded-full h-1 mt-8 overflow-hidden">
                 <motion.div
-                  className="bg-gradient-to-r from-orange-500 to-yellow-400 h-2 rounded-full"
+                  className="brand-gradient h-1 rounded-full"
                   style={{ width: `${progress}%` }}
                   transition={{ duration: 0.3 }}
                 ></motion.div>
@@ -196,7 +199,7 @@ const Testimonials = () => {
           {/* Next Button */}
           <button
             onClick={handleNext}
-            className="absolute right-0 z-10 p-3 bg-white/80 backdrop-blur-lg text-orange-600 rounded-full shadow-lg hover:scale-110 transition duration-300"
+            className="absolute right-0 z-10 w-11 h-11 flex items-center justify-center border border-[#D9A44D]/60 text-[#D9A44D] rounded-full hover:bg-[#D9A44D]/10 transition duration-300"
           >
             ▶
           </button>

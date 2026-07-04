@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
 import { motion } from "framer-motion";
 import Modal from "react-modal";
 import Papa from "papaparse";
@@ -11,7 +10,6 @@ const AdminOrders = () => {
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("createdAt");
-  const { user } = useAuth();
   const [selectedOrder, setSelectedOrder] = useState(null);
   const { theme } = useContext(ThemeContext);
   const [viewMode, setViewMode] = useState("table"); // 'table' | 'board'
