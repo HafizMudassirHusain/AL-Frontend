@@ -39,18 +39,22 @@ const AdminAddMenu = () => {
     if (image) formData.append("image", image);
 
     try {
+      const authHeaders = {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      };
       if (editItem) {
         await axios.put(
           `${import.meta.env.VITE_API_BASE_URL}/api/menu/${editItem._id}`,
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          { headers: authHeaders }
         );
         setMessage("✅ Menu item updated successfully!");
       } else {
         await axios.post(
           `${import.meta.env.VITE_API_BASE_URL}/api/menu`,
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          { headers: authHeaders }
         );
         setMessage("✅ Menu item added successfully!");
       }
@@ -82,7 +86,9 @@ const AdminAddMenu = () => {
     if (!window.confirm("Are you sure you want to delete this item?")) return;
 
     try {
-      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/menu/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/api/menu/${id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
       setMenu(menu.filter((item) => item._id !== id));
     } catch (error) {
       console.error("Error deleting menu item:", error);
@@ -101,7 +107,7 @@ const AdminAddMenu = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12">
+    <div className="min-h-screen bg-[#16130F] text-[#ECE3D0] py-12">
       <div className="container mx-auto px-6">
         {/* HEADER */}
         <motion.div
@@ -112,13 +118,13 @@ const AdminAddMenu = () => {
         >
           <motion.h1
             variants={fadeInUp}
-            className="font-display text-4xl font-semibold capitalize text-[#b9863a] mb-3"
+            className="font-display text-4xl font-semibold capitalize text-[#D9A44D] mb-3"
           >
             {editItem ? "Edit Menu Item" : "Add New Menu Item"}
           </motion.h1>
           <motion.p
             variants={fadeInUp}
-            className="text-gray-600 max-w-2xl mx-auto"
+            className="text-[#A49B8A] max-w-2xl mx-auto"
           >
             Easily manage and update your restaurant menu in one place.
           </motion.p>
@@ -127,7 +133,7 @@ const AdminAddMenu = () => {
         {/* FORM */}
         <motion.div
           variants={fadeInUp}
-          className="max-w-3xl mx-auto bg-white shadow-xl rounded-2xl p-8 border border-[#D9A44D]/25"
+          className="max-w-3xl mx-auto bg-[#231E18] shadow-xl rounded-2xl p-8 border border-[#D9A44D]/20"
         >
           <form onSubmit={handleSubmit} className="space-y-6">
             {message && (
@@ -138,13 +144,13 @@ const AdminAddMenu = () => {
 
             <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-[#ECE3D0] mb-2">
                   Name
                 </label>
                 <input
                   type="text"
                   placeholder="Item name"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D9A44D] focus:outline-none"
+                  className="w-full px-4 py-2 bg-[#16130F] border border-[#D9A44D]/30 rounded-lg text-[#ECE3D0] placeholder-[#A49B8A] focus:border-[#D9A44D] focus:outline-none"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required
@@ -152,13 +158,13 @@ const AdminAddMenu = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-[#ECE3D0] mb-2">
                   Category
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. Drinks, Snacks"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D9A44D] focus:outline-none"
+                  className="w-full px-4 py-2 bg-[#16130F] border border-[#D9A44D]/30 rounded-lg text-[#ECE3D0] placeholder-[#A49B8A] focus:border-[#D9A44D] focus:outline-none"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   required
@@ -166,13 +172,13 @@ const AdminAddMenu = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-[#ECE3D0] mb-2">
                   Price (Rs)
                 </label>
                 <input
                   type="number"
                   placeholder="Enter price"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D9A44D] focus:outline-none"
+                  className="w-full px-4 py-2 bg-[#16130F] border border-[#D9A44D]/30 rounded-lg text-[#ECE3D0] placeholder-[#A49B8A] focus:border-[#D9A44D] focus:outline-none"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   required
@@ -180,26 +186,26 @@ const AdminAddMenu = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-[#ECE3D0] mb-2">
                   Image
                 </label>
                 <input
                   type="file"
                   accept="image/*"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-[#D9A44D]"
+                  className="w-full px-3 py-2 bg-[#16130F] border border-[#D9A44D]/30 rounded-lg text-sm text-[#A49B8A] focus:border-[#D9A44D] focus:outline-none"
                   onChange={(e) => setImage(e.target.files[0])}
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-[#ECE3D0] mb-2">
                 Description
               </label>
               <textarea
                 rows="3"
                 placeholder="Short description about the dish..."
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#D9A44D] focus:outline-none"
+                className="w-full px-4 py-2 bg-[#16130F] border border-[#D9A44D]/30 rounded-lg text-[#ECE3D0] placeholder-[#A49B8A] focus:border-[#D9A44D] focus:outline-none"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
@@ -225,16 +231,16 @@ const AdminAddMenu = () => {
           variants={stagger}
           className="mt-16"
         >
-          <h2 className="text-3xl font-bold text-gray-900 text-center mb-6">
+          <h2 className="font-display text-3xl font-semibold capitalize text-[#D9A44D] text-center mb-6">
             Menu Items
           </h2>
 
           {menu.length === 0 ? (
-            <p className="text-center text-gray-600">No items added yet.</p>
+            <p className="text-center text-[#A49B8A]">No items added yet.</p>
           ) : (
-            <div className="overflow-x-auto rounded-2xl shadow-lg bg-white border border-[#D9A44D]/25">
+            <div className="overflow-x-auto rounded-2xl shadow-lg bg-[#1E1A15] border border-[#D9A44D]/20">
               <table className="w-full text-left border-collapse">
-                <thead className="bg-[#D9A44D]/15 text-[#b9863a]">
+                <thead className="bg-[#D9A44D]/15 text-[#D9A44D]">
                   <tr>
                     <th className="p-4 font-semibold">Image</th>
                     <th className="p-4 font-semibold">Name</th>
@@ -248,30 +254,30 @@ const AdminAddMenu = () => {
                     <motion.tr
                       key={item._id}
                       variants={fadeInUp}
-                      className="border-b hover:bg-[#D9A44D]/10 transition duration-200"
+                      className="border-b border-[#D9A44D]/10 hover:bg-[#D9A44D]/5 transition duration-200"
                     >
                       <td className="p-3">
                         {item.image ? (
                           <img
                             src={item.image}
                             alt={item.name}
-                            className="h-12 w-12 rounded-md object-cover"
+                            className="h-12 w-12 rounded-md object-cover border border-[#D9A44D]/25"
                           />
                         ) : (
-                          <span className="text-gray-400 italic">No Image</span>
+                          <span className="text-[#A49B8A] italic">No Image</span>
                         )}
                       </td>
-                      <td className="p-3 font-medium text-gray-800">
+                      <td className="p-3 font-medium text-[#ECE3D0]">
                         {item.name}
                       </td>
-                      <td className="p-3">{item.category}</td>
+                      <td className="p-3 text-[#A49B8A]">{item.category}</td>
                       <td className="p-3 font-semibold text-[#D9A44D]">
                         Rs. {item.price}
                       </td>
                       <td className="p-3">
                         <button
                           onClick={() => handleEdit(item)}
-                          className="text-blue-600 hover:text-blue-800 transition mx-2"
+                          className="text-[#D9A44D] hover:text-[#E8C06A] transition mx-2"
                         >
                           <FiEdit size={18} />
                         </button>

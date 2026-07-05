@@ -75,7 +75,7 @@ const AdminHeroSection = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 p-8">
+    <div className="min-h-screen bg-[#16130F] p-8">
       <motion.h1
         initial="hidden"
         animate="visible"
@@ -90,7 +90,7 @@ const AdminHeroSection = () => {
         initial="hidden"
         animate="visible"
         variants={fadeIn}
-        className="bg-gray-800/70 backdrop-blur-md shadow-lg rounded-2xl p-6 mb-10 max-w-4xl mx-auto"
+        className="bg-[#231E18] border border-[#D9A44D]/20 shadow-lg rounded-2xl p-6 mb-10 max-w-4xl mx-auto"
       >
         <h2 className="text-xl text-[#D9A44D] font-semibold mb-4">Add New Slide</h2>
 
@@ -100,20 +100,20 @@ const AdminHeroSection = () => {
             placeholder="Slide Title"
             value={newSlide.text}
             onChange={(e) => setNewSlide({ ...newSlide, text: e.target.value })}
-            className="flex-1 bg-gray-900/50 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-[#D9A44D] transition"
+            className="flex-1 bg-[#16130F] border border-[#D9A44D]/30 rounded-lg p-3 text-white focus:outline-none focus:border-[#D9A44D] transition"
           />
           <input
             type="text"
             placeholder="Slide Subtext"
             value={newSlide.subtext}
             onChange={(e) => setNewSlide({ ...newSlide, subtext: e.target.value })}
-            className="flex-1 bg-gray-900/50 border border-gray-700 rounded-lg p-3 text-white focus:outline-none focus:border-[#D9A44D] transition"
+            className="flex-1 bg-[#16130F] border border-[#D9A44D]/30 rounded-lg p-3 text-white focus:outline-none focus:border-[#D9A44D] transition"
           />
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setNewSlide({ ...newSlide, image: e.target.files[0] })}
-            className="flex-1 text-gray-300 bg-gray-900/50 border border-gray-700 rounded-lg p-2 focus:border-[#D9A44D]"
+            className="flex-1 text-gray-300 bg-[#16130F] border border-[#D9A44D]/30 rounded-lg p-2 focus:border-[#D9A44D]"
           />
           <button
             onClick={handleAddSlide}
@@ -132,13 +132,13 @@ const AdminHeroSection = () => {
         initial="hidden"
         animate="visible"
         variants={fadeIn}
-        className="bg-gray-800/70 backdrop-blur-md shadow-lg rounded-2xl p-6 overflow-x-auto"
+        className="bg-[#231E18] border border-[#D9A44D]/20 shadow-lg rounded-2xl p-6 overflow-x-auto"
       >
         <h2 className="text-xl text-[#D9A44D] font-semibold mb-4">Existing Slides</h2>
 
         <table className="w-full text-left border-collapse text-gray-300">
           <thead>
-            <tr className="bg-gray-700/60 text-gray-100">
+            <tr className="bg-[#D9A44D]/10 text-[#D9A44D]">
               <th className="px-4 py-3 rounded-tl-lg">Title</th>
               <th className="px-4 py-3">Subtext</th>
               <th className="px-4 py-3">Image</th>
@@ -157,7 +157,7 @@ const AdminHeroSection = () => {
                 <motion.tr
                   key={slide._id || index}
                   variants={fadeIn}
-                  className="hover:bg-gray-700/40 transition-all duration-300"
+                  className="hover:bg-[#D9A44D]/5 transition-all duration-300"
                 >
                   <td className="px-4 py-3 font-medium text-white">{slide.text}</td>
                   <td className="px-4 py-3 text-gray-400">{slide.subtext}</td>
@@ -166,13 +166,13 @@ const AdminHeroSection = () => {
                       whileHover={{ scale: 1.05 }}
                       src={slide.image}
                       alt="Slide"
-                      className="w-32 h-20 object-cover rounded-lg shadow-md border border-gray-700"
+                      className="w-32 h-20 object-cover rounded-lg shadow-md border border-[#D9A44D]/25"
                     />
                   </td>
                   <td className="px-4 py-3 text-center">
                     <button
                       onClick={() => handleDeleteSlide(slide._id)}
-                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-1.5 rounded-lg transition"
+                      className="border border-red-500/60 text-red-400 hover:bg-red-500/10 px-4 py-1.5 rounded-lg transition"
                     >
                       Delete
                     </button>

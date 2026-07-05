@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Modal from "react-modal";
 import Papa from "papaparse";
-import { ThemeContext } from "../../context/ThemeContext";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -11,7 +10,6 @@ const AdminOrders = () => {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("createdAt");
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const { theme } = useContext(ThemeContext);
   const [viewMode, setViewMode] = useState("table"); // 'table' | 'board'
 
   useEffect(() => {
@@ -112,16 +110,10 @@ const AdminOrders = () => {
     visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
   };
 
-  const accent = "from-[#C89B3F] to-[#E8C06A]";
-
   return (
     <>
       <motion.div
-        className={`min-h-screen p-8 ${
-          theme === "light"
-            ? "bg-gradient-to-b from-white via-[#FAF6EE] to-[#F4EEE2]"
-            : "bg-gray-900 text-white"
-        }`}
+        className="min-h-screen p-8 bg-[#16130F] text-[#ECE3D0]"
         initial="hidden"
         animate="visible"
         variants={fadeIn}
@@ -132,23 +124,20 @@ const AdminOrders = () => {
 
         {/* Summary Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
-          <motion.div
-            className={`bg-gradient-to-r ${accent} text-white rounded-xl p-5 shadow-lg`}
-            variants={fadeIn}
-          >
-            <h2 className="text-lg font-semibold opacity-90">Total Orders</h2>
-            <p className="text-3xl font-bold mt-1">{orders.length}</p>
-          </motion.div>
-
-          <div className="bg-yellow-400 text-white rounded-xl p-5 shadow-lg">
-            <h2 className="text-lg font-semibold opacity-90">Pending Orders</h2>
-            <p className="text-3xl font-bold mt-1">{pendingOrders}</p>
-          </div>
-
-          <div className="bg-green-500 text-white rounded-xl p-5 shadow-lg">
-            <h2 className="text-lg font-semibold opacity-90">Total Revenue</h2>
-            <p className="text-3xl font-bold mt-1">Rs. {totalRevenue}</p>
-          </div>
+          {[
+            { title: "Total Orders", value: orders.length, valueClass: "text-[#D9A44D]" },
+            { title: "Pending Orders", value: pendingOrders, valueClass: "text-yellow-400" },
+            { title: "Total Revenue", value: `Rs. ${totalRevenue}`, valueClass: "text-green-400" },
+          ].map((card) => (
+            <motion.div
+              key={card.title}
+              className="bg-[#231E18] border border-[#D9A44D]/20 rounded-xl p-5 shadow-lg"
+              variants={fadeIn}
+            >
+              <h2 className="text-sm uppercase tracking-[0.14em] text-[#A49B8A]">{card.title}</h2>
+              <p className={`font-display text-3xl font-semibold mt-2 ${card.valueClass}`}>{card.value}</p>
+            </motion.div>
+          ))}
         </div>
 
         {/* Controls */}
@@ -161,13 +150,13 @@ const AdminOrders = () => {
           <div className="flex gap-2">
             <button
               onClick={() => setViewMode("table")}
-              className={`px-4 py-2 rounded ${viewMode === 'table' ? 'bg-[#D9A44D] text-[#1c1812]' : 'border'}`}
+              className={`px-4 py-2 rounded ${viewMode === 'table' ? 'bg-[#D9A44D] text-[#1c1812] font-semibold' : 'border border-[#D9A44D]/40 text-[#D9A44D] hover:bg-[#D9A44D]/10'}`}
             >
               Table
             </button>
             <button
               onClick={() => setViewMode("board")}
-              className={`px-4 py-2 rounded ${viewMode === 'board' ? 'bg-[#D9A44D] text-[#1c1812]' : 'border'}`}
+              className={`px-4 py-2 rounded ${viewMode === 'board' ? 'bg-[#D9A44D] text-[#1c1812] font-semibold' : 'border border-[#D9A44D]/40 text-[#D9A44D] hover:bg-[#D9A44D]/10'}`}
             >
               Board
             </button>
@@ -175,14 +164,14 @@ const AdminOrders = () => {
           <input
             type="text"
             placeholder="Search by customer or phone"
-            className="p-2 border rounded w-64 shadow-sm"
+            className="p-2 bg-[#231E18] border border-[#D9A44D]/30 rounded w-64 text-[#ECE3D0] placeholder-[#A49B8A] focus:outline-none focus:border-[#D9A44D]"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
 
           <select
             onChange={(e) => setFilter(e.target.value)}
-            className="p-2 border rounded shadow-sm"
+            className="p-2 bg-[#231E18] border border-[#D9A44D]/30 rounded text-[#ECE3D0] focus:outline-none focus:border-[#D9A44D]"
           >
             <option value="All">All</option>
             <option value="Pending">Pending</option>
@@ -193,7 +182,7 @@ const AdminOrders = () => {
 
           <select
             onChange={(e) => setSortBy(e.target.value)}
-            className="p-2 border rounded shadow-sm"
+            className="p-2 bg-[#231E18] border border-[#D9A44D]/30 rounded text-[#ECE3D0] focus:outline-none focus:border-[#D9A44D]"
           >
             <option value="createdAt">Newest First</option>
             <option value="totalPrice">Highest Price</option>
@@ -202,17 +191,17 @@ const AdminOrders = () => {
 
           <button
             onClick={exportToCSV}
-            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition shadow-md"
+            className="border border-green-500/60 text-green-400 px-4 py-2 rounded hover:bg-green-500/10 transition"
           >
-            📥 Export CSV
+            Export CSV
           </button>
         </motion.div>
 
         {/* Orders Table / Board */}
         {viewMode === 'table' ? (
-          <div className="overflow-y-auto max-h-[550px] rounded-xl bg-white/80 backdrop-blur-md border border-[#D9A44D]/25 shadow-lg">
+          <div className="overflow-y-auto max-h-[550px] rounded-xl bg-[#1E1A15] border border-[#D9A44D]/20 shadow-lg">
             {sortedOrders.length === 0 ? (
-              <p className="text-gray-600 py-10 text-center">No orders found.</p>
+              <p className="text-[#A49B8A] py-10 text-center">No orders found.</p>
             ) : (
               <motion.table
                 className="w-full border-collapse text-sm"
@@ -232,23 +221,23 @@ const AdminOrders = () => {
                   {sortedOrders.map((order, i) => (
                     <motion.tr
                       key={order._id}
-                      className="border-b hover:bg-[#D9A44D]/10 transition"
+                      className="border-b border-[#D9A44D]/10 hover:bg-[#D9A44D]/5 transition"
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.05 }}
                     >
-                      <td className="p-3 font-medium text-gray-800">
+                      <td className="p-3 font-medium text-[#ECE3D0]">
                         {order.customerName}
                       </td>
-                      <td className="p-3">{order.phone}</td>
-                      <td className="p-3 font-semibold text-gray-700">
+                      <td className="p-3 text-[#A49B8A]">{order.phone}</td>
+                      <td className="p-3 font-semibold text-[#D9A44D]">
                         Rs. {order.totalPrice}
                       </td>
                       <td className="p-3">
                         <motion.select
                           value={order.status}
                           onChange={(e) => updateStatus(order._id, e.target.value)}
-                          className="p-2 rounded-md border bg-white shadow-sm"
+                          className="p-2 rounded-md bg-[#231E18] border border-[#D9A44D]/30 text-[#ECE3D0] focus:outline-none focus:border-[#D9A44D]"
                           whileHover={{ scale: 1.05 }}
                         >
                           <option value="Pending">Pending</option>
@@ -260,13 +249,13 @@ const AdminOrders = () => {
                       <td className="p-3 flex justify-center gap-2">
                         <button
                           onClick={() => openModal(order)}
-                          className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                          className="px-3 py-1 border border-[#D9A44D]/60 text-[#D9A44D] rounded hover:bg-[#D9A44D]/10 transition"
                         >
                           View
                         </button>
                         <button
                           onClick={() => deleteOrder(order._id)}
-                          className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                          className="px-3 py-1 border border-red-500/60 text-red-400 rounded hover:bg-red-500/10 transition"
                         >
                           Delete
                         </button>
@@ -280,28 +269,28 @@ const AdminOrders = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {['Pending','Preparing','Completed','Cancelled'].map((col) => (
-              <div key={col} className="bg-white/80 backdrop-blur-md border border-[#D9A44D]/25 rounded-xl p-3">
-                <h3 className="font-semibold mb-2">{col}</h3>
+              <div key={col} className="bg-[#1E1A15] border border-[#D9A44D]/20 rounded-xl p-3">
+                <h3 className="font-display font-semibold uppercase tracking-[0.1em] text-[#D9A44D] mb-2">{col}</h3>
                 <div className="space-y-3 max-h-[550px] overflow-y-auto">
                   {orders.filter(o => o.status === col).map((order) => (
-                    <div key={order._id} className="rounded-lg border p-3">
+                    <div key={order._id} className="rounded-lg bg-[#231E18] border border-[#D9A44D]/15 p-3">
                       <div className="flex justify-between text-sm">
-                        <span className="font-medium">{order.customerName}</span>
-                        <span>Rs. {order.totalPrice}</span>
+                        <span className="font-medium text-[#ECE3D0]">{order.customerName}</span>
+                        <span className="text-[#D9A44D]">Rs. {order.totalPrice}</span>
                       </div>
-                      <div className="text-xs text-gray-500">{new Date(order.createdAt).toLocaleString()}</div>
-                      <div className="flex gap-2 mt-2">
+                      <div className="text-xs text-[#A49B8A]">{new Date(order.createdAt).toLocaleString()}</div>
+                      <div className="flex flex-wrap gap-2 mt-2">
                         {col !== 'Pending' && (
-                          <button onClick={() => updateStatus(order._id, 'Pending')} className="px-2 py-1 border rounded text-xs">Set Pending</button>
+                          <button onClick={() => updateStatus(order._id, 'Pending')} className="px-2 py-1 border border-[#D9A44D]/40 text-[#D9A44D] hover:bg-[#D9A44D]/10 rounded text-xs transition">Set Pending</button>
                         )}
                         {col !== 'Preparing' && (
-                          <button onClick={() => updateStatus(order._id, 'Preparing')} className="px-2 py-1 border rounded text-xs">Preparing</button>
+                          <button onClick={() => updateStatus(order._id, 'Preparing')} className="px-2 py-1 border border-[#D9A44D]/40 text-[#D9A44D] hover:bg-[#D9A44D]/10 rounded text-xs transition">Preparing</button>
                         )}
                         {col !== 'Completed' && (
-                          <button onClick={() => updateStatus(order._id, 'Completed')} className="px-2 py-1 border rounded text-xs">Done</button>
+                          <button onClick={() => updateStatus(order._id, 'Completed')} className="px-2 py-1 border border-green-500/50 text-green-400 hover:bg-green-500/10 rounded text-xs transition">Done</button>
                         )}
                         {col !== 'Cancelled' && (
-                          <button onClick={() => updateStatus(order._id, 'Cancelled')} className="px-2 py-1 border rounded text-xs">Cancel</button>
+                          <button onClick={() => updateStatus(order._id, 'Cancelled')} className="px-2 py-1 border border-red-500/50 text-red-400 hover:bg-red-500/10 rounded text-xs transition">Cancel</button>
                         )}
                       </div>
                     </div>
@@ -321,11 +310,11 @@ const AdminOrders = () => {
       >
         {selectedOrder && (
           <motion.div
-            className="bg-white rounded-2xl shadow-xl p-6 w-full sm:w-3/4 lg:w-1/2 relative"
+            className="bg-[#231E18] border border-[#D9A44D]/25 text-[#ECE3D0] rounded-2xl shadow-xl p-6 w-full sm:w-3/4 lg:w-1/2 relative"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
           >
-            <h2 className="text-2xl font-bold text-[#D9A44D] mb-4 text-center">
+            <h2 className="font-display text-2xl font-semibold text-[#D9A44D] mb-4 text-center">
               Order #{selectedOrder._id.slice(-6)}
             </h2>
 
@@ -336,9 +325,9 @@ const AdminOrders = () => {
               <p><strong>Date:</strong> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
             </div>
 
-            <div className="bg-[#D9A44D]/10 rounded-lg p-3 max-h-40 overflow-y-auto">
+            <div className="bg-[#D9A44D]/10 border border-[#D9A44D]/15 rounded-lg p-3 max-h-40 overflow-y-auto">
               {selectedOrder.items.map((item, idx) => (
-                <div key={idx} className="flex justify-between py-1 text-gray-700">
+                <div key={idx} className="flex justify-between py-1 text-[#A49B8A]">
                   <span>{item.name} × {item.quantity}</span>
                   <span>Rs. {item.price}</span>
                 </div>
@@ -351,7 +340,7 @@ const AdminOrders = () => {
 
             <button
               onClick={closeModal}
-              className="mt-6 w-full py-2 bg-gradient-to-r from-[#C89B3F] to-[#E8C06A] text-white rounded-lg font-semibold hover:opacity-90 transition"
+              className="mt-6 w-full py-2 bg-[#D9A44D] hover:bg-[#E8C06A] text-[#1c1812] rounded-lg font-semibold transition"
             >
               Close
             </button>

@@ -27,19 +27,20 @@ export const AuthProvider = ({ children }) => {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
-  // ✅ Login function
+  // ✅ Login function — returns result so callers can react to failures
   const login = async (email, password) => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/auth/login`, { email, password });
-      const loggedInUser = { name: response.data.name, role: response.data.role };
+      const loggedInUser = { name: response.data.name, role: response.data.role, userId: response.data.userId };
 
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify({ name: response.data.name, role: response.data.role, userId: response.data.userId })); // ✅ Store full user object
-      console.log("✅ Login Success - Full Response:", response.data);
+      localStorage.setItem("user", JSON.stringify(loggedInUser)); // ✅ Store full user object
 
       setUser(loggedInUser);
+      return { success: true };
     } catch (error) {
-      console.error("Login Failed:", error.response ? error.response.data : error);
+      const message = error.response?.data?.message || "Login failed. Please try again.";
+      return { success: false, message };
     }
   };
 

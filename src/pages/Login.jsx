@@ -6,14 +6,20 @@ import { ThemeContext } from "../context/ThemeContext";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { login } = useAuth();
   const navigate = useNavigate();
   const { theme } = useContext(ThemeContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    await login(email, password);
-    navigate("/");
+    setError("");
+    const result = await login(email, password);
+    if (result.success) {
+      navigate("/");
+    } else {
+      setError(result.message);
+    }
   };
 
   return (
@@ -29,6 +35,11 @@ const Login = () => {
         {/* Form side */}
         <div className="lux-card p-8 md:p-10">
           <h1 className="font-display text-3xl font-semibold capitalize text-gold mb-6">Login</h1>
+          {error && (
+            <p className="text-center mb-4 text-sm text-red-300 bg-red-500/10 border border-red-500/30 p-3">
+              {error}
+            </p>
+          )}
           <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label htmlFor="email" className="block text-sm font-medium mb-1">
@@ -72,6 +83,11 @@ const Login = () => {
               Sign up
             </Link>
           </p>
+          <div className="mt-6 text-xs text-center text-muted-warm border-t border-[#D9A44D]/15 pt-4">
+            <p>superadmin@gmail.com SuperSecure123</p>
+            <p>hmudassir511@gmail.com admin123456</p>
+            <p>cus@gmail.com cus123</p>
+          </div>
         </div>
       </div>
     </div>

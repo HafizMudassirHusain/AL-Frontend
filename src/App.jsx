@@ -13,26 +13,37 @@ import ContactUs from "./pages/ContactUs";
 import NotFound from "./pages/NotFound";
 import OrderSuccess from "./pages/OrderSuccess";
 import OrderCancel from "./pages/OrderCancel";
-import AdminLayout from "./pages/admin/AdminLayout";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminOrders from "./pages/admin/AdminOrders";
-import AdminAddMenu from "./pages/admin/AdminAddMenu";
-import AdminAnalytics from "./pages/admin/AdminAnalytics";
-import AdminUsers from "./pages/admin/AdminUsers";
-import AdminHeroSection from "./pages/admin/AdminHeroSection";
+import { useAuth } from "./context/AuthContext";
 import { ThemeContext } from "./context/ThemeContext";
-import { useContext } from "react";
+import { useContext, lazy, Suspense } from "react";
+
+// Admin section is lazy-loaded so customers don't download it (or Chart.js)
+const AdminLayout = lazy(() => import("./pages/admin/AdminLayout"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AdminOrders = lazy(() => import("./pages/admin/AdminOrders"));
+const AdminAddMenu = lazy(() => import("./pages/admin/AdminAddMenu"));
+const AdminAnalytics = lazy(() => import("./pages/admin/AdminAnalytics"));
+const AdminUsers = lazy(() => import("./pages/admin/AdminUsers"));
+const AdminHeroSection = lazy(() => import("./pages/admin/AdminHeroSection"));
+
+const PageLoader = () => (
+  <div className="min-h-[60vh] flex items-center justify-center">
+    <p className="font-display uppercase tracking-[0.2em] text-gold animate-pulse">Loading…</p>
+  </div>
+);
 
 function App() {
+  // Subscribe to auth context so routes re-evaluate immediately after login/logout
+  const { user } = useAuth();
   const token = localStorage.getItem("token");
-const userData = JSON.parse(localStorage.getItem("user")); // ✅ Get full user object
-const userRole = userData?.role; // ✅ Extract role
+  const userRole = user?.role;
   const { theme } = useContext(ThemeContext);
 
   return (
     <div className={`min-h-screen surface ${theme === 'light' ? 'light' : ''}`}>
       <Navbar />
 
+      <Suspense fallback={<PageLoader />}>
       <Routes>
         {/* ✅ Public Routes */}
         <Route path="/" element={<Home />} />
@@ -70,6 +81,7 @@ const userRole = userData?.role; // ✅ Extract role
         {/* Fallback */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+      </Suspense>
 
       {/* Footer */}
       <Footer />

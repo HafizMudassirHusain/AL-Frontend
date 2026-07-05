@@ -47,9 +47,9 @@ const Navbar = () => {
           : "bg-[#16130F]/95 text-[#ECE3D0]"
       } backdrop-blur-md border-b border-[#D9A44D]/20 fixed top-0 min-w-full z-50`}
     >
-      <div className="container mx-auto px-6 py-3 flex justify-between items-center">
+      <div className="container mx-auto px-6 py-3 flex justify-between items-center gap-6">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-3">
+        <Link to="/" className="flex items-center gap-3 shrink-0">
           <span className="w-12 h-12 rounded-full border border-[#D9A44D] p-[2px] inline-flex">
             <img
               src={logo}
@@ -57,13 +57,13 @@ const Navbar = () => {
               className="w-full h-full rounded-full object-cover"
             />
           </span>
-          <span className="font-display text-xl tracking-[0.12em] uppercase">
+          <span className="font-display text-xl tracking-[0.12em] uppercase whitespace-nowrap">
             MZ <span className="text-[#D9A44D]">Kitchen</span>
           </span>
         </Link>
 
         {/* Center links */}
-        <div className="hidden lg:flex items-center gap-9 absolute left-1/2 -translate-x-1/2">
+        <div className="hidden lg:flex items-center gap-8 flex-1 justify-center">
           {navLinks.map((item) => (
             <Link key={item.path} to={item.path} className={linkClass(item.path)}>
               {item.name}
@@ -72,7 +72,7 @@ const Navbar = () => {
         </div>
 
         {/* Right actions */}
-        <div className="hidden lg:flex items-center gap-5">
+        <div className="hidden lg:flex items-center gap-5 shrink-0">
           <Link to="/order" className="btn-lux-outline !py-2 !px-5">
             Reservation <span className="btn-dash" />
           </Link>

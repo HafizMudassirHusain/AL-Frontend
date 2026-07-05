@@ -97,7 +97,7 @@ const AdminUsers = () => {
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`p-6 md:p-8 rounded-2xl transition-colors duration-300 ${theme === "light" ? "bg-gray-50" : "bg-gray-900"}`}
+      className={`p-6 md:p-8 rounded-2xl transition-colors duration-300 ${theme === "light" ? "bg-[#FAF6EE]" : "bg-[#16130F]"}`}
     >
       <header className="mb-6 text-center">
         <h1
@@ -123,12 +123,12 @@ const AdminUsers = () => {
             value={search}
             onChange={(e) => { setSearch(e.target.value); setCurrentPage(1); }}
             placeholder="Search by name, email or role..."
-            className={`flex-1 px-4 py-2 rounded-xl shadow-sm border focus:outline-none focus:ring-2 ${theme === "light" ? "bg-white border-gray-200 focus:ring-[#D9A44D] text-gray-800" : "bg-gray-800 border-gray-700 focus:ring-[#D9A44D] text-white"}`}
+            className={`flex-1 px-4 py-2 rounded-xl shadow-sm border focus:outline-none focus:ring-2 ${theme === "light" ? "bg-white border-gray-200 focus:ring-[#D9A44D] text-gray-800" : "bg-[#231E18] border-[#D9A44D]/25 focus:ring-[#D9A44D] text-white"}`}
           />
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className={`px-4 py-2 rounded-xl shadow-sm border ${theme === "light" ? "bg-white border-gray-200 text-gray-800" : "bg-gray-800 border-gray-700 text-white"}`}
+            className={`px-4 py-2 rounded-xl shadow-sm border ${theme === "light" ? "bg-white border-gray-200 text-gray-800" : "bg-[#231E18] border-[#D9A44D]/25 text-white"}`}
           >
             <option value="name">Sort: Name</option>
             <option value="email">Sort: Email</option>
@@ -144,7 +144,7 @@ const AdminUsers = () => {
           <button
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage === 1}
-            className={`px-4 py-2 rounded-full font-medium transition ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : "shadow-md" } ${theme === "light" ? "bg-white border" : "bg-gray-800 border-gray-700"}`}
+            className={`px-4 py-2 rounded-full font-medium transition ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : "shadow-md" } ${theme === "light" ? "bg-white border" : "bg-[#231E18] border-[#D9A44D]/25"}`}
           >
             Prev
           </button>
@@ -220,7 +220,7 @@ const AdminUsers = () => {
                 initial={{ opacity: 0, y: 6 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.03 }}
-                className={`${idx % 2 === 0 ? (theme === "light" ? "bg-white" : "bg-[#0b0b0b]") : (theme === "light" ? "bg-gray-50" : "bg-[#071010]")} hover:shadow-md`}
+                className={`${idx % 2 === 0 ? (theme === "light" ? "bg-white" : "bg-[#0b0b0b]") : (theme === "light" ? "bg-[#FAF6EE]" : "bg-[#071010]")} hover:shadow-md`}
               >
                 <td className="p-4 align-middle">
                   <div className="font-medium text-sm">{u.name}</div>
@@ -235,7 +235,7 @@ const AdminUsers = () => {
                     <select
                       value={u.role}
                       onChange={(e) => updateUserRole(u._id, e.target.value)}
-                      className={`px-3 py-1 rounded-md ${theme === "light" ? "bg-white border" : "bg-gray-800 border-gray-700 text-white"}`}
+                      className={`px-3 py-1 rounded-md ${theme === "light" ? "bg-white border" : "bg-[#231E18] border-[#D9A44D]/25 text-white"}`}
                     >
                       <option value="customer">Customer</option>
                       <option value="admin">Admin</option>

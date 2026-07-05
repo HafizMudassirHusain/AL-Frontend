@@ -55,6 +55,7 @@ const Order = () => {
         }
       }
 
+      const token = localStorage.getItem("token");
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/orders`,
         {
@@ -63,7 +64,8 @@ const Order = () => {
           address,
           items: cart,
           totalPrice,
-        }
+        },
+        token ? { headers: { Authorization: `Bearer ${token}` } } : undefined
       );
 
       setMessage(response.data.message);

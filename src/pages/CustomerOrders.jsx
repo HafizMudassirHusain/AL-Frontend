@@ -11,18 +11,13 @@ const CustomerOrders = () => {
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
-    if (!user?.name) return;
+    if (!user) return;
 
     axios
-      .get(`${import.meta.env.VITE_API_BASE_URL}/api/orders`, {
+      .get(`${import.meta.env.VITE_API_BASE_URL}/api/orders/my`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
-      .then((response) => {
-        const customerOrders = response.data.filter(
-          (order) => order.customerName === user.name
-        );
-        setOrders(customerOrders);
-      })
+      .then((response) => setOrders(response.data))
       .catch((error) => console.error("Error fetching orders:", error));
   }, [user]);
 
